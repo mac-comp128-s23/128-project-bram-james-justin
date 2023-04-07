@@ -14,7 +14,7 @@ public class Board {
     public void initializeBoard(){
         for (int[] col : gameBoard) {
             for (int i : col) {
-                i = 0;
+                col[i] = 0;
             }
         }
     }

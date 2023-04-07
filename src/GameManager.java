@@ -25,23 +25,27 @@ public class GameManager {
 
     }
 
-    public void initializePieces(int[][] gameBoard){
+    public void initializePieces(int[][] gameBoard){   //1 is red, 2 is yellow
         int colCount = 0;
+        int rowCount = 0;
         for (int[] col : gameBoard) {
-            for (int rowCount: col) {
+            rowCount = 0;
+            for (int var: col) {
                 GraphicsObject disc = new Ellipse(30 + (70 * (colCount % 7)), 30 + (70 * (rowCount )), 70, 70);
-                if(gameBoard[colCount][rowCount] == 0) {
+                if(var == 0) {
                     ((Ellipse) disc).setFillColor(Color.GRAY);
-                } else if(gameBoard[colCount][rowCount] == 1) {
+                } else if(var == 1) {
                     ((Ellipse) disc).setFillColor(Color.RED);
                 } else {
                     ((Ellipse) disc).setFillColor(Color.YELLOW);
                 }
                 canvas.add(disc);
+                rowCount ++;
             }
             colCount++;
         }
     }
+
 
     public static void main(String[] args) {
         GameManager game = new GameManager();
