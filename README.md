@@ -1,3 +1,3 @@
-# Project Title Goes Here
+# Connect4
 
 Info about your project goes here
