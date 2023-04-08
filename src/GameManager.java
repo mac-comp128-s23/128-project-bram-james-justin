@@ -13,6 +13,8 @@ public class GameManager {
     private final int CANVAS_WIDTH = 700;
     private final int CANVAS_HEIGHT = 600; 
     private GraphicsGroup pieces;
+    private Integer playerTurn;  //Red if 1, Yellow if 2
+    private GraphicsObject [][] ellipseGameBoard;
     
     public GameManager() {
         board = new Board();
@@ -34,12 +36,9 @@ public class GameManager {
             for (int var: col) {
                 GraphicsObject square= new Rectangle(100 + (70 * (colCount % 7)), 80 + (70 * (rowCount )), 70, 70);
                 GraphicsObject disc = new Ellipse(105 + (70 * (colCount % 7)), 85 + (70 * (rowCount )), 60, 60);
+                ellipseGameBoard[colCount][rowCount]=disc;
                 if(var == 0) {
                     ((Ellipse) disc).setFillColor(Color.WHITE); //If we could set this to translucent that would be cool then we could have the sliding effect later.
-                } else if(var == 1) {
-                    ((Ellipse) disc).setFillColor(Color.RED);
-                } else {
-                    ((Ellipse) disc).setFillColor(Color.YELLOW);
                 }
                 ((Rectangle) square).setFillColor(Color.BLUE);
                 canvas.add(square);
@@ -50,6 +49,22 @@ public class GameManager {
         }
     }
 
+
+
+
+    public void placeRed(){
+        canvas.onMouseDown(event -> {
+            ellipseGameBoard[]
+        });
+    }
+    // public void placeYellow(){
+
+    // }
+// } else if(var == 1) {
+//     ((Ellipse) disc).setFillColor(Color.RED);
+// } else {
+//     ((Ellipse) disc).setFillColor(Color.YELLOW);
+// }
 
     public static void main(String[] args) {
         GameManager game = new GameManager();
