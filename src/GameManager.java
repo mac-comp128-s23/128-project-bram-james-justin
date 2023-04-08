@@ -5,6 +5,7 @@ import edu.macalester.graphics.CanvasWindow;
 import edu.macalester.graphics.Ellipse;
 import edu.macalester.graphics.GraphicsGroup;
 import edu.macalester.graphics.GraphicsObject;
+import edu.macalester.graphics.Rectangle;
 
 public class GameManager {
     private Board board;
@@ -31,14 +32,17 @@ public class GameManager {
         for (int[] col : gameBoard) {
             rowCount = 0;
             for (int var: col) {
-                GraphicsObject disc = new Ellipse(30 + (70 * (colCount % 7)), 30 + (70 * (rowCount )), 70, 70);
+                GraphicsObject square= new Rectangle(100 + (70 * (colCount % 7)), 80 + (70 * (rowCount )), 70, 70);
+                GraphicsObject disc = new Ellipse(105 + (70 * (colCount % 7)), 85 + (70 * (rowCount )), 60, 60);
                 if(var == 0) {
-                    ((Ellipse) disc).setFillColor(Color.GRAY);
+                    ((Ellipse) disc).setFillColor(Color.WHITE); //If we could set this to translucent that would be cool then we could have the sliding effect later.
                 } else if(var == 1) {
                     ((Ellipse) disc).setFillColor(Color.RED);
                 } else {
                     ((Ellipse) disc).setFillColor(Color.YELLOW);
                 }
+                ((Rectangle) square).setFillColor(Color.BLUE);
+                canvas.add(square);
                 canvas.add(disc);
                 rowCount ++;
             }
