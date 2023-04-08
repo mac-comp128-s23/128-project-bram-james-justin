@@ -31,7 +31,7 @@ public class Board {
     public int getNearestColIndex(double mouseX, double mouseY){ //gets the position of the mouse and then assigns it to the nearest column
         int answer = -1;
         if(mouseX > xBoxMargin && mouseX < (squareHeightAndWidth * 7) + xBoxMargin) {
-            answer = (int) ((mouseX - xBoxMargin) / 7); //If something goes wrong check here          
+            answer = (int) ((mouseX - xBoxMargin) / squareHeightAndWidth); //If something goes wrong check here          
         }
         return answer;
     }
@@ -50,7 +50,7 @@ public class Board {
                 canvas.add((GraphicsObject) square);
                 canvas.add((GraphicsObject) disc);
                 System.out.println();
-                // ellipseGameBoard[colCount][rowCount] = disc;
+                gameBoard[colCount][rowCount] = disc;
 
                 rowCount ++;
             }

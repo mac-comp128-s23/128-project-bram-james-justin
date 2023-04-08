@@ -20,14 +20,35 @@ public class GameManager {
     private GraphicsObject [][] ellipseGameBoard;
     private HashMap<Integer[][], GraphicsObject> tokenMap;
     private int turnCount;
+    private boolean gameOver;
     
     public GameManager() {
         turnCount = 0;
+        gameOver = false;
         board = new Board();
         canvas = new CanvasWindow("Board", CANVAS_WIDTH, CANVAS_HEIGHT);
         pieces = new GraphicsGroup();
         canvas.add(pieces, 0, 0);
         board.initializePieces(canvas);
+        canvas.onClick(event -> {
+            int index = board.getNearestColIndex(event.getPosition().getX(), event.getPosition().getY());
+            System.out.println(index);
+            Fillable[] col = board.getGameBoard()[index];
+            if(turnCount < 43){
+                int count = 0;
+                while(count < 6){
+                    if(col[count].getFillColor() != Color.WHITE){
+                        break;
+                    }
+                    System.out.println("YYYAt");
+                    count ++;
+                }
+                board.getGameBoard()[index][count - 1].setFillColor(getPlayerColor());
+            }
+            canvas.draw();
+            player1Turn = !player1Turn;
+        });
+
     }
 
     public void displayBoard(){
@@ -61,25 +82,8 @@ public class GameManager {
     //     return pieces;
     // }   
 
-    public void placePiece(){
-        canvas.onClick(event -> {
-            int index = board.getNearestColIndex(event.getPosition().getX(), event.getPosition().getY());
-            Fillable[] col = board.getGameBoard()[index];
-            Boolean finished = false;
-            int count = 0;
-            if(turnCount < 43){
-                while(count < ){
-                    if(col[count].getFillColor() != Color.WHITE){
-                        board.getGameBoard()[index][count - 1].setFillColor(getPlayerColor());
-                        finished = true;
-                    }
-                    System.out.println("YYYAt");
-                    count ++;
-                }
-            }
-            canvas.draw();
-            player1Turn = !player1Turn;
-        });
+    public boolean placePiece(){
+        return true;
     }
     // public void placeYellow(){
 
