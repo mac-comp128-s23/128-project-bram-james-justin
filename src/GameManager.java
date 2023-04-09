@@ -1,14 +1,11 @@
 import java.awt.Color;
 import java.awt.Paint;
-import java.lang.reflect.Array;
 import java.util.HashMap;
 
 import edu.macalester.graphics.CanvasWindow;
-import edu.macalester.graphics.Ellipse;
 import edu.macalester.graphics.Fillable;
 import edu.macalester.graphics.GraphicsGroup;
 import edu.macalester.graphics.GraphicsObject;
-import edu.macalester.graphics.Rectangle;
 
 public class GameManager {
     private Board board;
@@ -16,8 +13,7 @@ public class GameManager {
     private final int CANVAS_WIDTH = 700;
     private final int CANVAS_HEIGHT = 600; 
     private GraphicsGroup pieces;
-    private GraphicsObject [][] ellipseGameBoard;
-    private HashMap<Integer[][], GraphicsObject> tokenMap;
+
     private int turnCount;
     private boolean gameIsOver;
     private static final int COLUMNS=7;
@@ -43,7 +39,7 @@ public class GameManager {
         if(index != -1){
             Fillable[] col = board.getGameBoard()[index];
             int count = 0;
-            while(count < 6){
+            while(count < 6){       // is less than 6 so that it represents the # of rows
                 if(col[count].getFillColor() != Color.WHITE){
                     break;
                 }
