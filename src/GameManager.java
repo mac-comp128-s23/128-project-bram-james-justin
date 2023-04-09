@@ -21,6 +21,8 @@ public class GameManager {
     private HashMap<Integer[][], GraphicsObject> tokenMap;
     private int turnCount;
     private boolean gameOver;
+    private static final int COLUMNS=7;
+    private static final int ROWS=6;
     
     public GameManager() {
         turnCount = 0;
@@ -40,59 +42,55 @@ public class GameManager {
                     if(col[count].getFillColor() != Color.WHITE){
                         break;
                     }
-                    System.out.println("YYYAt");
                     count ++;
                 }
                 board.getGameBoard()[index][count - 1].setFillColor(getPlayerColor());
             }
             canvas.draw();
             player1Turn = !player1Turn;
+            System.out.println(player1Turn);
+            checkWin(getPlayerColor(player1Turn));
+            System.out.println(getPlayerColor(player1Turn));
+            
         });
 
+    }
+
+    public Color getPlayerColor(boolean turn){
+        if(turn==true){
+            return Color.YELLOW;
+        }
+        else if(turn==false){
+            return Color.RED;
+        }
+        return Color.BLACK;
+    }
+    public Color getPieceColor(int column, int row){
+        if(column<COLUMNS &&row<ROWS){
+        return (Color) board.getGameBoard()[column][row].getFillColor();
+        }
+        return Color.WHITE;
+    }
+    public boolean checkWin(Color color){
+        //Checks rows for Connect4
+        for (int i=0; i<COLUMNS;i++){
+            for(int j=0;j<ROWS;j++){
+                if(getPieceColor(i, j)==color && getPieceColor(i+1, j)==color&& getPieceColor(i+2, j)==color&& getPieceColor(i+3, j)==color){
+                    System.out.println("Won");
+                    return true;
+                }
+            }  
+        }
+        return false;
     }
 
     public void displayBoard(){
 
     }
 
-    // public void initializePieces(int[][] gameBoard){   //1 is red, 2 is yellow
-    //     int colCount = 0;
-    //     int rowCount = 0;
-    //     for (int[] col : gameBoard) {
-    //         rowCount = 0;
-    //         for (int var: col) {
-    //             GraphicsObject square= new Rectangle(100 + (70 * (colCount % 7)), 80 + (70 * (rowCount )), 70, 70);
-    //             GraphicsObject disc = new Ellipse(105 + (70 * (colCount % 7)), 85 + (70 * (rowCount )), 60, 60);
-    //             if(var == 0) {
-    //                 ((Ellipse) disc).setFillColor(Color.WHITE); //If we could set this to translucent that would be cool then we could have the sliding effect later.
-    //             }
-    //             ((Rectangle) square).setFillColor(Color.BLUE);
-    //             canvas.add(square);
-    //             canvas.add(disc);
-    //             // ellipseGameBoard[colCount][rowCount] = disc;
-
-    //             rowCount ++;
-    //         }
-    //         colCount++;
-    //     }
-    // }
-
-
-    // public Ellipse getToken() {
-    //     return pieces;
-    // }   
-
     public boolean placePiece(){
         return true;
     }
-    // public void placeYellow(){
-
-    // }
-// } else if(var == 1) {
-//     ((Ellipse) disc).setFillColor(Color.RED);
-// } else {
-//     ((Ellipse) disc).setFillColor(Color.YELLOW);
-// }
 
     private Paint getPlayerColor() {
         Paint color;
