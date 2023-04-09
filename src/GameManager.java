@@ -48,9 +48,7 @@ public class GameManager {
             }
             canvas.draw();
             player1Turn = !player1Turn;
-            System.out.println(player1Turn);
             checkWin(getPlayerColor(player1Turn));
-            System.out.println(getPlayerColor(player1Turn));
             
         });
 
@@ -60,10 +58,10 @@ public class GameManager {
         if(turn==true){
             return Color.YELLOW;
         }
-        else if(turn==false){
+        else{
             return Color.RED;
         }
-        return Color.BLACK;
+
     }
     public Color getPieceColor(int column, int row){
         if(column<COLUMNS &&row<ROWS){
@@ -72,11 +70,26 @@ public class GameManager {
         return Color.WHITE;
     }
     public boolean checkWin(Color color){
-        //Checks rows for Connect4
-        for (int i=0; i<COLUMNS;i++){
-            for(int j=0;j<ROWS;j++){
-                if(getPieceColor(i, j)==color && getPieceColor(i+1, j)==color&& getPieceColor(i+2, j)==color&& getPieceColor(i+3, j)==color){
-                    System.out.println("Won");
+        // Checks rows for 4 in a row
+        for (int column=0; column<COLUMNS;column++){
+            for(int row=0;row<ROWS;row++){
+                if(getPieceColor(column, row)==color && getPieceColor(column+1, row)==color&& getPieceColor(column+2, row)==color&& getPieceColor(column+3, row)==color){
+                    System.out.println("Row Won");
+                    return true;
+                }
+                // Checks columns for 4 in a row.
+                if(getPieceColor(column, row)==color && getPieceColor(column, row+1)==color&& getPieceColor(column, row+2)==color&& getPieceColor(column, row+3)==color){
+                    System.out.println("Column Won");
+                    return true;
+                }
+                // Checks Rightwards increasing diagonal for 4 in a row.
+                if(getPieceColor(column, row)==color && getPieceColor(column+1, row-1)==color&& getPieceColor(column+2, row-2)==color&& getPieceColor(column+3, row-3)==color){
+                    System.out.println("right diagonal Won");
+                    return true;
+                }
+                //Checks leftward increasing diagonal for 4 in a row.
+                if(getPieceColor(column, row)==color && getPieceColor(column-1, row-1)==color&& getPieceColor(column-2, row-2)==color&& getPieceColor(column-3, row-3)==color){
+                    System.out.println("left diagonal Won");
                     return true;
                 }
             }  
