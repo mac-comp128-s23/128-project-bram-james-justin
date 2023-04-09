@@ -44,16 +44,14 @@ public class GameManager {
                     }
                     count ++;
                 }
-                board.getGameBoard()[index][count - 1].setFillColor(getPlayerColor());
+                board.getGameBoard()[index][count - 1].setFillColor(getPlayerColor(player1Turn));
             }
             canvas.draw();
-            player1Turn = !player1Turn;
             checkWin(getPlayerColor(player1Turn));
-            
+            player1Turn = !player1Turn;    
         });
 
     }
-
     public Color getPlayerColor(boolean turn){
         if(turn==true){
             return Color.YELLOW;
@@ -103,16 +101,6 @@ public class GameManager {
 
     public boolean placePiece(){
         return true;
-    }
-
-    private Paint getPlayerColor() {
-        Paint color;
-        if(player1Turn) {
-            color = Color.RED;
-        } else {
-            color = Color.YELLOW;
-        }
-        return color;
     }
 
     public static void main(String[] args) {
