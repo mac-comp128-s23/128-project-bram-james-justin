@@ -3,5 +3,6 @@ public class Node {
     
     public Node(Board gameBoard) {
         board = gameBoard;
+        
     }
 }
