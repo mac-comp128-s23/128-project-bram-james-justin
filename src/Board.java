@@ -20,14 +20,6 @@ public class Board {
         squareHeightAndWidth = 70;
     }
 
-    // public void initializeBoard(){
-    //     for (GraphicsObject[] col : gameBoard) {
-    //         for (GraphicsObject i : col) {
-    //         }
-    //     }
-    // }
-
-
     public int getNearestColIndex(double mouseX, double mouseY){ //gets the position of the mouse and then assigns it to the nearest column
         int answer = -1;
         if(mouseX > xBoxMargin && mouseX < (squareHeightAndWidth * 7) + xBoxMargin) {

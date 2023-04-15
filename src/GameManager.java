@@ -18,6 +18,8 @@ public class GameManager {
     private boolean gameIsOver;
     private static final int COLUMNS=7;
     private static final int ROWS=6;
+    private double outcomeYellow=0;
+    private double outcomeRed =0;
     
     public GameManager() {
         turnCount = 0;
@@ -61,16 +63,30 @@ public class GameManager {
         if (playerWon) {
             if (turnCount % 2 == 0) { // checks if player 1 wins because they are an even move number (first move made by red is move 0), not 1
                 System.out.println("Red Wins");
+                outcomeRed =1;
+                outcomeYellow= 0;
             } else {
                 System.out.println("Yellow wins");
+                outcomeRed = 0;
+                outcomeYellow =1;
             }
         } 
         if(turnCount == 41 && !playerWon){
+            outcomeYellow = 0.5;
+            outcomeRed =0.5;
             System.out.println("Nobody is a winner");
         }
         gameIsOver = true;
     }
 
+    public double getOutcomeRed(){
+        return outcomeRed;
+    }
+
+
+    public double getOutcomeYellow(){
+        return outcomeYellow;
+    }
     public void clearGame() {
         canvas.removeAll();
         canvas.add(pieces);
@@ -124,9 +140,6 @@ public class GameManager {
         }
     }
 
-    public void displayBoard(){
-
-    }
 
     public boolean placePiece(){
         return true;
