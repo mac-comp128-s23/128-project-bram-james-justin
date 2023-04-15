@@ -87,6 +87,7 @@ public class GameManager {
     public double getOutcomeYellow(){
         return outcomeYellow;
     }
+
     public void clearGame() {
         canvas.removeAll();
         canvas.add(pieces);
@@ -139,7 +140,6 @@ public class GameManager {
             }  
         }
     }
-
 
     public boolean placePiece(){
         return true;

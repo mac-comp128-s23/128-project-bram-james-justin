@@ -1,7 +1,14 @@
-import javax.swing.tree.TreeNode;
-
 public class Tree {
+    private Node root;
+    private Board board;
 
-    private TreeNode root;
+    public Tree(){
+        root = new Node(board.getGameBoard());
+
+
+    }
     
+    public double minimax(Node node){
+        
+    }
 }
