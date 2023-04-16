@@ -79,6 +79,9 @@ public class GameManager {
         gameIsOver = true;
     }
 
+    public boolean getGameOver(){
+        return gameIsOver;
+    }
     public double getOutcomeRed(){
         return outcomeRed;
     }
