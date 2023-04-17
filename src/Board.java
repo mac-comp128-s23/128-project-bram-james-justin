@@ -6,6 +6,7 @@ import edu.macalester.graphics.CanvasWindow;
 import edu.macalester.graphics.Ellipse;
 import edu.macalester.graphics.Fillable;
 import edu.macalester.graphics.GraphicsObject;
+import edu.macalester.graphics.Point;
 import edu.macalester.graphics.Rectangle;
 
 public class Board {
@@ -87,7 +88,7 @@ public class Board {
             if (count != 0) {
                 getGameBoard()[index][count - 1].setFillColor(getPlayerColor());
                 
-                checkWin(getPlayerColor());
+                checkWin(index, count-1, getPlayerColor());
 
                 turnCount++;
             }
@@ -97,36 +98,57 @@ public class Board {
         }
     }
 
-    public void checkWin(Color color) {
+    public boolean checkWin(int x, int y, Color color) {
         // Checks rows for 4 in a row
-        for (int column = 0; column < COLUMNS; column++) {
-            for (int row = 0; row < ROWS; row++) {
-                if (getPieceColor(column, row) == color &&
-                    getPieceColor(column + 1, row) == color &&
-                    getPieceColor(column + 2, row) == color &&
-                    getPieceColor(column + 3, row) == color) {
-                    gameOver(true);
-                }
-                // Checks columns for 4 in a row.
-                if (getPieceColor(column, row) == color && getPieceColor(column, row + 1) == color
-                    && getPieceColor(column, row + 2) == color && getPieceColor(column, row + 3) == color) {
-                    gameOver(true);
-                }
-                // Checks Rightwards increasing diagonal for 4 in a row.
-                if (getPieceColor(column, row) == color &&
-                    getPieceColor(column + 1, row - 1) == color &&
-                    getPieceColor(column + 2, row - 2) == color &&
-                    getPieceColor(column + 3, row - 3) == color) {
-                    gameOver(true);
-                }
-                // Checks leftward increasing diagonal for 4 in a row.
-                if (getPieceColor(column, row) == color && getPieceColor(column - 1, row - 1) == color
-                    && getPieceColor(column - 2, row - 2) == color && getPieceColor(column - 3, row - 3) == color) {
-                    gameOver(true);
-                }
-            }
+        if (getPieceColor(x, y) == color &&
+            getPieceColor(x + 1, y) == color &&
+            getPieceColor(x + 2, y) == color &&
+            getPieceColor(x + 3, y) == color ||
+            getPieceColor(x, y) == color &&
+            getPieceColor(x - 1, y) == color &&
+            getPieceColor(x - 2, y) == color &&
+            getPieceColor(x - 3, y) == color) {
+            gameOver(true);
+            return true;
         }
-    }
+        // Checks columns for 4 in a row.
+        if (getPieceColor(x, y) == color &&
+            getPieceColor(x, y + 1) == color && 
+            getPieceColor(x, y + 2) == color && 
+            getPieceColor(x, y + 3) == color ||
+            getPieceColor(x, y) == color &&
+            getPieceColor(x, y - 1) == color && 
+            getPieceColor(x, y - 2) == color && 
+            getPieceColor(x, y - 3) == color){
+            gameOver(true);
+            return true;
+        }
+        // Checks Rightwards  diagonal for 4 in a row.
+        if (getPieceColor(x, y) == color &&
+            getPieceColor(x + 1, y - 1) == color &&
+            getPieceColor(x + 2, y - 2) == color &&
+            getPieceColor(x + 3, y - 3) == color ||
+            getPieceColor(x, y) == color &&
+            getPieceColor(x - 1, y - 1) == color &&
+            getPieceColor(x - 2, y - 2) == color &&
+            getPieceColor(x - 3, y - 3) == color) {
+            gameOver(true);
+            return true;
+        }
+        // Checks leftward diagonal for 4 in a row.
+        if (getPieceColor(x, y) == color &&
+            getPieceColor(x - 1, y - 1) == color &&
+            getPieceColor(x - 2, y - 2) == color &&
+            getPieceColor(x - 3, y - 3) == color ||
+            getPieceColor(x, y) == color &&
+            getPieceColor(x + 1, y + 1) == color &&
+            getPieceColor(x + 2, y + 2) == color &&
+            getPieceColor(x + 3, y + 3) == color) {
+            gameOver(true);
+            return true;
+        }
+        return false;
+    }    
 
       /**
      * Turns Fillable board into a matrix. Can be used for testing the algorithm
