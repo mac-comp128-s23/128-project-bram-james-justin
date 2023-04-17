@@ -23,7 +23,8 @@ public class Node {
         for (int i = 0; i < boardState.length; i++) { //column
             int[][] newBoard = boardState;
             for (int j = 0; j < newBoard[i].length; j++) { //row
-                    if ((j < boardState.length-1) && newBoard[i+1][j] == 0) {
+                    if ((j < boardState.length-1) &&
+                        newBoard[i+1][j] == 0) {
                         newBoard[i+1][j] = turn;
                         break;
 
