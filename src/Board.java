@@ -14,7 +14,7 @@ public class Board {
     public int xBoxMargin, yBoxMargin;
     public int squareHeightAndWidth;
     public int turnCount;     
-    private static final int COLUMNS = 7;
+    public static final int COLUMNS = 7;
     private static final int ROWS = 6;
     private boolean gameIsOver;
     private int red = 1;    // every red token is a 1. This will be used to convert the gameboard into a matrix
@@ -96,6 +96,33 @@ public class Board {
                 gameOver(false);
             }
         }
+    }
+
+    /*
+     * for the tree to create nodes with unique boards
+     */
+    public boolean plopPiece(int x){
+        Fillable[] col = getGameBoard()[x];
+        int count = 0;
+        while (count < 6) {       // is less than 6 so that it represents the # of rows
+            if (col[count].getFillColor() != Color.WHITE) {
+                break;
+            }
+            count++;
+        }
+        if (count != 0) {
+            getGameBoard()[x][count - 1].setFillColor(getPlayerColor());
+            
+            checkWin(x, count-1, getPlayerColor());
+
+            turnCount++;
+        } else {
+            return false;
+        }
+        if (turnCount == 42) {
+            gameOver(false);
+        }
+        return true;
     }
 
     public boolean checkWin(int x, int y, Color color) {
