@@ -9,20 +9,26 @@ public class Node {
     private int turn;
     // private GameManager manager;
 
-    public Node(Fillable[][] fillables) {
-        board = new Board(fillables);
+    public Node(Board b, int turnNumba) {
+        board = b;
         children = new ArrayList<Node>();
+        turn = turnNumba;
+    }
 
+    public int getTurn() {
+        return turn;
     }
 
     /**
      * Prints out the possible nodes of the current game state. Probably should change the method name.
      */
-    public void addChildNode() {
-        for (int i = 0; i < board.COLUMNS ; i++) {
-            if(board.plopPiece(i)){
-                Node node = new Node(board.getGameBoard());
-                children.add(node);
+    public void addChildren() {
+        if(children.isEmpty()){
+            for (int i = 0; i < board.COLUMNS ; i++) {
+                if(board.plopPiece(i)){
+                    Node node = new Node(board, turn + 1);
+                    children.add(node);
+                }
             }
         }
     }
@@ -36,14 +42,20 @@ public class Node {
     //     }
     // }
 
-    public void getChildren() {
-        for (Node child : children) {
-            // printGetChildren(child);
-            System.out.println("+++++++++++++++++++++++++++++++++++");
+    public ArrayList<Node> getOrMakeChildren() {
+        if(children.isEmpty()) addChildren();
+        return children;
+    }
+
+    public boolean hasKids(){
+        if(children.isEmpty()){
+            return false;
+        } else {
+            return true;
         }
     }
 
-    
-
-
+    public Board getBoard(){
+        return getBoard();
+    }
 }

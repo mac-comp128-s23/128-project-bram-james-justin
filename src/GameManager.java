@@ -12,6 +12,7 @@ import edu.macalester.graphics.GraphicsObject;
 
 public class GameManager {
     private Board board;
+    private Node gameState;
     private CanvasWindow canvas;
     private final int CANVAS_WIDTH = 700;
     private final int CANVAS_HEIGHT = 600;
@@ -20,13 +21,14 @@ public class GameManager {
     public GameManager() {
         canvas = new CanvasWindow("Board", CANVAS_WIDTH, CANVAS_HEIGHT);
         pieces = new GraphicsGroup();
-        board = new Board(null);
-
+        board = new Board(null, null, null, null, null);
+        board.initializeArrays();
+        gameState = new Node(board, 0);
         canvas.add(pieces, 0, 0);
         board.initializePieces(canvas);
 
         canvas.onClick(event -> {
-            if (!board.getGameOver()) {
+            if (!board.getGameIsOverInPosition()) {
                 takeATurn(event.getPosition().getX(), event.getPosition().getY());
             } else {
                 clearBoard();
