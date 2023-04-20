@@ -62,6 +62,56 @@ public class Board {
         return answer;
     }
 
+    public void placePiece(double x, double y){
+        int index = getNearestColIndex(x, y);
+        if (index != -1 && !gameIsOverInPosition) {
+            Fillable[] col = getGameBoard()[index];
+            int count = 0;
+            while (count < 6) {       // is less than 6 so that it represents the # of rows
+                if (col[count].getFillColor() != Color.WHITE) {
+                    break;
+                }
+                count++;
+            }
+            if (count != 0) {
+                getGameBoard()[index][count - 1].setFillColor(getPlayerColor());
+                
+                checkPiece(index, count-1, getPlayerColor());
+
+                turnCount++;
+            }
+            if (turnCount == 42 && !gameIsOverInPosition) {
+                gameOver(false);
+            }
+        }
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+
     public void initializePieces(CanvasWindow canvas){   //1 is red, 2 is yellow
         int colCount = 0;
         int rowCount = 0;
@@ -88,29 +138,7 @@ public class Board {
         return gameBoard;
     }
 
-    public void placePiece(double x, double y){
-        int index = getNearestColIndex(x, y);
-        if (index != -1 && !gameIsOverInPosition) {
-            Fillable[] col = getGameBoard()[index];
-            int count = 0;
-            while (count < 6) {       // is less than 6 so that it represents the # of rows
-                if (col[count].getFillColor() != Color.WHITE) {
-                    break;
-                }
-                count++;
-            }
-            if (count != 0) {
-                getGameBoard()[index][count - 1].setFillColor(getPlayerColor());
-                
-                checkPiece(index, count-1, getPlayerColor());
-
-                turnCount++;
-            }
-            if (turnCount == 42 && !gameIsOverInPosition) {
-                gameOver(false);
-            }
-        }
-    }
+  
 
     /*
      * for the tree to create nodes with unique boards

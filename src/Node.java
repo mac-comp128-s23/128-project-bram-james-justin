@@ -4,15 +4,19 @@ import java.util.ArrayList;
 import edu.macalester.graphics.Fillable;
 
 public class Node {
-    private Board board;
+    private BitBoard position;
+    private BitBoard mask;
+    private BitBoard playersPosition;
     private ArrayList<Node> children;   //retrieves the children of a specific node, i.e. a game state
     private int turn;
     // private GameManager manager;
 
-    public Node(Board b, int turnNumba) {
-        board = b;
+    public Node(BitBoard hamiDownPosition, BitBoard hamiDownMask, int turnNumba) {
         children = new ArrayList<Node>();
         turn = turnNumba;
+        position = hamiDownPosition;
+        mask = hamiDownMask;
+        
     }
 
     public int getTurn() {

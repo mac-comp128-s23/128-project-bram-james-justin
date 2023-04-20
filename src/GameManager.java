@@ -1,6 +1,7 @@
 import java.awt.Color;
 import java.awt.Paint;
 import java.util.ArrayList;
+import java.util.BitSet;
 import java.util.HashMap;
 
 import javax.swing.text.AttributeSet.ColorAttribute;
@@ -71,6 +72,8 @@ public class GameManager {
     }
 
     public static void main(String[] args) {
-        GameManager game = new GameManager();
+        // GameManager game = new GameManager();
+        BitBoard board = new BitBoard(0b000000000000000000000000000000000000000000);
+
     }
 }
