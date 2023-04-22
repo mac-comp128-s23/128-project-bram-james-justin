@@ -27,14 +27,14 @@ public class Node {
      * Prints out the possible nodes of the current game state. Probably should change the method name.
      */
     public void addChildren() {
-        if(children.isEmpty()){
-            for (int i = 0; i < board.COLUMNS ; i++) {
-                if(board.plopPiece(i)){
-                    Node node = new Node(board, turn + 1);
-                    children.add(node);
-                }
-            }
-        }
+        // if(children.isEmpty()){
+        //     for (int i = 0; i < board.COLUMNS ; i++) {
+        //         if(board.plopPiece(i)){
+        //             Node node = new Node(board, turn + 1);
+        //             children.add(node);
+        //         }
+        //     }
+        // }
     }
 
     // private void printGetChildren(){ //for testing purposes. delete when done

@@ -2,10 +2,10 @@ import java.util.BitSet;
 
 public class BitBoard {
     public BitSet board;
-    private int bit;
+    public int bit;
 
     public BitBoard(int previousBit) {
-        board = new BitSet(42);
+        board = new BitSet();
         bit = previousBit;
 
 
@@ -61,17 +61,23 @@ public class BitBoard {
     public BitBoard addPiece(int col){
         BitSet number = new BitSet();
         int count = 0;
-        while(!((number.get((col* 6) + count)))){
+        //find height of piece to change
+        while((!(number.get((col* 6) + count)) && count < 6)){
             count++;
-            System.out.println(count);
+            System.out.println("count = " + count);
         }
-        number.set((col* 6) + count, true);
-        
-        System.out.println();
+
+        // change one digit of bitstring 
+        bit += Math.pow(2, (col* (6)) + count) ; // +1 
+        return new BitBoard(bit);
     }
 
     public static void main(String[] args) {
-        System.out.println(addPiece());
+        BitBoard board = new BitBoard(0b000000000000000000000000000000000000000000);
+        board.addPiece(1);
+        System.out.println(board.bit);
+
+      
 
         
         
