@@ -1,8 +1,5 @@
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.awt.Color;
-import java.awt.List;
-
 import edu.macalester.graphics.CanvasWindow;
 import edu.macalester.graphics.Ellipse;
 import edu.macalester.graphics.Fillable;
@@ -18,10 +15,9 @@ public class Board {
     public static final int COLUMNS = 7;
     private static final int ROWS = 6;
     private boolean gameIsOverInPosition;
-    private int red = 1;    // every red token is a 1. This will be used to convert the gameboard into a matrix
-    private int yellow = 2; // every yellow token is a 2. This will be used to convert the gameboard into a matrix
-    private int white = 0;  // every white piece is a 0.
-    private double outcomeRed = 0;
+    private int outcomeRed = 0;
+    private BitBoard fullboard;
+    private BitBoard unmask;
     private ArrayList<ArrayList<Point>> redList, yellowList; 
     private ArrayList<Point> redWins, yellowWins;
 
@@ -65,16 +61,16 @@ public class Board {
     public void placePiece(double x, double y){
         int index = getNearestColIndex(x, y);
         if (index != -1 && !gameIsOverInPosition) {
-            Fillable[] col = getGameBoard()[index];
+            Fillable[] col = gameBoard[index];
             int count = 0;
-            while (count < 6) {       // is less than 6 so that it represents the # of rows
+            while (count < 6) {      // is less than 6 so that it represents the # of rows
                 if (col[count].getFillColor() != Color.WHITE) {
                     break;
                 }
                 count++;
             }
             if (count != 0) {
-                getGameBoard()[index][count - 1].setFillColor(getPlayerColor());
+                gameBoard[index][count - 1].setFillColor(getPlayerColor());
                 
                 checkPiece(index, count-1, getPlayerColor());
 
@@ -85,32 +81,6 @@ public class Board {
             }
         }
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    
 
     public void initializePieces(CanvasWindow canvas){   //1 is red, 2 is yellow
         int colCount = 0;
@@ -125,7 +95,7 @@ public class Board {
                 
                 canvas.add((GraphicsObject) square);
                 canvas.add((GraphicsObject) disc);
-                System.out.println();
+
                 gameBoard[colCount][rowCount] = disc;
 
                 rowCount ++;
@@ -134,17 +104,11 @@ public class Board {
         }
     }
 
-    public Fillable[][] getGameBoard() {
-        return gameBoard;
-    }
-
-  
-
     /*
      * for the tree to create nodes with unique boards
      */
     public boolean plopPiece(int x){
-        Fillable[] col = getGameBoard()[x];
+        Fillable[] col = gameBoard[x];
         int count = 0;
         while (count < 6) {       // is less than 6 so that it represents the # of rows
             if (col[count].getFillColor() != Color.WHITE) {
@@ -153,7 +117,7 @@ public class Board {
             count++;
         }
         if (count != 0) {
-            getGameBoard()[x][count - 1].setFillColor(getPlayerColor());
+            gameBoard[x][count - 1].setFillColor(getPlayerColor());
             
             checkPiece(x, count-1, getPlayerColor());
 
@@ -168,57 +132,7 @@ public class Board {
     }
 
     public boolean checkPiece(int x, int y, Color color) {
-        // Checks rows for 4 in a row
-        // if (getPieceColor(x, y) == color &&
-        //     getPieceColor(x + 1, y) == color &&
-        //     getPieceColor(x + 2, y) == color &&
-        //     getPieceColor(x + 3, y) == color ||
-        //     getPieceColor(x, y) == color &&
-        //     getPieceColor(x - 1, y) == color &&
-        //     getPieceColor(x - 2, y) == color &&
-        //     getPieceColor(x - 3, y) == color) {
-        //     gameOver(true);
-        //     return true;
-        // }
-        // // Checks columns for 4 in a row.
-        // if (getPieceColor(x, y) == color &&
-        //     getPieceColor(x, y + 1) == color && 
-        //     getPieceColor(x, y + 2) == color && 
-        //     getPieceColor(x, y + 3) == color ||
-        //     getPieceColor(x, y) == color &&
-        //     getPieceColor(x, y - 1) == color && 
-        //     getPieceColor(x, y - 2) == color && 
-        //     getPieceColor(x, y - 3) == color){
-        //     gameOver(true);
-        //     return true;
-        // }
-        // // Checks Rightwards  diagonal for 4 in a row.
-        // if (getPieceColor(x, y) == color &&
-        //     getPieceColor(x + 1, y - 1) == color &&
-        //     getPieceColor(x + 2, y - 2) == color &&
-        //     getPieceColor(x + 3, y - 3) == color ||
-        //     getPieceColor(x, y) == color &&
-        //     getPieceColor(x - 1, y - 1) == color &&
-        //     getPieceColor(x - 2, y - 2) == color &&
-        //     getPieceColor(x - 3, y - 3) == color) {
-        //     gameOver(true);
-        //     return true;
-        // }
-        // // Checks leftward diagonal for 4 in a row.
-        // if (getPieceColor(x, y) == color &&
-        //     getPieceColor(x - 1, y - 1) == color &&
-        //     getPieceColor(x - 2, y - 2) == color &&
-        //     getPieceColor(x - 3, y - 3) == color ||
-        //     getPieceColor(x, y) == color &&
-        //     getPieceColor(x + 1, y + 1) == color &&
-        //     getPieceColor(x + 2, y + 2) == color &&
-        //     getPieceColor(x + 3, y + 3) == color) {
-        //     gameOver(true);
-        //     return true;
-        // }
-        // return false;
         Point addedDiscCoordinates = new Point(x, y);
-        
         if(!checkWin(addedDiscCoordinates)){ // check to see if we met our win con
             ArrayList<ArrayList<Point>> mightyList;
             ArrayList<Point> mightyWinList;
@@ -257,8 +171,6 @@ public class Board {
             
             addWinConditions(addedDiscCoordinates, mightyList);
         }   
-        // if(getPieceColor(x + 1, y))
-        System.out.println(redList.toString());
         return true;
     }  
     
@@ -326,31 +238,6 @@ public class Board {
         return false;
     }
 
-      /**
-     * Turns Fillable board into a matrix. Can be used for testing the algorithm
-     * 
-     * @param board
-     * @return
-     */
-    public int[][] makeIntoMatrix(Fillable[][] board) {
-        // iterate through the board and the get the player color at each board. if the piece is yellow,
-        // return 2
-        // if the piece is red, return 1.
-        int[][] newBoard = new int[7][6];
-        for (int i = 0; i < 7; i++) {
-            for (int j = 0; j < 6; j++) {
-                if (getPieceColor(i, j) == Color.WHITE) {
-                    newBoard[i][j] = white;
-                } else if (getPieceColor(i, j) == Color.RED) {
-                    newBoard[i][j] = red;
-                } else if (getPieceColor(i, j) == Color.YELLOW) {
-                    newBoard[i][j] = yellow;
-                }
-            }
-        }
-        return newBoard;
-    }
-
 
     public Color getPlayerColor() {
         if (turnCount % 2 == 1) {
@@ -362,7 +249,7 @@ public class Board {
 
     public Color getPieceColor(double d, double e) {
         if (d < COLUMNS && d > -1 && e < ROWS && e > -1) {
-            return (Color) getGameBoard()[(int) d][(int) e].getFillColor();
+            return (Color) gameBoard[(int) d][(int) e].getFillColor();
         }
         return Color.WHITE;
     }
