@@ -29,7 +29,8 @@ public class Node {
     }
 
     /**
-     * Adds all the children of a current boardstate.
+     * Adds all the children of a current boardstate. Doesn't make ALL possible children for the entire tree, for purposes of space. 
+     * Will be used for analysis of which child is the best.
      */
     public void addChildren() {
         if(children.isEmpty()){
