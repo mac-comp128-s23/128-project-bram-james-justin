@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import edu.macalester.graphics.Fillable;
 
 public class Node {
-    private BitBoard position;
-    private BitBoard mask;
+    private BitBoard position; // has 1s where computer has a disc (yellow)
+    private BitBoard mask; // has 1s where there is a disc
     private BitBoard playersPosition;
     private ArrayList<Node> children;   //retrieves the children of a specific node, i.e. a game state
     private int turn;
@@ -23,18 +23,24 @@ public class Node {
         return turn;
     }
 
+    public boolean wasNewBoardCreated(BitBoard newBoard){
+        if(newBoard.bit - mask.bit > 0) return true;
+        return false;
+    }
+
     /**
-     * Prints out the possible nodes of the current game state. Probably should change the method name.
+     * Adds all the children of a current boardstate.
      */
     public void addChildren() {
-        // if(children.isEmpty()){
-        //     for (int i = 0; i < board.COLUMNS ; i++) {
-        //         if(board.plopPiece(i)){
-        //             Node node = new Node(board, turn + 1);
-        //             children.add(node);
-        //         }
-        //     }
-        // }
+        if(children.isEmpty()){
+            for (int i = 0; i < Board.COLUMNS ; i++) {
+                BitBoard newMask = mask.addBitPiece(i);
+                if(wasNewBoardCreated(newMask)){
+                    Node node = new Node(position.addBitPiece(i), newMask, turn + 1);
+                    children.add(node);
+                }
+            }
+        }
     }
 
     // private void printGetChildren(){ //for testing purposes. delete when done

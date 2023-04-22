@@ -6,8 +6,7 @@ public class Tree {
     public Tree(Node n){
         root = n;
         currentTurn = 0;
-        searchDepth = 2; // 
-
+        searchDepth = 2;  
 
     }
 

@@ -1,10 +1,9 @@
-import java.util.ArrayList;
+
 import java.awt.Color;
 import edu.macalester.graphics.CanvasWindow;
 import edu.macalester.graphics.Ellipse;
 import edu.macalester.graphics.Fillable;
 import edu.macalester.graphics.GraphicsObject;
-import edu.macalester.graphics.Point;
 import edu.macalester.graphics.Rectangle;
 
 public class Board {
@@ -19,12 +18,13 @@ public class Board {
     private BitBoard unmask;
 
 
-    public Board(Fillable[][] board, ArrayList<ArrayList<Point>> redOne, ArrayList<ArrayList<Point>> yellowOne, ArrayList<Point> redThree, ArrayList<Point> yellowThree) {
+    public Board(Fillable[][] board) {
         initializeBoard(board);
         xBoxMargin = 100;
         yBoxMargin = 80;
         squareHeightAndWidth = 70;
         gameIsOverInPosition = false;
+        fullboard= new BitBoard(0b000000000000000000000000000000000000000000);
     }
 
 
@@ -57,9 +57,8 @@ public class Board {
             }
             if (count != 0) {
                 gameBoard[index][count - 1].setFillColor(getPlayerColor());
-                
-      
-
+                fullboard=fullboard.addBitPiece(index);
+                System.out.println(Long.toBinaryString(fullboard.bit));
                 turnCount++;
             }
             if (turnCount == 42 && !gameIsOverInPosition) {
@@ -90,29 +89,30 @@ public class Board {
         }
     }
 
-    /*
-     * for the tree to create nodes with unique boards
-     */
-    public boolean plopPiece(int x){
-        Fillable[] col = gameBoard[x];
-        int count = 0;
-        while (count < 6) {       // is less than 6 so that it represents the # of rows
-            if (col[count].getFillColor() != Color.WHITE) {
-                break;
-            }
-            count++;
-        }
-        if (count != 0) {
-            gameBoard[x][count - 1].setFillColor(getPlayerColor());
-            turnCount++;
-        } else {
-            return false;
-        }
-        if (turnCount == 42) {
-            gameOver(false);
-        }
-        return true;
-    }
+    // /*
+    //  * for the tree to create nodes with unique boards
+    //  */
+    // public boolean plopPiece(int x){
+    //     Fillable[] col = gameBoard[x];
+    //     int count = 0;
+    //     while (count < 6) {       // is less than 6 so that it represents the # of rows
+    //         if (col[count].getFillColor() != Color.WHITE) {
+    //             break;
+    //         }
+    //         count++;
+    //     }
+    //     if (count != 0) {
+    //         gameBoard[x][count - 1].setFillColor(getPlayerColor());
+    //         turnCount++;
+    //         fullboard.addPiece(col);
+    //     } else {
+    //         return false;
+    //     }
+    //     if (turnCount == 42) {
+    //         gameOver(false);
+    //     }
+    //     return true;
+    // }
 
     public Color getPlayerColor() {
         if (turnCount % 2 == 1) {
@@ -151,6 +151,10 @@ public class Board {
 
     public boolean getGameIsOverInPosition() {
         return gameIsOverInPosition;
+    }
+
+    public void setGameIsOverInPosition(boolean gameIsOver){
+        gameIsOverInPosition = gameIsOver;
     }
 
     public static void main(String[] args) {

@@ -7,15 +7,17 @@ public class BitBoard {
     public BitBoard(long previousBit) {
         board = new BitSet();
         bit = previousBit;
-
-
     }
 
-    public long unMask(int mask){
+    public long updateBitboard(BitBoard newBoard){
+        return newBoard.bit^bit + bit;
+    }
+
+    public long unMask(long mask){
         return bit^mask;
     }
 
-    public boolean checkHor(int unmaskedPosition){
+    public boolean checkHor( int unmaskedPosition){
         int m = unmaskedPosition & (unmaskedPosition >> 7);
         int f = m & (m >> 14);   
         if(Integer.valueOf(f) > 0){
@@ -58,13 +60,11 @@ public class BitBoard {
         return false;
     }
 
-    public BitBoard addPiece(int col){
+    public BitBoard addBitPiece(int col){
         BitSet number = BitSet.valueOf(new long[] {bit}); // check here for issues 
         int count = 0;
         //find height of piece to change
         while(((number.get((col* 6) + count)))){
-            System.out.println("while"+(number.get((col* 6) + count)));
-            System.out.println("count =" + count);
             count++;
         }
         // change one digit of bitstring 
@@ -76,7 +76,7 @@ public class BitBoard {
 
     public static void main(String[] args) {
         BitBoard board = new BitBoard(0b000000000000000000000000000000000000000000);
-        board = board.addPiece(6);  
+        board = board.addBitPiece(6);  
         System.out.println(board.bit); 
         System.out.println(Long.toBinaryString(board.bit));
         
