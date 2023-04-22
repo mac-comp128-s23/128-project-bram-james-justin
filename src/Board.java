@@ -15,11 +15,8 @@ public class Board {
     public static final int COLUMNS = 7;
     private static final int ROWS = 6;
     private boolean gameIsOverInPosition;
-    private int outcomeRed = 0;
     private BitBoard fullboard;
     private BitBoard unmask;
-    private ArrayList<ArrayList<Point>> redList, yellowList; 
-    private ArrayList<Point> redWins, yellowWins;
 
 
     public Board(Fillable[][] board, ArrayList<ArrayList<Point>> redOne, ArrayList<ArrayList<Point>> yellowOne, ArrayList<Point> redThree, ArrayList<Point> yellowThree) {
@@ -28,19 +25,8 @@ public class Board {
         yBoxMargin = 80;
         squareHeightAndWidth = 70;
         gameIsOverInPosition = false;
-        outcomeRed = 5000;
-        redList = redOne;
-        yellowList = yellowOne;
-        redWins = redThree;
-        yellowWins = yellowThree;
     }
-   
-    public void initializeArrays(){
-        redList = new ArrayList<ArrayList<Point>>();
-        yellowList = new ArrayList<ArrayList<Point>>();
-        redWins = new ArrayList<>();
-        yellowWins = new ArrayList<>();
-    }
+
 
     public void initializeBoard(Fillable[][] board){
         if(board != null){
@@ -72,7 +58,7 @@ public class Board {
             if (count != 0) {
                 gameBoard[index][count - 1].setFillColor(getPlayerColor());
                 
-                checkPiece(index, count-1, getPlayerColor());
+      
 
                 turnCount++;
             }
@@ -118,9 +104,6 @@ public class Board {
         }
         if (count != 0) {
             gameBoard[x][count - 1].setFillColor(getPlayerColor());
-            
-            checkPiece(x, count-1, getPlayerColor());
-
             turnCount++;
         } else {
             return false;
@@ -130,114 +113,6 @@ public class Board {
         }
         return true;
     }
-
-    public boolean checkPiece(int x, int y, Color color) {
-        Point addedDiscCoordinates = new Point(x, y);
-        if(!checkWin(addedDiscCoordinates)){ // check to see if we met our win con
-            ArrayList<ArrayList<Point>> mightyList;
-            ArrayList<Point> mightyWinList;
-            ArrayList<ArrayList<Point>> opponentList;
-            ArrayList<Point> opponentWinList;
-            if(getPlayerColor() == Color.RED){
-                mightyList = redList;
-                mightyWinList = redWins;
-                opponentList = yellowList;
-                opponentWinList = yellowWins;
-            } else {
-                mightyList = yellowList;
-                mightyWinList = yellowWins;
-                opponentList = redList;
-                opponentWinList = redWins;
-            }
-
-            for(ArrayList<Point> list: mightyList){ //move players two-move-wins to one-move-wins list
-                for(Point p: list){
-                    if(addedDiscCoordinates == p) {
-                        mightyList.remove(list);
-                        list.remove(addedDiscCoordinates);
-                        mightyWinList.add(list.get(0));
-                    }
-                }
-            } 
-            
-            for(ArrayList<Point> list: opponentList){ // remove opponents blocked two-move wins
-                for(Point p: list){
-                    if(addedDiscCoordinates == p) {
-                        opponentList.remove(list);
-                    }
-                }
-            } 
-            if(opponentWinList.contains(addedDiscCoordinates)) opponentWinList.remove(addedDiscCoordinates); //remove opponents blocked one move wins
-            
-            addWinConditions(addedDiscCoordinates, mightyList);
-        }   
-        return true;
-    }  
-    
-    public void addWinConditions(Point p, ArrayList<ArrayList<Point>> winList){
-        ArrayList<Point> list = adjacencyList(p);
-        Color checkColor = getPlayerColor();
-        for (Point point : list) {
-            if(checkColor == getPieceColor( point.getX(),  point.getY())){
-                int vectorX =  (int)(p.getX() - point.getX());
-                int vectorY =  (int)(p.getY() - point.getY());
-
-                if(getPieceColor( p.getX() + (2 * vectorX),  p.getY() + (2 * vectorY)) == checkColor &&
-                getPieceColor( p.getX() -  vectorX,  p.getY() - vectorY) == checkColor){
-                    ArrayList<Point> pointPair = new ArrayList<Point>();
-                    pointPair.add(new Point((p.getX() + (2 * vectorX)), p.getY() + (2*vectorY)));
-                    pointPair.add(new Point( p.getX() -  vectorX,  p.getY() - vectorY));
-                    winList.add(pointPair);
-                }
-
-                if(getPieceColor( p.getX() + 3*(vectorX),  p.getY() + 3*(vectorY) ) == checkColor &&
-                getPieceColor( p.getX() + 2*(vectorX),  p.getY() + 2*(vectorY)) == checkColor){
-                    ArrayList<Point> pointPair = new ArrayList<Point>();
-                    pointPair.add(new Point((p.getX() + 3*(vectorX)), p.getY() + 3*(vectorY)));
-                    pointPair.add(new Point( p.getX() +  2*(vectorX),  p.getY() + 2*(vectorY)));
-                    winList.add(pointPair);
-                }
-
-                if(getPieceColor(p.getX() - vectorX, p.getY() - vectorY) == checkColor &&
-                getPieceColor(p.getX() -  2*(vectorX), p.getY() -  2*(vectorY)) == checkColor){
-                    ArrayList<Point> pointPair = new ArrayList<Point>();
-                    pointPair.add(new Point((p.getX() - vectorX), p.getY() - vectorY));
-                    pointPair.add(new Point( p.getX() -  2*(vectorX),  p.getY() -  2*(vectorY)));
-                    winList.add(pointPair);
-                }
-
-            }
-        }
-    }
-
-    public ArrayList<Point> adjacencyList(Point p){
-        ArrayList<Point> list = new ArrayList<Point>();
-        list.add(new Point(p.getX()+1, p.getY()+1));
-        list.add(new Point(p.getX()-1, p.getY()+1));
-        list.add(new Point(p.getX(), p.getY()+1));
-        list.add(new Point(p.getX()+1, p.getY()));
-        list.add(new Point(p.getX()+1, p.getY()-1));
-        list.add(new Point(p.getX(), p.getY()-1));
-        list.add(new Point(p.getX()-1, p.getY()-1));
-        list.add(new Point(p.getX()-1, p.getY()));
-        return list;
-    }
-
-    public boolean checkWin(Point last){
-        if(Color.RED == getPlayerColor()){
-            if(redWins.contains(last)) {
-                gameOver(true);
-                return true;
-            } 
-        }else {
-            if(yellowWins.contains(last)) {
-                gameOver(true);
-                return true;
-            }    
-        }
-        return false;
-    }
-
 
     public Color getPlayerColor() {
         if (turnCount % 2 == 1) {
@@ -259,14 +134,11 @@ public class Board {
             if (turnCount % 2 == 0) { // checks if player 1 wins because they are an even move number (first move made
                                       // by red is move 0), not 1
                 System.out.println("Red Wins");
-                outcomeRed = 10000;
             } else {
                 System.out.println("Yellow wins");
-                outcomeRed = 0;
             }
         }
         if (!playerWon) {
-            outcomeRed = 50;
             System.out.println("Nobody is a winner");
         }
         gameIsOverInPosition = true;

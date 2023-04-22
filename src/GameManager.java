@@ -14,7 +14,6 @@ public class GameManager {
         canvas = new CanvasWindow("Board", CANVAS_WIDTH, CANVAS_HEIGHT);
         pieces = new GraphicsGroup();
         board = new Board(null, null, null, null, null);
-        board.initializeArrays();
         canvas.add(pieces, 0, 0);
         board.initializePieces(canvas);
 
