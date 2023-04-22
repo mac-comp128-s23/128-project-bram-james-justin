@@ -59,24 +59,27 @@ public class BitBoard {
     }
 
     public BitBoard addPiece(int col){
-        BitSet number = new BitSet();
+        BitSet number = BitSet.valueOf(new long[] {bit}); // check here for issues 
         int count = 0;
         //find height of piece to change
-        while((!(number.get((col* 6) + count)) && count < 6)){
+        while(((number.get((col* 6) + count)) && count < 6)){
             count++;
             System.out.println("count = " + count);
         }
-
+        System.out.println((col* 6) + count);
         // change one digit of bitstring 
-        bit += Math.pow(2, (col* (6)) + count) ; // +1 
+        bit += Math.pow(2, (col* (6)) + count); 
         return new BitBoard(bit);
     }
 
     public static void main(String[] args) {
         BitBoard board = new BitBoard(0b000000000000000000000000000000000000000000);
-        board.addPiece(1);
-        System.out.println(board.bit);
-
+        board = board.addPiece(2);
+        System.out.println(board.bit); 
+        System.out.println(Integer.toBinaryString(board.bit));
+        board = board.addPiece(2);  
+        System.out.println(board.bit); 
+        System.out.println(Integer.toBinaryString(board.bit));
       
 
         
