@@ -51,12 +51,27 @@ public class BitBoard {
         return false;
     } 
 
-    public void addPiece(int column){
+    public boolean checkWin(int unmaskedPosition){
+        if(checkHor(unmaskedPosition) || checkUpLeftDiag(unmaskedPosition)||checkUpRight(unmaskedPosition)||checkVert(unmaskedPosition)){
+            return true;
+        }
+        return false;
+    }
 
+    public BitBoard addPiece(int col){
+        BitSet number = new BitSet();
+        int count = 0;
+        while(!((number.get((col* 6) + count)))){
+            count++;
+            System.out.println(count);
+        }
+        number.set((col* 6) + count, true);
+        
+        System.out.println();
     }
 
     public static void main(String[] args) {
-        
+        System.out.println(addPiece());
 
         
         
