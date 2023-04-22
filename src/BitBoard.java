@@ -2,16 +2,16 @@ import java.util.BitSet;
 
 public class BitBoard {
     public BitSet board;
-    public int bit;
+    public long bit;
 
-    public BitBoard(int previousBit) {
+    public BitBoard(long previousBit) {
         board = new BitSet();
         bit = previousBit;
 
 
     }
 
-    public int unMask(int mask){
+    public long unMask(int mask){
         return bit^mask;
     }
 
@@ -63,10 +63,10 @@ public class BitBoard {
         int count = 0;
         //find height of piece to change
         while(((number.get((col* 6) + count)))){
+            System.out.println("while"+(number.get((col* 6) + count)));
+            System.out.println("count =" + count);
             count++;
-            System.out.println("count = " + count);
         }
-        System.out.println((col* 6) + count);
         // change one digit of bitstring 
         if(count < 6){   //For some reason the limit in the while loop wasn't working
         bit += Math.pow(2, (col* (6)) + count); 
@@ -76,32 +76,10 @@ public class BitBoard {
 
     public static void main(String[] args) {
         BitBoard board = new BitBoard(0b000000000000000000000000000000000000000000);
-        board = board.addPiece(2);
+        board = board.addPiece(6);  
         System.out.println(board.bit); 
-        System.out.println(Integer.toBinaryString(board.bit));
-        board = board.addPiece(2);  
-        System.out.println(board.bit); 
-        System.out.println(Integer.toBinaryString(board.bit));
-        board = board.addPiece(2);  
-        System.out.println(board.bit); 
-        System.out.println(Integer.toBinaryString(board.bit));
-        board = board.addPiece(2);  
-        System.out.println(board.bit); 
-        System.out.println(Integer.toBinaryString(board.bit));
-        board = board.addPiece(2);  
-        System.out.println(board.bit); 
-        System.out.println(Integer.toBinaryString(board.bit));
-        board = board.addPiece(2);  
-        System.out.println(board.bit); 
-        System.out.println(Integer.toBinaryString(board.bit));
-        board = board.addPiece(2);  
-        System.out.println(board.bit); 
-        System.out.println(Integer.toBinaryString(board.bit));
-
+        System.out.println(Long.toBinaryString(board.bit));
         
-        
-        
-        // System.out.println(bitBoard);
     }
     
 }
