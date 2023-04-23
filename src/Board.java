@@ -17,7 +17,6 @@ public class Board {
     private BitBoard mask;
     private BitBoard yellow;
 
-
     public Board(Fillable[][] board) {
         initializeBoard(board);
         xBoxMargin = 100;
@@ -27,7 +26,6 @@ public class Board {
         mask = new BitBoard(0b000000000000000000000000000000000000000000);
         yellow = new BitBoard(0b000000000000000000000000000000000000000000);
     }
-
 
     public void initializeBoard(Fillable[][] board){
         if(board != null){
@@ -59,6 +57,7 @@ public class Board {
             if (count != 0) {
                 gameBoard[index][count - 1].setFillColor(getPlayerColor());
                 mask = mask.addBitPiece(index);
+                yellow = yellow.addBitPiece(index);
                 System.out.println(Long.toBinaryString(mask.bit));
                 turnCount++;
                 if(turnCount % 2 ==0){

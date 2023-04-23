@@ -19,8 +19,8 @@ public class BitBoard {
 
     public boolean checkHor( long unmaskedPosition){
         long m = unmaskedPosition & (unmaskedPosition >> 7);
-        long f = m & (m >> 14);   
-        if(Long.valueOf(f) > 0){
+        long f = m & (m << 14);   
+        if(f > 0){
             return true;
         } 
         return false;
