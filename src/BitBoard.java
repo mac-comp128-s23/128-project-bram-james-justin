@@ -19,43 +19,44 @@ public class BitBoard {
 
     public boolean checkHor( long unmaskedPosition){
         long m = unmaskedPosition & (unmaskedPosition >> 7);
-        long f = m & (m << 14);   
-        if(f > 0){
-            return true;
-        } 
-        return false;
-    } 
-
-    public boolean checkUpLeftDiag(long unmaskedPosition){
-        long m = unmaskedPosition & (unmaskedPosition >> 6);
-        long f = m & (m >> 12);   
+        System.out.println(unmaskedPosition);
+        long f = m & (m >> 14);   
         if(Long.valueOf(f) > 0){
             return true;
         } 
         return false;
     } 
 
-    public boolean checkUpRight(long unmaskedPosition){
-        long m = unmaskedPosition & (unmaskedPosition >> 8);
-        long f = m & (m >> 16);   
-        if(Long.valueOf(f) > 0){
-            return true;
-        } 
-        return false;
-    } 
+    // public boolean checkUpLeftDiag(long unmaskedPosition){
+    //     long m = unmaskedPosition & (unmaskedPosition >> 6);
+    //     long f = m & (m >> 12);   
+    //     if(Long.valueOf(f) > 0){
+    //         return true;
+    //     } 
+    //     return false;
+    // } 
 
-    public boolean checkVert(long unmaskedPosition){
-        long m = unmaskedPosition & (unmaskedPosition >> 1);
-        long f = m & (m >> 2);   
-        if(Long.valueOf(f) > 0){
-            return true;
-        } 
-        return false;
-    } 
+    // public boolean checkUpRight(long unmaskedPosition){
+    //     long m = unmaskedPosition & (unmaskedPosition >> 8);
+    //     long f = m & (m >> 16);   
+    //     if(Long.valueOf(f) > 0){
+    //         return true;
+    //     } 
+    //     return false;
+    // } 
+
+    // public boolean checkVert(long unmaskedPosition){
+    //     long m = unmaskedPosition & (unmaskedPosition >> 1);
+    //     long f = m & (m >> 2);   
+    //     if(Long.valueOf(f) > 0){
+    //         return true;
+    //     } 
+    //     return false;
+    // } 
 
     public boolean checkWin(long unmaskedPosition){
-        if(checkHor(unmaskedPosition) || checkUpLeftDiag(unmaskedPosition)||checkUpRight(unmaskedPosition)||checkVert(unmaskedPosition)){
-            return true;
+            if(checkHor(unmaskedPosition)     ) {//|| checkUpLeftDiag(unmaskedPosition)||checkUpRight(unmaskedPosition)||checkVert(unmaskedPosition)){
+        return true;
         }
         return false;
     }
