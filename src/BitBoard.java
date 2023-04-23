@@ -19,7 +19,7 @@ public class BitBoard {
 
     public boolean checkHor( long unmaskedPosition){
         long m = unmaskedPosition & (unmaskedPosition >> 7);
-        System.out.println(unmaskedPosition);
+        System.out.println(Long.toBinaryString(unmaskedPosition));
         long f = m & (m >> 14);   
         if(Long.valueOf(f) > 0){
             return true;
