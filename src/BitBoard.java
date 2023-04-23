@@ -18,43 +18,40 @@ public class BitBoard {
     }
 
     public boolean checkHor( long unmaskedPosition){
-        System.out.println(Long.toBinaryString(unmaskedPosition));
-
         long m = unmaskedPosition & (unmaskedPosition >> 6);
         long f = m & (m >> 12);   
-        System.out.println(Long.toBinaryString(m));
         if(Long.valueOf(f) > 0){
             return true;
         } 
         return false;
     } 
 
-    public boolean checkUpLeftDiag(long unmaskedPosition){
-        long m = unmaskedPosition & (unmaskedPosition >> 7);
-        long f = m & (m >> 14);   
-        if(Long.valueOf(f) > 0){
-            return true;
-        } 
-        return false;
-    } 
+    // public boolean checkUpLeftDiag(long unmaskedPosition){
+    //     long m = unmaskedPosition & (unmaskedPosition >> 6);
+    //     long f = m & (m >> 12);   
+    //     if(Long.valueOf(f) > 0){
+    //         return true;
+    //     } 
+    //     return false;
+    // } 
 
-    public boolean checkUpRight(long unmaskedPosition){
-        long m = unmaskedPosition & (unmaskedPosition >> 5);
-        long f = m & (m >> 10);   
-        if(Long.valueOf(f) > 0){
-            return true;
-        } 
-        return false;
-    } 
+    // public boolean checkUpRight(long unmaskedPosition){
+    //     long m = unmaskedPosition & (unmaskedPosition >> 5);
+    //     long f = m & (m >> 10);   
+    //     if(Long.valueOf(f) > 0){
+    //         return true;
+    //     } 
+    //     return false;
+    // } 
 
-    public boolean checkVert(long unmaskedPosition){
-        long m = unmaskedPosition & (unmaskedPosition >> 1);
-        long f = m & (m >> 2);   
-        if(Long.valueOf(f) > 0){
-            return true;
-        } 
-        return false;
-    } 
+    // public boolean checkVert(long unmaskedPosition){
+    //     long m = unmaskedPosition & (unmaskedPosition >> 1);
+    //     long f = m & (m >> 2);   
+    //     if(Long.valueOf(f) > 0){
+    //         return true;
+    //     } 
+    //     return false;
+    // } 
 
     public boolean checkWin(){
         return checkHor(bit);   //|| checkUpLeftDiag(unmaskedPosition)||checkUpRight(unmaskedPosition)||checkVert(unmaskedPosition)){;
@@ -67,6 +64,7 @@ public class BitBoard {
         while(((number.get((col* 6) + count)))){
             count++;
         }
+        System.out.println("count: " + count);
         // change one digit of bitstring 
         if(count < 6){   //For some reason the limit in the while loop wasn't working
         bit += Math.pow(2, (col* (6)) + count); 

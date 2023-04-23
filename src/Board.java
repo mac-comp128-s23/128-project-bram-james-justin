@@ -56,18 +56,19 @@ public class Board {
             }
             if (count != 0) {
                 gameBoard[index][count - 1].setFillColor(getPlayerColor());
-                mask = mask.addBitPiece(index);
-                turnCount++;
+                BitBoard temp = mask.addBitPiece(index);
                 if(turnCount % 2 == 1){
-                    yellow = yellow.addBitPiece(index);
+                    yellow.bit += mask.bit ^ temp.bit;
                     if(yellow.checkWin()){
                         gameOver(true);
                     }
                 } else {
-                    if(yellow.unMask(mask).checkWin()){
+                    if(yellow.unMask(temp).checkWin()){
                         gameOver(true);
                     }
                 }
+                mask = temp;
+                turnCount++;
             }
             if (turnCount == 42 && !gameIsOverInPosition) {
                 gameOver(false);
@@ -139,7 +140,7 @@ public class Board {
 
     public void gameOver(boolean playerWon) {
         if (playerWon) {
-            if (turnCount % 2 == 1) { // checks if player 1 wins because they are an even move number (first move made
+            if (turnCount % 2 == 0) { // checks if player 1 wins because they are an even move number (first move made
                                       // by red is move 0), not 1
                 System.out.println("Red Wins");
             } else {
