@@ -22,9 +22,9 @@ public class Node {
 
     public void decideLeafStatus(){
         if(turn % 2 == 0) {
-            gameIsOverInPosiiton = position.checkWin(position.bit);
+            gameIsOverInPosiiton = position.checkWin();
         } else {
-            gameIsOverInPosiiton = position.checkWin(position.unMask(mask.bit));
+            gameIsOverInPosiiton = position.unMask(mask).checkWin();
         }
     }
 
@@ -86,5 +86,5 @@ public class Node {
         return 0;
     }
 
-    
+
 }

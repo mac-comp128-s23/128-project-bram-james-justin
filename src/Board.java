@@ -60,11 +60,11 @@ public class Board {
                 turnCount++;
                 if(turnCount % 2 == 1){
                     yellow = yellow.addBitPiece(index);
-                    if(yellow.checkWin(yellow.bit)){
+                    if(yellow.checkWin()){
                         gameOver(true);
                     }
                 } else {
-                    if(yellow.checkWin(yellow.unMask(mask.bit))){
+                    if(yellow.unMask(mask).checkWin()){
                         gameOver(true);
                     }
                 }

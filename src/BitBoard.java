@@ -13,13 +13,24 @@ public class BitBoard {
         return newBoard.bit^bit + bit;
     }
 
-    public long unMask(long mask){
-        return bit^mask;
+    public BitBoard unMask(BitBoard mask){
+        return new BitBoard(bit^mask.bit);
     }
 
     public boolean checkHor( long unmaskedPosition){
-        long m = unmaskedPosition & (unmaskedPosition >> 7);
         System.out.println(Long.toBinaryString(unmaskedPosition));
+
+        long m = unmaskedPosition & (unmaskedPosition >> 6);
+        long f = m & (m >> 12);   
+        System.out.println(Long.toBinaryString(m));
+        if(Long.valueOf(f) > 0){
+            return true;
+        } 
+        return false;
+    } 
+
+    public boolean checkUpLeftDiag(long unmaskedPosition){
+        long m = unmaskedPosition & (unmaskedPosition >> 7);
         long f = m & (m >> 14);   
         if(Long.valueOf(f) > 0){
             return true;
@@ -27,38 +38,26 @@ public class BitBoard {
         return false;
     } 
 
-    // public boolean checkUpLeftDiag(long unmaskedPosition){
-    //     long m = unmaskedPosition & (unmaskedPosition >> 6);
-    //     long f = m & (m >> 12);   
-    //     if(Long.valueOf(f) > 0){
-    //         return true;
-    //     } 
-    //     return false;
-    // } 
-
-    // public boolean checkUpRight(long unmaskedPosition){
-    //     long m = unmaskedPosition & (unmaskedPosition >> 8);
-    //     long f = m & (m >> 16);   
-    //     if(Long.valueOf(f) > 0){
-    //         return true;
-    //     } 
-    //     return false;
-    // } 
-
-    // public boolean checkVert(long unmaskedPosition){
-    //     long m = unmaskedPosition & (unmaskedPosition >> 1);
-    //     long f = m & (m >> 2);   
-    //     if(Long.valueOf(f) > 0){
-    //         return true;
-    //     } 
-    //     return false;
-    // } 
-
-    public boolean checkWin(long unmaskedPosition){
-            if(checkHor(unmaskedPosition)     ) {//|| checkUpLeftDiag(unmaskedPosition)||checkUpRight(unmaskedPosition)||checkVert(unmaskedPosition)){
-        return true;
-        }
+    public boolean checkUpRight(long unmaskedPosition){
+        long m = unmaskedPosition & (unmaskedPosition >> 5);
+        long f = m & (m >> 10);   
+        if(Long.valueOf(f) > 0){
+            return true;
+        } 
         return false;
+    } 
+
+    public boolean checkVert(long unmaskedPosition){
+        long m = unmaskedPosition & (unmaskedPosition >> 1);
+        long f = m & (m >> 2);   
+        if(Long.valueOf(f) > 0){
+            return true;
+        } 
+        return false;
+    } 
+
+    public boolean checkWin(){
+        return checkHor(bit);   //|| checkUpLeftDiag(unmaskedPosition)||checkUpRight(unmaskedPosition)||checkVert(unmaskedPosition)){;
     }
 
     public BitBoard addBitPiece(int col){
