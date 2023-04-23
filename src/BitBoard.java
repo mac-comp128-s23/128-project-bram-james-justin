@@ -9,6 +9,12 @@ public class BitBoard {
         bit = previousBit;
     }
 
+    /**
+     * Updates the current bitboard by performing the XOR operation on the bitstrings (exclusive-or on 0s and 1s in
+     * the bitstring).
+     * @param newBoard
+     * @return
+     */
     public long updateBitboard(BitBoard newBoard){
         return newBoard.bit^bit + bit;
     }
@@ -57,6 +63,12 @@ public class BitBoard {
         return checkHor(bit);   //|| checkUpLeftDiag(unmaskedPosition)||checkUpRight(unmaskedPosition)||checkVert(unmaskedPosition)){;
     }
 
+    /**
+     * Changes a bit of a bitboard (i.e., one 42-digit bitstring) from 0 to 1 at a specific column index. Successive
+     * additions to the same column are represented at an adjacent index.
+     * @param col Column of a bitboard.
+     * @return A new bitboard
+     */
     public BitBoard addBitPiece(int col){
         BitSet number = BitSet.valueOf(new long[] {bit}); // check here for issues 
         int count = 0;
