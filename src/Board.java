@@ -43,7 +43,7 @@ public class Board {
         return answer;
     }
 
-    public void playerPlacePiece(double x, double y){
+    public void playerPlacePiece(double x, double y) throws Exception{
         int index = getNearestColIndex(x, y);
         if (index != -1 && !gameIsOverInPosition) {
             Fillable[] col = gameBoard[index];
@@ -56,9 +56,9 @@ public class Board {
             }
             if (count != 0) {
                 gameBoard[index][count - 1].setFillColor(getPlayerColor());
-                BitBoard temp = mask.addBitPiece(index);
+                BitBoard temp = mask.addBitPieceToMask(index);
                 if(turnCount % 2 == 1){
-                    yellow.bit += mask.bit ^ temp.bit;
+                    yellow.bit += updatedMask.bit ^ oldMask.bit;
                     if(yellow.checkWin()){
                         gameOver(true);
                     }
@@ -169,6 +169,9 @@ public class Board {
     }
 
     public static void main(String[] args) {
+            GameManager game = new GameManager();
+            BitBoard board = new BitBoard(0b000000000000000000000000000000000000000000);
+    
         
     }
 }

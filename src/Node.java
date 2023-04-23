@@ -40,13 +40,14 @@ public class Node {
     /**
      * Adds all the children of a current boardstate. Doesn't make ALL possible children for the entire tree, for purposes of space. 
      * Will be used for analysis of which child is the best.
+     * @throws Exception
      */
-    public void addChildren() {
+    public void addChildren() throws Exception {
         if(children.isEmpty()){
             for (int i = 0; i < Board.COLUMNS ; i++) {
-                BitBoard newMask = mask.addBitPiece(i);
+                BitBoard newMask = mask.addBitPieceToMask(i);
                 if(wasNewBoardCreated(newMask)){
-                    Node node = new Node(position.addBitPiece(i), newMask, turn + 1);
+                    Node node = new Node(position.addBitPieceToMask(i), newMask, turn + 1);
                     children.add(node);
                 }
             }
@@ -64,7 +65,7 @@ public class Node {
     //     }
     // }
 
-    public ArrayList<Node> getOrMakeChildren() {
+    public ArrayList<Node> getOrMakeChildren() throws Exception {
         if(children.isEmpty()) addChildren();
         return children;
     }

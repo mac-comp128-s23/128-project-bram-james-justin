@@ -19,14 +19,19 @@ public class GameManager {
 
         canvas.onClick(event -> {
             if (!board.getGameIsOverInPosition()) {
-                takeATurn(event.getPosition().getX(), event.getPosition().getY());
+                try {
+                    takeATurn(event.getPosition().getX(), event.getPosition().getY());
+                } catch (Exception e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
             } else {
                 clearBoard();
             }
         });
     }
 
-    public void takeATurn(double x, double y) {
+    public void takeATurn(double x, double y) throws Exception {
         board.playerPlacePiece(x, y); 
         canvas.draw();
     }
