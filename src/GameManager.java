@@ -27,7 +27,7 @@ public class GameManager {
     }
 
     public void takeATurn(double x, double y) {
-        board.placePiece(x, y); 
+        board.playerPlacePiece(x, y); 
         canvas.draw();
     }
 

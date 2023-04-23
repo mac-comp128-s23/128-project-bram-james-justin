@@ -1,18 +1,16 @@
-public class Tree {
+public class PositionEvaluator {
     private Node root;
     private int currentTurn; // maximizing player should be even turn count
     private int searchDepth;
 
-    public Tree(Node n){
+    public PositionEvaluator(Node n){
         root = n;
         currentTurn = 0;
         searchDepth = 2;  
 
     }
 
-    public int evaluateNode(Node current){
-        return  5;
-    }
+
 
     /*
      * creates the tree, using alpha-beta pruning and minimax on the imaginary full game tree,
@@ -22,7 +20,7 @@ public class Tree {
         Node current = start;
         double eval = -1.0;
         if(currentTurn - current.getTurn() <= searchDepth || current.getBoard().getGameIsOverInPosition()){
-            return evaluateNode(current);
+            return current.evaluateNode(current);
         }
         if(current.getTurn() % 2 == 0) {
             double maxEval = Double.NEGATIVE_INFINITY; 

@@ -14,8 +14,8 @@ public class Board {
     public static final int COLUMNS = 7;
     private static final int ROWS = 6;
     private boolean gameIsOverInPosition;
-    private BitBoard fullboard;
-    private BitBoard unmask;
+    private BitBoard mask;
+    private BitBoard yellow;
 
 
     public Board(Fillable[][] board) {
@@ -24,7 +24,8 @@ public class Board {
         yBoxMargin = 80;
         squareHeightAndWidth = 70;
         gameIsOverInPosition = false;
-        fullboard= new BitBoard(0b000000000000000000000000000000000000000000);
+        mask = new BitBoard(0b000000000000000000000000000000000000000000);
+        yellow = new BitBoard(0b000000000000000000000000000000000000000000);
     }
 
 
@@ -44,7 +45,7 @@ public class Board {
         return answer;
     }
 
-    public void placePiece(double x, double y){
+    public void playerPlacePiece(double x, double y){
         int index = getNearestColIndex(x, y);
         if (index != -1 && !gameIsOverInPosition) {
             Fillable[] col = gameBoard[index];
@@ -57,9 +58,18 @@ public class Board {
             }
             if (count != 0) {
                 gameBoard[index][count - 1].setFillColor(getPlayerColor());
-                fullboard=fullboard.addBitPiece(index);
-                System.out.println(Long.toBinaryString(fullboard.bit));
+                mask = mask.addBitPiece(index);
+                System.out.println(Long.toBinaryString(mask.bit));
                 turnCount++;
+                if(turnCount % 2 ==0){
+                    if(yellow.checkWin(yellow.bit)){
+                        gameOver(true);
+                    }
+                } else {
+                    if(yellow.checkWin(yellow.unMask(yellow.bit))){
+                        gameOver(true);
+                    }
+                }
             }
             if (turnCount == 42 && !gameIsOverInPosition) {
                 gameOver(false);
@@ -147,6 +157,8 @@ public class Board {
     public void resetGameTrackers(){
         gameIsOverInPosition = false;
         turnCount = 0;
+        mask = new BitBoard(0b000000000000000000000000000000000000000000);
+        yellow = new BitBoard(0b000000000000000000000000000000000000000000);
     }
 
     public boolean getGameIsOverInPosition() {
