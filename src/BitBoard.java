@@ -24,7 +24,16 @@ public class BitBoard {
     }
 
     public boolean checkHor( long unmaskedPosition){
-        System.out.println(Long.toBinaryString(unmaskedPosition));
+        long m = unmaskedPosition & (unmaskedPosition >> 7);
+        System.out.println("hor m: " + Long.toBinaryString(m));
+        long f = m & (m >> 14);   
+        if(Long.valueOf(f) > 0){
+            return true;
+        } 
+        return false;
+    } 
+
+    public boolean checkUpRightDiag(long unmaskedPosition){
         long m = unmaskedPosition & (unmaskedPosition >> 6);
         long f = m & (m >> 12);   
         if(Long.valueOf(f) > 0){
@@ -33,18 +42,9 @@ public class BitBoard {
         return false;
     } 
 
-    public boolean checkUpLeftDiag(long unmaskedPosition){
-        long m = unmaskedPosition & (unmaskedPosition >> 7);
-        long f = m & (m >> 14);   
-        if(Long.valueOf(f) > 0){
-            return true;
-        } 
-        return false;
-    } 
-
-    public boolean checkUpRight(long unmaskedPosition){
-        long m = unmaskedPosition & (unmaskedPosition >> 5);
-        long f = m & (m >> 10);   
+    public boolean checkUpLeft(long unmaskedPosition){
+        long m = unmaskedPosition & (unmaskedPosition >> 8);
+        long f = m & (m >> 16);   
         if(Long.valueOf(f) > 0){
             return true;
         } 
@@ -61,7 +61,7 @@ public class BitBoard {
     } 
 
     public boolean checkWin(){
-        return checkHor(bit) || checkUpRight(bit) || checkUpLeftDiag(bit) ||  checkVert(bit);
+        return checkHor(bit)  || checkVert(bit) || checkUpLeft(bit) ||  checkUpRightDiag(bit);
     } //
     /**
      * Changes a bit of a bitboard (i.e., one 42-digit bitstring) from 0 to 1 at a specific column index. Successive
@@ -74,14 +74,14 @@ public class BitBoard {
         BitSet number = BitSet.valueOf(new long[] {bit}); // check here for issues 
         int count = 0;
         //find height of piece to change
-        while(((number.get((col* 6) + count)))){
+        while(((number.get((col* 7) + count)))){
             count++;
         }
         System.out.println("count: " + count);
         // change one digit of bitstring 
         if(count < 6){   //For some reason the limit in the while loop wasn't working
         long tempBit = bit;
-        tempBit += (long) Math.pow(2, (col* (6)) + count); 
+        tempBit += (long) Math.pow(2, (col* (7)) + count); 
         return new BitBoard(tempBit);
         } else {
             throw new Exception("addBitPiece count bound exception");
@@ -90,7 +90,7 @@ public class BitBoard {
 
     public static void main(String[] args) {
         GameManager game = new GameManager();
-        BitBoard board = new BitBoard(0b000000000000000000000000000000000000000000);
+        BitBoard board = new BitBoard(0b0000000000000000000000000000000000000000000000000);
 
     }
     

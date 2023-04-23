@@ -23,8 +23,8 @@ public class Board {
         yBoxMargin = 80;
         squareHeightAndWidth = 70;
         gameIsOverInPosition = false;
-        mask = new BitBoard(0b000000000000000000000000000000000000000000);
-        yellow = new BitBoard(0b000000000000000000000000000000000000000000);
+        mask = new BitBoard(0b0000000000000000000000000000000000000000000000000); //length should be 49 (7*7)
+        yellow = new BitBoard(0b0000000000000000000000000000000000000000000000000);
     }
 
     public void initializeBoard(Fillable[][] board){
@@ -56,18 +56,18 @@ public class Board {
             }
             if (count != 0) {
                 gameBoard[index][count - 1].setFillColor(getPlayerColor());
-                BitBoard temp = mask.addBitPieceToMask(index);
+                BitBoard updatedMask = mask.addBitPieceToMask(index);
                 if(turnCount % 2 == 1){
-                    yellow.bit += updatedMask.bit ^ oldMask.bit;
+                    yellow.bit += updatedMask.bit ^ mask.bit;
                     if(yellow.checkWin()){
                         gameOver(true);
                     }
                 } else {
-                    if(yellow.unMask(temp).checkWin()){
+                    if(yellow.unMask(updatedMask).checkWin()){
                         gameOver(true);
                     }
                 }
-                mask = temp;
+                mask = updatedMask;
                 turnCount++;
             }
             if (turnCount == 42 && !gameIsOverInPosition) {
@@ -156,8 +156,8 @@ public class Board {
     public void resetGameTrackers(){
         gameIsOverInPosition = false;
         turnCount = 0;
-        mask = new BitBoard(0b000000000000000000000000000000000000000000);
-        yellow = new BitBoard(0b000000000000000000000000000000000000000000);
+        mask = new BitBoard(0b0000000000000000000000000000000000000000000000000);
+        yellow = new BitBoard(0b0000000000000000000000000000000000000000000000000);
     }
 
     public boolean getGameIsOverInPosition() {
@@ -170,7 +170,7 @@ public class Board {
 
     public static void main(String[] args) {
             GameManager game = new GameManager();
-            BitBoard board = new BitBoard(0b000000000000000000000000000000000000000000);
+            BitBoard board = new BitBoard(0b0000000000000000000000000000000000000000000000000);
     
         
     }

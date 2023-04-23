@@ -45,7 +45,7 @@ public class GameManager {
 
     public static void main(String[] args) {
         GameManager game = new GameManager();
-        BitBoard board = new BitBoard(0b000000000000000000000000000000000000000000);
+        BitBoard board = new BitBoard(0b0000000000000000000000000000000000000000000000000);
 
     }
 }
