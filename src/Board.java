@@ -58,7 +58,8 @@ public class Board {
                 gameBoard[index][count - 1].setFillColor(getPlayerColor());
                 BitBoard updatedMask = mask.addBitPieceToMask(index);
                 if(turnCount % 2 == 1){
-                    yellow.bit += updatedMask.bit ^ mask.bit;
+                    yellow.bit = yellow.addBitToThisPosition(mask, updatedMask);
+                    System.out.println("Yellow bit: " + Long.toBinaryString(yellow.bit));
                     if(yellow.checkWin()){
                         gameOver(true);
                     }

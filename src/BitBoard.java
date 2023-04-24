@@ -25,7 +25,6 @@ public class BitBoard {
 
     public boolean checkHor( long unmaskedPosition){
         long m = unmaskedPosition & (unmaskedPosition >> 7);
-        System.out.println("hor m: " + Long.toBinaryString(m));
         long f = m & (m >> 14);   
         if(Long.valueOf(f) > 0){
             return true;
@@ -86,6 +85,12 @@ public class BitBoard {
         } else {
             throw new Exception("addBitPiece count bound exception");
         }
+    }
+
+    public long addBitToThisPosition(BitBoard oldMask, BitBoard newMask){
+        long newBit = bit;
+        newBit += newMask.bit ^ oldMask.bit;
+        return newBit;
     }
 
     public static void main(String[] args) {
