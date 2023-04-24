@@ -29,6 +29,11 @@ public class GameManager {
                 clearBoard();
             }
         });
+
+        /// FOR TESTING!!!
+        canvas.onKeyDown(event -> {
+            
+        });
     }
 
     public void takeATurn(double x, double y) throws Exception {

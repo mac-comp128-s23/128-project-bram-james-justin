@@ -23,8 +23,8 @@ public class BitBoard {
         return new BitBoard(bit^mask.bit);
     }
 
-    public boolean checkHor( long unmaskedPosition){
-        long m = unmaskedPosition & (unmaskedPosition >> 7);
+    public boolean checkHor(){
+        long m = bit & (bit >> 7);
         long f = m & (m >> 14);   
         if(Long.valueOf(f) > 0){
             return true;
@@ -32,8 +32,8 @@ public class BitBoard {
         return false;
     } 
 
-    public boolean checkUpRightDiag(long unmaskedPosition){
-        long m = unmaskedPosition & (unmaskedPosition >> 6);
+    public boolean checkUpRightDiag(){
+        long m = bit & (bit >> 6);
         long f = m & (m >> 12);   
         if(Long.valueOf(f) > 0){
             return true;
@@ -60,7 +60,7 @@ public class BitBoard {
     } 
 
     public boolean checkWin(){
-        return checkHor(bit)  || checkVert(bit) || checkUpLeft(bit) ||  checkUpRightDiag(bit);
+        return checkHor()  || checkVert(bit) || checkUpLeft(bit) ||  checkUpRightDiag();
     } //
     /**
      * Changes a bit of a bitboard (i.e., one 42-digit bitstring) from 0 to 1 at a specific column index. Successive
@@ -76,7 +76,6 @@ public class BitBoard {
         while(((number.get((col* 7) + count)))){
             count++;
         }
-        System.out.println("count: " + count);
         // change one digit of bitstring 
         if(count < 6){   //For some reason the limit in the while loop wasn't working
         long tempBit = bit;
@@ -87,16 +86,47 @@ public class BitBoard {
         }
     }
 
-    public long addBitToThisPosition(BitBoard oldMask, BitBoard newMask){
+    public long addBitToThisPosition(Long oldMaskbit, long newMaskBit){
         long newBit = bit;
-        newBit += newMask.bit ^ oldMask.bit;
+        newBit += newMaskBit ^ oldMaskbit;
         return newBit;
     }
 
-    public static void main(String[] args) {
-        GameManager game = new GameManager();
-        BitBoard board = new BitBoard(0b0000000000000000000000000000000000000000000000000);
+    // check for twos: evaluation methods
 
+    public int checkHorForTwo(){
+        long m = bit & (bit >> 7);
+        BitSet bs = BitSet.valueOf(new long[] {m});
+        return bs.cardinality();
+    } 
+
+    public int checkUpRightDiagForTwo(){
+        long m = bit & (bit >> 6);
+        BitSet bs = BitSet.valueOf(new long[] {m});
+        return bs.cardinality();
+    } 
+
+    public int checkUpLeftForTwo(){
+        long m = bit & (bit >> 8);
+        BitSet bs = BitSet.valueOf(new long[] {m});
+        return bs.cardinality();
+    } 
+
+    public int checkVertForTwo(){
+        long m = bit & (bit >> 1);
+        BitSet bs = BitSet.valueOf(new long[] {m});
+        return bs.cardinality();
+    } 
+
+    public int checkTwo(){
+        return checkHorForTwo()  +  checkVertForTwo() + checkUpLeftForTwo() +  checkUpRightDiagForTwo();
+    } //
+
+    
+    public static void main(String[] args) throws Exception {
+        BitBoard board = new BitBoard(0b0000000000000000000000000000000000000000000000000);
+        board = board.addBitPieceToMask(0);
+        
     }
     
 }

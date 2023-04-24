@@ -9,7 +9,7 @@ public class PositionEvaluator {
         searchDepth = 2;  
 
     }
-
+    
 
 
     /*
@@ -20,7 +20,7 @@ public class PositionEvaluator {
         Node current = start;
         double eval = -1.0;
         if(currentTurn - current.getTurn() <= searchDepth || current.getBoard().getGameIsOverInPosition()){
-            return current.evaluateNode(current);
+            return current.evaluateNode();
         }
         if(current.getTurn() % 2 == 0) {
             double maxEval = Double.NEGATIVE_INFINITY; 

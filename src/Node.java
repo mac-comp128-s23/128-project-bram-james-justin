@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import edu.macalester.graphics.Fillable;
 
 public class Node {
-    private BitBoard position; // has 1s where computer has a disc (yellow)
+    private BitBoard yPosition; // has 1s where computer has a disc (yellow)
     private BitBoard mask; // has 1s where there is a disc
     private BitBoard playersPosition;
     private ArrayList<Node> children;   //retrieves the children of a specific node, i.e. a game state
@@ -15,16 +15,16 @@ public class Node {
     public Node(BitBoard hamiDownPosition, BitBoard hamiDownMask, int turnNumba) {
         children = new ArrayList<Node>();
         turn = turnNumba;
-        position = hamiDownPosition;
+        yPosition = hamiDownPosition;
         mask = hamiDownMask;
         decideLeafStatus();
     }
 
     public void decideLeafStatus(){
         if(turn % 2 == 0) {
-            gameIsOverInPosiiton = position.checkWin();
+            gameIsOverInPosiiton = yPosition.checkWin();
         } else {
-            gameIsOverInPosiiton = position.unMask(mask).checkWin();
+            gameIsOverInPosiiton = yPosition.unMask(mask).checkWin();
         }
     }
 
@@ -40,15 +40,21 @@ public class Node {
     /**
      * Adds all the children of a current boardstate. Doesn't make ALL possible children for the entire tree, for purposes of space. 
      * Will be used for analysis of which child is the best.
-     * @throws Exception
+     * @throws Exception /////// NOT WORKING YET, IMPLEMENT NEW ADD TO POSITION METHOD
      */
     public void addChildren() throws Exception {
-        if(children.isEmpty()){
+        if(children.isEmpty()){ 
             for (int i = 0; i < Board.COLUMNS ; i++) {
                 BitBoard newMask = mask.addBitPieceToMask(i);
                 if(wasNewBoardCreated(newMask)){
-                    Node node = new Node(position.addBitPieceToMask(i), newMask, turn + 1);
-                    children.add(node);
+                    Node node;
+                    if(turn % 2 == 0) {
+                        BitBoard newPosition = new BitBoard(yPosition.addBitToThisPosition(mask.bit, newMask.bit));
+                        node = new Node(newPosition, newMask, turn + 1);
+                    } else {
+                        node = new Node(yPosition, newMask, turn + 1);
+                    }
+                children.add(node);
                 }
             }
         }
@@ -78,13 +84,17 @@ public class Node {
         }
     }
 
-    public Board getBoard(){
-        return getBoard();
-    }
 
-    public double evaluateNode(Node current) {
-
-        return 0;
+    public int evaluateNode() {
+        int score = yPosition.checkTwo() - yPosition.unMask(mask).checkTwo();
+        if(gameIsOverInPosiiton){
+            if(turn % 2 == 0){
+                score -= 100;
+            } else {
+                score += 100;
+            }
+        }
+        return score;
     }
 
 
