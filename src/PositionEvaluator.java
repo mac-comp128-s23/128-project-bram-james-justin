@@ -1,3 +1,5 @@
+import java.util.Collections;
+
 public class PositionEvaluator {
     private Node root;
     private int currentTurn; // maximizing player should be even turn count
@@ -9,8 +11,10 @@ public class PositionEvaluator {
         searchDepth = 2;  
 
     }
-    
 
+    // public Node getBestMoveForAI(){
+    //     Collections.sort(root.getChildren(), null);
+    // }
 
     /*
      * creates the tree, using alpha-beta pruning and minimax on the imaginary full game tree,
@@ -19,10 +23,10 @@ public class PositionEvaluator {
     public double evaluatePosition(Node start, double alpha, double beta) throws Exception{
         Node current = start;
         double eval = -1.0;
-        if(currentTurn - current.getTurn() <= searchDepth || current.getBoard().getGameIsOverInPosition()){
+        if(currentTurn - current.getTurn() <= searchDepth || current.getGameIsOverInPosition()){
             return current.evaluateNode();
         }
-        if(current.getTurn() % 2 == 0) {
+        if(current.getTurn() % 2 == 1) {
             double maxEval = Double.NEGATIVE_INFINITY; 
             for(Node child: current.getOrMakeChildren()){
                 eval = evaluatePosition(child, alpha, beta);
@@ -47,10 +51,4 @@ public class PositionEvaluator {
         return root;
     }
 
-    
-    // public double minimax(Node node, Integer depth, Integer alpha, Integer beta, GameManager manager){
-    //     if(manager.getGameOver()==true){
-    //         break; 
-    //     }
-    // }
 }

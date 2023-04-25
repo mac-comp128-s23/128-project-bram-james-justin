@@ -77,7 +77,7 @@ public class Board {
     }
 
     public void TESTTHENODES(){
-        Node n = new Node(, mask, turnCount);
+        Node n = new Node(yellow, mask, turnCount);
         System.out.println(n.evaluateNode());
     }
 

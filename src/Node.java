@@ -10,6 +10,7 @@ public class Node {
     private ArrayList<Node> children;   //retrieves the children of a specific node, i.e. a game state
     private int turn;
     private boolean gameIsOverInPosiiton;
+    private int score;
     // private GameManager manager;
 
     public Node(BitBoard hamiDownPosition, BitBoard hamiDownMask, int turnNumba) {
@@ -60,6 +61,13 @@ public class Node {
         }
     }
 
+    public ArrayList<Node> getChildren(){
+        return children;
+    }
+
+    public int getScore(){
+        return score;
+    }
 
 
     // private void printGetChildren(){ //for testing purposes. delete when done
@@ -83,10 +91,8 @@ public class Node {
             return true;
         }
     }
-
-
     public int evaluateNode() {
-        int score = yPosition.checkTwo() - yPosition.unMask(mask).checkTwo();
+        score = yPosition.checkTwo() - yPosition.unMask(mask).checkTwo();
         if(gameIsOverInPosiiton){
             if(turn % 2 == 0){
                 score -= 100;
@@ -97,5 +103,7 @@ public class Node {
         return score;
     }
 
-
+    public boolean getGameIsOverInPosition() {
+        return gameIsOverInPosiiton;
+    }
 }

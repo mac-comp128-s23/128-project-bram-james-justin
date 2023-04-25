@@ -1,5 +1,6 @@
 import edu.macalester.graphics.CanvasWindow;
 import edu.macalester.graphics.GraphicsGroup;
+import edu.macalester.graphics.events.Key;
 
 public class GameManager {
     private Board board;
@@ -32,7 +33,8 @@ public class GameManager {
 
         /// FOR TESTING!!!
         canvas.onKeyDown(event -> {
-            
+            if(event.getKey() == Key.RETURN_OR_ENTER)
+            board.TESTTHENODES();
         });
     }
 
