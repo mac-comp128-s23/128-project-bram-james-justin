@@ -1,5 +1,7 @@
 
 import java.awt.Color;
+import java.util.BitSet;
+
 import edu.macalester.graphics.CanvasWindow;
 import edu.macalester.graphics.Ellipse;
 import edu.macalester.graphics.Fillable;
@@ -16,22 +18,24 @@ public class Board {
     private boolean gameIsOverInPosition;
     private BitBoard mask;
     private BitBoard yellow;
+    private PositionEvaluator PE;
 
-    public Board(Fillable[][] board) {
-        initializeBoard(board);
-        xBoxMargin = 100;
-        yBoxMargin = 80;
+    public Board() {
+        gameBoard = new Fillable[7][6];
+        xBoxMargin = 500;
+        yBoxMargin = 480;
         squareHeightAndWidth = 70;
         gameIsOverInPosition = false;
         mask = new BitBoard(0b0000000000000000000000000000000000000000000000000); //length should be 49 (7*7)
         yellow = new BitBoard(0b0000000000000000000000000000000000000000000000000);
+        PE = new PositionEvaluator(new Node(yellow, mask, 0));
     }
 
-    public void initializeBoard(Fillable[][] board){
-        if(board != null){
-            gameBoard = board;
-        } else {
-            gameBoard = new Fillable[7][6];
+    public void turn(int x, int y) throws Exception{
+        if(turnCount % 2 == 0){
+            playerPlacePiece(x, y);
+        } else{
+            AIMove();
         }
     }
 
@@ -45,50 +49,59 @@ public class Board {
 
     public void playerPlacePiece(double x, double y) throws Exception{
         int index = getNearestColIndex(x, y);
-        if (index != -1 && !gameIsOverInPosition) {
-            Fillable[] col = gameBoard[index];
-            int count = 0;
-            while (count < 6) {      // is less than 6 so that it represents the # of rows
-                if (col[count].getFillColor() != Color.WHITE) {
-                    break;
+        if (index != -1) {
+            Node board = PE.makePlayerMove(index);
+            if(board.getGameIsOverInPosition()) gameOver(true);
+            updateBoard(board.getYellowString(), board.getRedString());
+                        /// add check for tie if we ever let AI go first!! 
+        }
+    } 
+
+    public void AIMove() throws Exception{
+        Node board = PE.makeAIMove();
+        if(board.getGameIsOverInPosition()){
+            gameOver(true);
+        }
+        updateBoard(board.getYellowString(), board.getRedString());
+    }
+
+    public void updateBoard(long yellow, long red){
+        BitSet y = BitSet.valueOf(new long[] {yellow});
+        BitSet r = BitSet.valueOf(new long[] {red});
+        int count = 0;
+        for (Fillable[] fillables : gameBoard) {
+            for(Fillable square: fillables){
+                if(y.get(count)){
+                    square.setFillColor(Color.YELLOW);
+                } else if (r.get(count)){
+                    square.setFillColor(Color.RED);
                 }
-                count++;
-            }
-            if (count != 0) {
-                gameBoard[index][count - 1].setFillColor(getPlayerColor());
-                BitBoard updatedMask = mask.addBitPieceToMask(index);
-                if(turnCount % 2 == 1){
-                    yellow.bit = yellow.addBitToThisPosition(mask.bit, updatedMask.bit);
-                    if(yellow.checkWin()){
-                        gameOver(true);
-                    }
+                if(count % 7 == 0) {
+                    count += 2;
                 } else {
-                    if(yellow.unMask(updatedMask).checkWin()){
-                        gameOver(true);
-                    }
+                    count++;
                 }
-                mask = updatedMask;
-                turnCount++;
-            }
-            if (turnCount == 42 && !gameIsOverInPosition) {
-                gameOver(false);
             }
         }
     }
 
-    public void TESTTHENODES(){
-        Node n = new Node(yellow, mask, turnCount);
-        System.out.println(n.evaluateNode());
-    }
+
+
+
+
+    // public void TESTTHENODES(){
+    //     Node n = new Node(yellow, mask, turnCount);
+    //     System.out.println(n.evaluateNode());
+    // }
 
     public void initializePieces(CanvasWindow canvas){   //1 is red, 2 is yellow
         int colCount = 0;
         int rowCount = 0;
         for (Fillable[] col : gameBoard) {
             rowCount = 0;
-            for (Fillable var: col) {
-                Fillable square= new Rectangle(xBoxMargin + (70 * (colCount % 7)), yBoxMargin + (70 * (rowCount )), squareHeightAndWidth, squareHeightAndWidth);
-                Fillable disc = new Ellipse(105 + (70 * (colCount % 7)), 85 + (70 * (rowCount )), 60, 60);
+            for (Fillable v: col) {
+                Fillable square= new Rectangle(xBoxMargin - (70 * (colCount % 7)), yBoxMargin - (70 * (rowCount )), squareHeightAndWidth, squareHeightAndWidth);
+                Fillable disc = new Ellipse(xBoxMargin +5 - (70 * (colCount % 7)), yBoxMargin + 5 - (70 * (rowCount )), 60, 60);
                 ((Ellipse) disc).setFillColor(Color.WHITE); //If we could set this to translucent that would be cool then we could have the sliding effect later.
                 ((Rectangle) square).setFillColor(Color.BLUE);
                 
@@ -102,31 +115,6 @@ public class Board {
             colCount++;
         }
     }
-
-    // /*
-    //  * for the tree to create nodes with unique boards
-    //  */
-    // public boolean plopPiece(int x){
-    //     Fillable[] col = gameBoard[x];
-    //     int count = 0;
-    //     while (count < 6) {       // is less than 6 so that it represents the # of rows
-    //         if (col[count].getFillColor() != Color.WHITE) {
-    //             break;
-    //         }
-    //         count++;
-    //     }
-    //     if (count != 0) {
-    //         gameBoard[x][count - 1].setFillColor(getPlayerColor());
-    //         turnCount++;
-    //         fullboard.addPiece(col);
-    //     } else {
-    //         return false;
-    //     }
-    //     if (turnCount == 42) {
-    //         gameOver(false);
-    //     }
-    //     return true;
-    // }
 
     public Color getPlayerColor() {
         if (turnCount % 2 == 1) {

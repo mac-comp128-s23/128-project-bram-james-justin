@@ -14,7 +14,7 @@ public class GameManager {
     public GameManager() {
         canvas = new CanvasWindow("Board", CANVAS_WIDTH, CANVAS_HEIGHT);
         pieces = new GraphicsGroup();
-        board = new Board(null);
+        board = new Board();
         canvas.add(pieces, 0, 0);
         board.initializePieces(canvas);
 
@@ -32,14 +32,14 @@ public class GameManager {
         });
 
         /// FOR TESTING!!!
-        canvas.onKeyDown(event -> {
-            if(event.getKey() == Key.RETURN_OR_ENTER)
-            board.TESTTHENODES();
-        });
+        // canvas.onKeyDown(event -> {
+        //     if(event.getKey() == Key.RETURN_OR_ENTER)
+        //     board.TESTTHENODES();
+        // });
     }
 
     public void takeATurn(double x, double y) throws Exception {
-        board.playerPlacePiece(x, y); 
+        board.turn((int)x,(int) y); 
         canvas.draw();
     }
 
