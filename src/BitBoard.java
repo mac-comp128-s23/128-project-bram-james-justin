@@ -120,9 +120,13 @@ public class BitBoard {
 
     public int checkTwo(){
         return checkHorForTwo()  +  checkVertForTwo() + checkUpLeftForTwo() +  checkUpRightDiagForTwo();
-    } //
+    } 
 
-    
+    public int getColumn(Long placedPiece){
+        int trailingZeroes = Long.numberOfTrailingZeros(placedPiece);
+        return trailingZeroes/7; 
+    }
+
     public static void main(String[] args) throws Exception {
         BitBoard board = new BitBoard(0b0000000000000000000000000000000000000000000000000);
         board = board.addBitPieceToMask(0);

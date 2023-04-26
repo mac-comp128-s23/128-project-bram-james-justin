@@ -18,21 +18,13 @@ public class Board {
     private BitBoard yellow;
 
     public Board(Fillable[][] board) {
-        initializeBoard(board);
+        gameBoard = new Fillable[7][6];
         xBoxMargin = 100;
         yBoxMargin = 80;
         squareHeightAndWidth = 70;
         gameIsOverInPosition = false;
         mask = new BitBoard(0b0000000000000000000000000000000000000000000000000); //length should be 49 (7*7)
         yellow = new BitBoard(0b0000000000000000000000000000000000000000000000000);
-    }
-
-    public void initializeBoard(Fillable[][] board){
-        if(board != null){
-            gameBoard = board;
-        } else {
-            gameBoard = new Fillable[7][6];
-        }
     }
 
     public int getNearestColIndex(double mouseX, double mouseY){ //gets the position of the mouse and then assigns it to the nearest column
