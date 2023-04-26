@@ -21,14 +21,6 @@ public class Node {
         decideLeafStatus();
     }
 
-    public Long getRedString(){
-        return yPosition.unMask(mask).bit;
-    }
-
-    public Long getYellowString(){
-        return yPosition.bit;
-    }
-
     public void decideLeafStatus(){
         if(turn % 2 == 0) {
             gameIsOverInPosiiton = yPosition.checkWin();

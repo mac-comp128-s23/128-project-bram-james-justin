@@ -9,27 +9,12 @@ public class PositionEvaluator {
         root = n;
         currentTurn = 0;
         searchDepth = 2;  
+
     }
 
-    public Node makePlayerMove(int col) throws Exception{
-        root = root.getOrMakeChildren().get(col);
-        return root;
-    }
-
-    public Node makeAIMove() throws Exception{
-        Node bestNode = null;
-        evaluatePosition(root, 0, 0);
-        // Collections.sort(root.getChildren(), null);
-        int max = Integer.MIN_VALUE;
-        for (Node child : root.getChildren()) {
-            if(child.getScore() > max) {      //// if returns null check here
-                max = child.getScore();
-                bestNode = child;
-            }
-        }
-        root = bestNode;
-        return bestNode;
-    }
+    // public Node getBestMoveForAI(){
+    //     Collections.sort(root.getChildren(), null);
+    // }
 
     /*
      * creates the tree, using alpha-beta pruning and minimax on the imaginary full game tree,
