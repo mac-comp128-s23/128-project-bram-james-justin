@@ -69,7 +69,7 @@ public class BitBoard {
      * @return A new bitboard
      * @throws Exception
      */
-    public BitBoard addBitPieceToMask(int col) throws Exception{ // to add to position: yellow.bit += updatedMask.bit ^ oldMask.bit;
+    public BitBoard addBitPieceToMask(int col) { // to add to position: yellow.bit += updatedMask.bit ^ oldMask.bit;
         BitSet number = BitSet.valueOf(new long[] {bit}); // check here for issues 
         int count = 0;
         //find height of piece to change
@@ -77,13 +77,12 @@ public class BitBoard {
             count++;
         }
         // change one digit of bitstring 
-        if(count < 6){   //For some reason the limit in the while loop wasn't working
         long tempBit = bit;
-        tempBit += (long) Math.pow(2, (col* (7)) + count); 
+        if (count < 6){   //For some reason the limit in the while loop wasn't working
+            tempBit += (long) Math.pow(2, (col* (7)) + count); 
+        }    
         return new BitBoard(tempBit);
-        } else {
-            throw new Exception("addBitPiece count bound exception");
-        }
+        
     }
 
     public long addBitToThisPosition(Long oldMaskbit, long newMaskBit){
@@ -120,11 +119,6 @@ public class BitBoard {
 
     public int checkTwo(){
         return checkHorForTwo()  +  checkVertForTwo() + checkUpLeftForTwo() +  checkUpRightDiagForTwo();
-    } 
-
-    public int getColumn(Long placedPiece){
-        int trailingZeroes = Long.numberOfTrailingZeros(placedPiece);
-        return trailingZeroes/7; 
     }
 
     public static void main(String[] args) throws Exception {

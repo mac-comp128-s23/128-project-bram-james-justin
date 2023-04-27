@@ -16,6 +16,7 @@ public class Board {
     private boolean gameIsOverInPosition;
     private BitBoard mask;
     private BitBoard yellow;
+    public PositionEvaluator positionEvaluator;
 
     public Board(Fillable[][] board) {
         gameBoard = new Fillable[7][6];
@@ -35,8 +36,16 @@ public class Board {
         return answer;
     }
 
-    public void playerPlacePiece(double x, double y) throws Exception{
-        int index = getNearestColIndex(x, y);
+    public void playerPlacePiece(double x, double y) {
+        int index;
+        if (turnCount % 2 == 0) {
+            index = getNearestColIndex(x, y);
+
+        } else {
+            Node nextMove = positionEvaluator.getNextMove();
+            // nextMove.yellowPos.
+            index = getColumn(nextMove.yellowPos.bit ^ yellow.bit);
+        }
         if (index != -1 && !gameIsOverInPosition) {
             Fillable[] col = gameBoard[index];
             int count = 0;
@@ -68,10 +77,10 @@ public class Board {
         }
     }
 
-    public void TESTTHENODES(){
-        Node n = new Node(yellow, mask, turnCount);
-        System.out.println(n.evaluateNode());
-    }
+    // public void TESTTHENODES(){
+    //     Node n = new Node(yellow, mask, turnCount);
+    //     System.out.println(n.evaluateNode());
+    // }
 
     public void initializePieces(CanvasWindow canvas){   //1 is red, 2 is yellow
         int colCount = 0;
@@ -94,31 +103,6 @@ public class Board {
             colCount++;
         }
     }
-
-    // /*
-    //  * for the tree to create nodes with unique boards
-    //  */
-    // public boolean plopPiece(int x){
-    //     Fillable[] col = gameBoard[x];
-    //     int count = 0;
-    //     while (count < 6) {       // is less than 6 so that it represents the # of rows
-    //         if (col[count].getFillColor() != Color.WHITE) {
-    //             break;
-    //         }
-    //         count++;
-    //     }
-    //     if (count != 0) {
-    //         gameBoard[x][count - 1].setFillColor(getPlayerColor());
-    //         turnCount++;
-    //         fullboard.addPiece(col);
-    //     } else {
-    //         return false;
-    //     }
-    //     if (turnCount == 42) {
-    //         gameOver(false);
-    //     }
-    //     return true;
-    // }
 
     public Color getPlayerColor() {
         if (turnCount % 2 == 1) {
@@ -165,10 +149,25 @@ public class Board {
         gameIsOverInPosition = gameIsOver;
     }
 
+    /**
+     * Gets the column based on the location of the first one in the bitstring.
+     * @param newestBitPiece
+     * @return
+     */
+    public int getColumn(Long newestBitPiece){
+        int trailingZeroes = Long.numberOfTrailingZeros(newestBitPiece);
+        return trailingZeroes/7; 
+    }
+
     public static void main(String[] args) {
-            GameManager game = new GameManager();
-            BitBoard board = new BitBoard(0b0000000000000000000000000000000000000000000000000);
-    
+        GameManager game = new GameManager();
+        BitBoard board = new BitBoard(0b0000000000000000000000000000000000000000000000000);
+        try {
+            board = board.addBitPieceToMask(3);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        System.out.println("Column = " + game.board.getColumn(board.bit));
         
     }
 }

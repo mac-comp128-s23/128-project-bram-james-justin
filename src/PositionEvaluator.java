@@ -20,7 +20,7 @@ public class PositionEvaluator {
      * creates the tree, using alpha-beta pruning and minimax on the imaginary full game tree,
      * using a max depth of searchDepth 2** and alpha beta scores as doubles so we can use infinities
      */
-    public double evaluatePosition(Node start, double alpha, double beta) throws Exception{
+    public double evaluatePosition(Node start, double alpha, double beta){
         Node current = start;
         double eval = -1.0;
         if(currentTurn - current.getTurn() <= searchDepth || current.getGameIsOverInPosition()){

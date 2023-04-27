@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import edu.macalester.graphics.Fillable;
 
 public class Node {
-    private BitBoard yPosition; // has 1s where computer has a disc (yellow)
+    public BitBoard yellowPos; // has 1s where computer has a disc (yellow)
     private BitBoard mask; // has 1s where there is a disc
     private BitBoard playersPosition;
     private ArrayList<Node> children;   //retrieves the children of a specific node, i.e. a game state
@@ -16,16 +16,16 @@ public class Node {
     public Node(BitBoard hamiDownPosition, BitBoard hamiDownMask, int turnNumba) {
         children = new ArrayList<Node>();
         turn = turnNumba;
-        yPosition = hamiDownPosition;
+        yellowPos = hamiDownPosition;
         mask = hamiDownMask;
         decideLeafStatus();
     }
 
     public void decideLeafStatus(){
         if(turn % 2 == 0) {
-            gameIsOverInPosiiton = yPosition.checkWin();
+            gameIsOverInPosiiton = yellowPos.checkWin();
         } else {
-            gameIsOverInPosiiton = yPosition.unMask(mask).checkWin();
+            gameIsOverInPosiiton = yellowPos.unMask(mask).checkWin();
         }
     }
 
@@ -43,17 +43,17 @@ public class Node {
      * Will be used for analysis of which child is the best.
      * @throws Exception /////// NOT WORKING YET, IMPLEMENT NEW ADD TO POSITION METHOD
      */
-    public void addChildren() throws Exception {
+    public void addChildren() {
         if(children.isEmpty()){ 
             for (int i = 0; i < Board.COLUMNS ; i++) {
                 BitBoard newMask = mask.addBitPieceToMask(i);
                 if(wasNewBoardCreated(newMask)){
                     Node node;
                     if(turn % 2 == 0) {
-                        BitBoard newPosition = new BitBoard(yPosition.addBitToThisPosition(mask.bit, newMask.bit));
+                        BitBoard newPosition = new BitBoard(yellowPos.addBitToThisPosition(mask.bit, newMask.bit));
                         node = new Node(newPosition, newMask, turn + 1);
                     } else {
-                        node = new Node(yPosition, newMask, turn + 1);
+                        node = new Node(yellowPos, newMask, turn + 1);
                     }
                 children.add(node);
                 }
@@ -79,7 +79,7 @@ public class Node {
     //     }
     // }
 
-    public ArrayList<Node> getOrMakeChildren() throws Exception {
+    public ArrayList<Node> getOrMakeChildren(){
         if(children.isEmpty()) addChildren();
         return children;
     }
@@ -92,7 +92,7 @@ public class Node {
         }
     }
     public int evaluateNode() {
-        score = yPosition.checkTwo() - yPosition.unMask(mask).checkTwo();
+        score = yellowPos.checkTwo() - yellowPos.unMask(mask).checkTwo();
         if(gameIsOverInPosiiton){
             if(turn % 2 == 0){
                 score -= 100;

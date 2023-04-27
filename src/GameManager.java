@@ -3,7 +3,7 @@ import edu.macalester.graphics.GraphicsGroup;
 import edu.macalester.graphics.events.Key;
 
 public class GameManager {
-    private Board board;
+    public Board board;
     private BitBoard bitboard;
     private Node gameState;
     private CanvasWindow canvas;
@@ -32,13 +32,13 @@ public class GameManager {
         });
 
         /// FOR TESTING!!!
-        canvas.onKeyDown(event -> {
-            if(event.getKey() == Key.RETURN_OR_ENTER)
-            board.TESTTHENODES();
-        });
+        // canvas.onKeyDown(event -> {
+        //     if(event.getKey() == Key.RETURN_OR_ENTER)
+        //     board.TESTTHENODES();
+        // });
     }
 
-    public void takeATurn(double x, double y) throws Exception {
+    public void takeATurn(double x, double y) {
         board.playerPlacePiece(x, y); 
         canvas.draw();
     }
