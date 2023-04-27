@@ -26,6 +26,7 @@ public class Board {
         gameIsOverInPosition = false;
         mask = new BitBoard(0b0000000000000000000000000000000000000000000000000); //length should be 49 (7*7)
         yellow = new BitBoard(0b0000000000000000000000000000000000000000000000000);
+        positionEvaluator = new PositionEvaluator(new Node(yellow, mask, 0));
     }
 
     public int getNearestColIndex(double mouseX, double mouseY){ //gets the position of the mouse and then assigns it to the nearest column
@@ -40,10 +41,9 @@ public class Board {
         int index;
         if (turnCount % 2 == 0) {
             index = getNearestColIndex(x, y);
-
+            positionEvaluator.updateTree(index);
         } else {
-            Node nextMove = positionEvaluator.getNextMove();
-            // nextMove.yellowPos.
+            Node nextMove = positionEvaluator.getNextAIMove();
             index = getColumn(nextMove.yellowPos.bit ^ yellow.bit);
         }
         if (index != -1 && !gameIsOverInPosition) {
@@ -162,13 +162,10 @@ public class Board {
     public static void main(String[] args) {
         GameManager game = new GameManager();
         BitBoard board = new BitBoard(0b0000000000000000000000000000000000000000000000000);
-        try {
-            board = board.addBitPieceToMask(3);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        System.out.println("Column = " + game.board.getColumn(board.bit));
+
         
+        System.out.println("position score = " + game.board.positionEvaluator.evaluatePosition(game.board.positionEvaluator.root, Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY));
+        //
     }
 }
 

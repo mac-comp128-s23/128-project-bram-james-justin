@@ -7,7 +7,7 @@ public class Node {
     public BitBoard yellowPos; // has 1s where computer has a disc (yellow)
     private BitBoard mask; // has 1s where there is a disc
     private BitBoard playersPosition;
-    private ArrayList<Node> children;   //retrieves the children of a specific node, i.e. a game state
+    public ArrayList<Node> children;   //retrieves the children of a specific node, i.e. a game state
     private int turn;
     private boolean gameIsOverInPosiiton;
     private int score;
@@ -49,13 +49,16 @@ public class Node {
                 BitBoard newMask = mask.addBitPieceToMask(i);
                 if(wasNewBoardCreated(newMask)){
                     Node node;
-                    if(turn % 2 == 0) {
+                    if(turn % 2 == 0) { // if this node is a red move/turn
                         BitBoard newPosition = new BitBoard(yellowPos.addBitToThisPosition(mask.bit, newMask.bit));
                         node = new Node(newPosition, newMask, turn + 1);
                     } else {
                         node = new Node(yellowPos, newMask, turn + 1);
                     }
-                children.add(node);
+                    children.add(node);
+                } else {
+                    System.out.println("addChildren error! (in Node)");
+                    children.add(null);
                 }
             }
         }
@@ -69,18 +72,10 @@ public class Node {
         return score;
     }
 
-
-    // private void printGetChildren(){ //for testing purposes. delete when done
-    //     for (int i = 0; i < children.length; i++) {
-    //         for (int j = 0; j < board[i].length; j++) {
-    //             System.out.print(board[i][j]);
-    //         }
-    //         System.out.println();
-    //     }
-    // }
-
     public ArrayList<Node> getOrMakeChildren(){
-        if(children.isEmpty()) addChildren();
+        if(children.isEmpty()) {
+            addChildren();
+        }
         return children;
     }
 
@@ -91,15 +86,19 @@ public class Node {
             return true;
         }
     }
+
+
     public int evaluateNode() {
         score = yellowPos.checkTwo() - yellowPos.unMask(mask).checkTwo();
         if(gameIsOverInPosiiton){
+            System.out.println("Game's over ran in evaluate node");
             if(turn % 2 == 0){
                 score -= 100;
             } else {
                 score += 100;
             }
         }
+        System.out.println("Node score= " + score);
         return score;
     }
 

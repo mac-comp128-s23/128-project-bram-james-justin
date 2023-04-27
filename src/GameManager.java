@@ -51,8 +51,9 @@ public class GameManager {
     }
 
     public static void main(String[] args) {
-        GameManager game = new GameManager();
+        // GameManager game = new GameManager();
         BitBoard board = new BitBoard(0b0000000000000000000000000000000000000000000000000);
-
+        board = board.addBitPieceToMask(3);
+        new Node(new BitBoard(0b0000000000000000000000000000000000000000000000000), board, 1).evaluateNode();
     }
 }
