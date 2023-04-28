@@ -39,15 +39,17 @@ public class Board {
 
     public void playerPlacePiece(double x, double y) {
         int index;
+        
         if (turnCount % 2 == 0) {
             index = getNearestColIndex(x, y);
             positionEvaluator.updateTree(index);
         } else {
+            
             Node nextMove = positionEvaluator.getNextAIMove();
             index = getColumn(nextMove.yellowPos.bit ^ yellow.bit);
         }
-        System.out.println("last move went in column: " + index);
         if (index != -1 && !gameIsOverInPosition) {
+            System.out.println("last move went in column: " + index);
             Fillable[] col = gameBoard[index];
             int count = 0;
             while (count < 6) {      // is less than 6 so that it represents the # of rows

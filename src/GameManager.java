@@ -20,13 +20,9 @@ public class GameManager {
 
         canvas.onClick(event -> {
             if (!board.getGameIsOverInPosition()) {
-                try {
-                    takeATurn(event.getPosition().getX(), event.getPosition().getY());
-                } catch (Exception e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
-                }
-            } else {
+                takeATurn(event.getPosition().getX(), event.getPosition().getY());
+            } 
+            else {
                 clearBoard();
             }
         });

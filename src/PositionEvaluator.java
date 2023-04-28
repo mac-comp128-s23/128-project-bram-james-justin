@@ -74,8 +74,11 @@ public class PositionEvaluator {
      * updates the tree to reflect the players last move
      */
     public void updateTree(int index) {
-        root = root.getOrMakeChildren().get(index);
-        currentTurn++;
+        if(index !=-1){
+            root = root.getOrMakeChildren().get(index);
+            currentTurn++;
+        }
+        
     }
 
     public static void main(String[] args) {
