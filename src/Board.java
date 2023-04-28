@@ -37,7 +37,7 @@ public class Board {
         return answer;
     }
 
-    public int getRowToPlayIn(double x, double y){
+    public int getColToPlayIn(double x, double y){
         int index;
         if (turnCount % 2 == 0) {
             index = getNearestColIndex(x, y);
@@ -51,7 +51,7 @@ public class Board {
     }
 
     public void playerPlacePiece(double x, double y) {
-        int index =  getRowToPlayIn(x, y);
+        int index =  getColToPlayIn(x, y);
         if (index != -1 && !gameIsOverInPosition) {
             System.out.println("last move went in column: " + index);
             Fillable[] col = gameBoard[index];
