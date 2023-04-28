@@ -46,6 +46,7 @@ public class Board {
             Node nextMove = positionEvaluator.getNextAIMove();
             index = getColumn(nextMove.yellowPos.bit ^ yellow.bit);
         }
+        System.out.println("last move went in column: " + index);
         if (index != -1 && !gameIsOverInPosition) {
             Fillable[] col = gameBoard[index];
             int count = 0;

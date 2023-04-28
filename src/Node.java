@@ -92,7 +92,6 @@ public class Node {
     public int evaluateNode() {
         positionEvalutationScore = yellowPos.checkTwo() - yellowPos.unMask(mask).checkTwo();
         if(gameIsOverInPosiiton){
-            System.out.println("Game's over ran in evaluate node");
             if(turn % 2 == 0){
                 positionEvalutationScore -= 100;
             } else {

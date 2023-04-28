@@ -1,4 +1,5 @@
 import java.util.Collections;
+import java.util.Comparator;
 
 public class PositionEvaluator {
     public Node root;
@@ -8,7 +9,7 @@ public class PositionEvaluator {
     public PositionEvaluator(Node n){
         root = n;
         currentTurn = 0;
-        searchDepth = 4;
+        searchDepth = 6;
     }
 
     /*
@@ -52,6 +53,8 @@ public class PositionEvaluator {
     public Node getNextAIMove(){
         Node returnNode = null;
         double eval=  evaluatePosition(root, Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY);
+        System.out.println("eval: " + eval);
+        Collections.sort(root.getOrMakeChildren(), new ChildSorter());
         for (Node child: root.getOrMakeChildren()) {
             System.out.println(child.score);
                 if(child.getScore() == eval) {
