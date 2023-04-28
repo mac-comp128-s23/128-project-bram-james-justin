@@ -37,11 +37,8 @@ public class Board {
         return answer;
     }
 
-    
-
-    public void playerPlacePiece(double x, double y) {
+    public int getRowToPlayIn(double x, double y){
         int index;
-        
         if (turnCount % 2 == 0) {
             index = getNearestColIndex(x, y);
             positionEvaluator.updateTree(index);
@@ -50,6 +47,11 @@ public class Board {
             Node nextMove = positionEvaluator.getNextAIMove();
             index = getColumn(nextMove.yellowPos.bit ^ yellow.bit);
         }
+        return index;
+    }
+
+    public void playerPlacePiece(double x, double y) {
+        int index =  getRowToPlayIn(x, y);
         if (index != -1 && !gameIsOverInPosition) {
             System.out.println("last move went in column: " + index);
             Fillable[] col = gameBoard[index];
@@ -145,7 +147,8 @@ public class Board {
         turnCount = 0;
         mask = new BitBoard(0b0000000000000000000000000000000000000000000000000);
         yellow = new BitBoard(0b0000000000000000000000000000000000000000000000000);
-    }
+        positionEvaluator = new PositionEvaluator(new Node(yellow, mask, 0));
+    }   
 
     public boolean getGameIsOverInPosition() {
         return gameIsOverInPosition;
