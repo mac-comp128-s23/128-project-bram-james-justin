@@ -37,6 +37,8 @@ public class Board {
         return answer;
     }
 
+    
+
     public void playerPlacePiece(double x, double y) {
         int index;
         

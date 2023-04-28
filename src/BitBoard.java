@@ -73,14 +73,15 @@ public class BitBoard {
         BitSet number = BitSet.valueOf(new long[] {bit}); // check here for issues 
         int count = 0;
         //find height of piece to change
-        while(((number.get((col* 7) + count)))){
+        while(number.get((col* 7) + count) && count < 6){
             count++;
         }
         // change one digit of bitstring 
         long tempBit = bit;
-        if (count < 6){   //For some reason the limit in the while loop wasn't working
+        // if (count < 6){   //For some reason the limit in the while loop wasn't working
             tempBit += (long) Math.pow(2, (col* (7)) + count); 
-        }    
+            // System.out.println("coutn: " + count);
+        // }    
         return new BitBoard(tempBit);
         
     }

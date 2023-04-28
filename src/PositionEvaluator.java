@@ -1,5 +1,4 @@
 import java.util.Collections;
-import java.util.Comparator;
 
 public class PositionEvaluator {
     public Node root;
@@ -50,18 +49,16 @@ public class PositionEvaluator {
      * returs the highest score child node of the root, than updates the root to reflect the turn progression
      */
     public Node getNextAIMove(){
-        Node returnNode = null;
         double eval=  evaluatePosition(root, Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY);
         System.out.println("eval: " + eval);
         Collections.sort(root.getOrMakeChildren(), new ChildSorter());
+        Node returnNode=root.getOrMakeChildren().get(0);
         for (Node child: root.getOrMakeChildren()) {
-            System.out.println(child.score);
+            System.out.println("Child score:" + child.score);
                 if(child.getScore() == eval) {
                     returnNode = child;
-                    System.out.println("it's working!");
                     break;
                 }
-    
         }
         
         currentTurn++;
@@ -74,6 +71,7 @@ public class PositionEvaluator {
      */
     public void updateTree(int index) {
         if(index !=-1){
+            System.out.println("root: "+ root);
             root = root.getOrMakeChildren().get(index);
             currentTurn++;
         }
