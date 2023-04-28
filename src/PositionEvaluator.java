@@ -17,26 +17,30 @@ public class PositionEvaluator {
      */
     public double evaluatePosition(Node start, double alpha, double beta){
         Node current = start;
-        double eval = -1.0;
-        if( current.getTurn() - currentTurn >= searchDepth || current.getGameIsOverInPosition()){
+        current.score = Double.NEGATIVE_INFINITY;
+        if(current.getTurn() - currentTurn >= searchDepth || current.getGameIsOverInPosition()){
             return current.evaluateNode();
         }
         if(current.getTurn() % 2 == 1) {
             double maxEval = Double.NEGATIVE_INFINITY; 
             for(Node child: current.getOrMakeChildren()){
-                eval = evaluatePosition(child, alpha, beta);
-                maxEval = Math.max(maxEval, eval);
-                alpha = Math.max(alpha, eval);
-                if(beta <= alpha)break;
+                if(child != null){
+                    current.score = evaluatePosition(child, alpha, beta);
+                    maxEval = Math.max(maxEval, current.score);
+                    alpha = Math.max(alpha, current.score);
+                    if(beta <= alpha)break;
+                }
             }
             return maxEval;
         } else {
             double minEval = Double.POSITIVE_INFINITY;
             for(Node child: current.getOrMakeChildren()){
-                eval = evaluatePosition(child, alpha, beta);
-                minEval = Math.min(minEval, eval);
-                beta = Math.min(beta, eval);
-                if(beta <= alpha) break;
+                if(child != null){
+                    current.score = evaluatePosition(child, alpha, beta);
+                    minEval = Math.min(minEval, current.score);
+                    beta = Math.min(beta, current.score);
+                    if(beta <= alpha) break;
+                }
             }
             return minEval; 
         }
@@ -46,15 +50,19 @@ public class PositionEvaluator {
      * returs the highest score child node of the root, than updates the root to reflect the turn progression
      */
     public Node getNextAIMove(){
-        int maxScore = Integer.MIN_VALUE;
         Node returnNode = null;
-        evaluatePosition(root, Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY);
-        for (Node child: root.getChildren()) {
-            if(child != null){
-                if(child.getScore() > maxScore) maxScore = child.getScore();
-                returnNode = child;
-            }
+        double eval=  evaluatePosition(root, Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY);
+        for (Node child: root.getOrMakeChildren()) {
+            System.out.println(child.score);
+                if(child.getScore() == eval) {
+                    returnNode = child;
+                    System.out.println("it's working!");
+                    break;
+                }
+    
         }
+        
+        currentTurn++;
         root = returnNode;
         return returnNode;
     }
@@ -63,6 +71,12 @@ public class PositionEvaluator {
      * updates the tree to reflect the players last move
      */
     public void updateTree(int index) {
-        root = root.getChildren().get(index);
+        root = root.getOrMakeChildren().get(index);
+        currentTurn++;
+    }
+
+    public static void main(String[] args) {
+        GameManager game = new GameManager();
+
     }
 }

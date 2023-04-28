@@ -74,6 +74,7 @@ public class Board {
             if (turnCount == 42 && !gameIsOverInPosition) {
                 gameOver(false);
             }
+
         }
     }
 
@@ -161,10 +162,7 @@ public class Board {
 
     public static void main(String[] args) {
         GameManager game = new GameManager();
-        BitBoard board = new BitBoard(0b0000000000000000000000000000000000000000000000000);
-
-        
-        System.out.println("position score = " + game.board.positionEvaluator.evaluatePosition(game.board.positionEvaluator.root, Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY));
+      
         //
     }
 }
