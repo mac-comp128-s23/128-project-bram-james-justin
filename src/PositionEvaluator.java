@@ -18,7 +18,6 @@ public class PositionEvaluator {
      */
     public double evaluatePosition(Node start, double alpha, double beta){
         Node current = start;
-        current.score = Double.NEGATIVE_INFINITY;
         if(current.getTurn() - currentTurn >= searchDepth || current.getGameIsOverInPosition()){
             return current.evaluateNode();
         }
