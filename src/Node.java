@@ -11,7 +11,7 @@ public class Node {
     public int turn;
     public boolean gameIsOverInPosiiton;
     public double score;
-    public int positionEvalutationScore;
+    public int positionEvaluationScore;
     // private GameManager manager;
 
     public Node(BitBoard hamiDownPosition, BitBoard hamiDownMask, int turnNumba) {
@@ -20,7 +20,7 @@ public class Node {
         yellowPos = hamiDownPosition;
         mask = hamiDownMask;
         decideLeafStatus();
-        positionEvalutationScore = Integer.MIN_VALUE;
+        positionEvaluationScore = Integer.MIN_VALUE;
     }
 
     public void decideLeafStatus(){
@@ -90,15 +90,15 @@ public class Node {
 
 
     public int evaluateNode() {
-        positionEvalutationScore = yellowPos.checkTwo() - yellowPos.unMask(mask).checkTwo();
+        positionEvaluationScore = yellowPos.checkTwo() - yellowPos.unMask(mask).checkTwo();
         if(gameIsOverInPosiiton){
             if(turn % 2 == 0){
-                positionEvalutationScore -= 100;
+                positionEvaluationScore -= 100;
             } else {
-                positionEvalutationScore += 100;
+                positionEvaluationScore += 100;
             }
         }
-        return positionEvalutationScore;
+        return positionEvaluationScore;
     }
 
     public boolean getGameIsOverInPosition() {
