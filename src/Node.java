@@ -58,9 +58,7 @@ public class Node {
                         node = new Node(yellowPos, newMask, turn + 1);
                     }
                     children.add(node);
-                } else {
-                    children.add(null);
-                }
+                } 
             }
         }
     }
