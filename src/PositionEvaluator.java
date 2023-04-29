@@ -71,7 +71,8 @@ public class PositionEvaluator {
      */
     public void updateTree(int index) {
         if(index !=-1){
-            System.out.println("root: "+ root);
+            // System.out.println("root: "+ root);
+            System.out.println(index);
             root = root.getOrMakeChildren().get(index);
             currentTurn++;
         }

@@ -19,7 +19,7 @@ public class GameManager {
         board.initializePieces(canvas);
 
         canvas.onClick(event -> {
-            if (!board.getGameIsOverInPosition()) {
+            if (!board.getGameIsOverInPosition() && board.getNumberOfPiecesInColumn(event.getPosition().getX(), event.getPosition().getY()) != 6) {
                 takeATurn(event.getPosition().getX(), event.getPosition().getY());
             } 
             else {

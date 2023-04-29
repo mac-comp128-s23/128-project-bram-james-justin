@@ -1,5 +1,7 @@
-
 import java.awt.Color;
+import java.util.HashMap;
+import java.util.Map;
+
 import edu.macalester.graphics.CanvasWindow;
 import edu.macalester.graphics.Ellipse;
 import edu.macalester.graphics.Fillable;
@@ -17,6 +19,7 @@ public class Board {
     private BitBoard mask;
     private BitBoard yellow;
     public PositionEvaluator positionEvaluator;
+    private Map<Integer, Integer> columnMap;
 
     public Board(Fillable[][] board) {
         gameBoard = new Fillable[7][6];
@@ -27,6 +30,14 @@ public class Board {
         mask = new BitBoard(0b0000000000000000000000000000000000000000000000000); //length should be 49 (7*7)
         yellow = new BitBoard(0b0000000000000000000000000000000000000000000000000);
         positionEvaluator = new PositionEvaluator(new Node(yellow, mask, 0));
+        columnMap = new HashMap< Integer, Integer>();
+        columnMap.put(0,0);
+        columnMap.put(1,0);
+        columnMap.put(2,0);
+        columnMap.put(3,0);
+        columnMap.put(4,0);
+        columnMap.put(5,0);
+        columnMap.put(6,0);
     }
 
     public int getNearestColIndex(double mouseX, double mouseY){ //gets the position of the mouse and then assigns it to the nearest column
@@ -36,22 +47,50 @@ public class Board {
         }
         return answer;
     }
+   
 
-    public int getColToPlayIn(double x, double y){
-        int index;
-        if (turnCount % 2 == 0) {
-            index = getNearestColIndex(x, y);
-            positionEvaluator.updateTree(index);
-        } else {
-            
-            Node nextMove = positionEvaluator.getNextAIMove();
-            index = getColumn(nextMove.yellowPos.bit ^ yellow.bit);
+    public int getColToPlayInPlayer(double x, double y){
+        int column=-1;     
+        int row= columnMap.get(getNearestColIndex(x, y));
+        if(columnMap.get(row)<6){
+            positionEvaluator.updateTree(row);
+            int newRow =row+1;
+            columnMap.put(row, newRow);
+            column= getNearestColIndex(x, y);
         }
-        return index;
+        return column;
+    }
+
+    public int getColToPlayInComputer(){  
+        int column=-1;     
+        Node nextMove = positionEvaluator.getNextAIMove();
+        int row=columnMap.get(getColumn(nextMove.yellowPos.bit ^ yellow.bit));
+        if(columnMap.get(row)<6){
+            int newRow =row+1;
+            columnMap.put(row, newRow);
+            column= getColumn(nextMove.yellowPos.bit ^ yellow.bit);
+        }
+        System.out.println("Comp column"+column);
+        return column;
+    }
+
+    public Integer getNumberOfPiecesInColumn(double x, double y){
+        if (turnCount % 2 == 0) {
+            return columnMap.get(getColToPlayInPlayer(x, y));
+        }
+        else{
+            return columnMap.get(getColToPlayInComputer());
+        }
     }
 
     public void playerPlacePiece(double x, double y) {
-        int index =  getColToPlayIn(x, y);
+        int index= -1;
+        if (turnCount % 2 == 0) {
+        index =  getColToPlayInPlayer(x, y);
+        }
+        else{
+            index=getColToPlayInComputer();
+        }
         if (index != -1 && !gameIsOverInPosition) {
             System.out.println("last move went in column: " + index);
             Fillable[] col = gameBoard[index];
