@@ -46,6 +46,7 @@ public class Node {
      * @throws Exception
      */
     public void addChildren() {
+        System.out.println("gameover:" + gameIsOverInPosiiton);
         if(!gameIsOverInPosiiton){ 
             for (int i = 0; i < Board.COLUMNS ; i++) {
                 BitBoard newMask = mask.addBitPieceToMask(i);
@@ -69,13 +70,6 @@ public class Node {
 
     public double getScore(){
         return score;
-    }
-
-    public ArrayList<Node> getOrMakeChildren(){
-        if(children.isEmpty()) {
-            addChildren();
-        }
-        return children;
     }
 
     public boolean hasKids(){

@@ -34,36 +34,38 @@ public class Board {
         if(mouseX > xBoxMargin && mouseX < (squareHeightAndWidth * 7) + xBoxMargin) {
             answer = (int) ((mouseX - xBoxMargin) / squareHeightAndWidth); //If something goes wrong check here          
         }
+        System.out.println("check for -1 " + answer);
         return answer;
     }
 
     public int getColToPlayIn(double x, double y){
-        int index;
+        int column;
         if (turnCount % 2 == 0) {
-            index = getNearestColIndex(x, y);
-            positionEvaluator.updateTree(index);
+            column = getNearestColIndex(x, y);
+            positionEvaluator.updateTree(column);
         } else {
-            
             Node nextMove = positionEvaluator.getNextAIMove();
-            index = getColumn(nextMove.yellowPos.bit ^ yellow.bit);
+            column = getColumn(nextMove.yellowPos.bit ^ yellow.bit);
         }
-        return index;
+        return column;
     }
 
     public void playerPlacePiece(double x, double y) {
         int index =  getColToPlayIn(x, y);
         if (index != -1 && !gameIsOverInPosition) {
-            System.out.println("last move went in column: " + index);
             Fillable[] col = gameBoard[index];
             int count = 0;
             while (count < 6) {      // is less than 6 so that it represents the # of rows
+                // System.out.println("last move went in column: " + index);
                 if (col[count].getFillColor() != Color.WHITE) {
                     break;
                 }
                 count++;
             }
+            System.out.println("count " + count);
             if (count != 0) {
                 gameBoard[index][count - 1].setFillColor(getPlayerColor());
+                // System.out.println("last move went in column: " + index);
                 BitBoard updatedMask = mask.addBitPieceToMask(index);
                 if(turnCount % 2 == 1){
                     yellow.bit = yellow.addBitToThisPosition(mask.bit, updatedMask.bit);

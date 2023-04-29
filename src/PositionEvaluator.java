@@ -22,7 +22,7 @@ public class PositionEvaluator {
         }
         if(current.getTurn() % 2 == 1) {
             double maxEval = Double.NEGATIVE_INFINITY; 
-            for(Node child: current.getOrMakeChildren()){
+            for(Node child: current.getChildren()){
                 if(child != null){
                     current.score = evaluatePosition(child, alpha, beta);
                     maxEval = Math.max(maxEval, current.score);
@@ -33,7 +33,7 @@ public class PositionEvaluator {
             return maxEval;
         } else {
             double minEval = Double.POSITIVE_INFINITY;
-            for(Node child: current.getOrMakeChildren()){
+            for(Node child: current.getChildren()){
                 if(child != null){
                     current.score = evaluatePosition(child, alpha, beta);
                     minEval = Math.min(minEval, current.score);
@@ -49,11 +49,12 @@ public class PositionEvaluator {
      * returs the highest score child node of the root, than updates the root to reflect the turn progression
      */
     public Node getNextAIMove(){
+        Node returnNode = null;
         double eval=  evaluatePosition(root, Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY);
-        System.out.println("eval: " + eval);
-        Collections.sort(root.getOrMakeChildren(), new ChildSorter());
-        Node returnNode=root.getOrMakeChildren().get(0);
-        for (Node child: root.getOrMakeChildren()) {
+        Collections.sort(root.getChildren(), new ChildSorter());
+        // Node returnNode=root.getChildren().get(0);
+        System.out.println("get children " + root.getChildren());
+        for (Node child: root.getChildren()) {
             System.out.println("Child score:" + child.score);
                 if(child.getScore() == eval) {
                     returnNode = child;
@@ -70,9 +71,12 @@ public class PositionEvaluator {
      * updates the tree to reflect the players last move
      */
     public void updateTree(int index) {
+        if(root.children.isEmpty()){
+            root.addChildren();
+        }
         if(index !=-1){
-            System.out.println("root: "+ root);
-            root = root.getOrMakeChildren().get(index);
+            root = root.getChildren().get(index);
+            // System.out.println("Child size: " + root.getChildren().size());
             currentTurn++;
         }
         
