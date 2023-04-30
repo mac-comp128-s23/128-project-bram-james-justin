@@ -65,6 +65,9 @@ public class Node {
     }
 
     public ArrayList<Node> getChildren(){
+        if (children.isEmpty()) {
+            addChildren();
+        }
         return children;
     }
 
