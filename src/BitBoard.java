@@ -69,7 +69,7 @@ public class BitBoard {
      * @return A new bitboard
      * @throws Exception
      */
-    public BitBoard addBitPieceToMask(int col) { // to add to position: yellow.bit += updatedMask.bit ^ oldMask.bit;
+    public BitBoard addBitPieceToMask(int col) { // to add to position: x += updatedMask.bit ^ oldMask.bit;
         BitSet number = BitSet.valueOf(new long[] {bit}); // check here for issues 
         int count = 0;
         //find height of piece to change

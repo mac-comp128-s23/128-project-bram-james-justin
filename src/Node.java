@@ -79,15 +79,6 @@ public class Node {
         return score;
     }
 
-    public boolean hasKids(){
-        if(children.isEmpty()){
-            return false;
-        } else {
-            return true;
-        }
-    }
-
-
     public int evaluateNode() {
         positionEvaluationScore = yellowPos.checkTwo() - yellowPos.unMask(mask).checkTwo();
         if(gameIsOverInPosiiton){

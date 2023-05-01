@@ -1,6 +1,5 @@
 import edu.macalester.graphics.CanvasWindow;
 import edu.macalester.graphics.GraphicsGroup;
-import edu.macalester.graphics.events.Key;
 
 public class GameManager {
     public static Board board;

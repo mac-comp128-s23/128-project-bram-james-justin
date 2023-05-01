@@ -99,6 +99,7 @@ public class Board {
             gameOver(false);
         }
     }
+
     // public void makeMove (int count){
         
     // }
