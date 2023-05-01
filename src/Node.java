@@ -26,10 +26,10 @@ public class Node {
     public void decideLeafStatus(){
         if(turn % 2 == 1) {
             gameIsOverInPosiiton = yellowPos.checkWin();
-            System.out.println("yellow position.checkwin" + yellowPos.checkWin());
+            // System.out.println("yellow position.checkwin" + yellowPos.checkWin());
         } else {
             gameIsOverInPosiiton = yellowPos.unMask(mask).checkWin();
-            System.out.println("red position check win " +yellowPos.unMask(mask).checkWin());
+            // System.out.println("red position check win " +yellowPos.unMask(mask).checkWin());
         }
     }
 
@@ -47,7 +47,7 @@ public class Node {
      * Will be used for analysis of which child is the best.
      */
     public void addChildren() {
-        System.out.println("gameover:" + gameIsOverInPosiiton);
+        // System.out.println("gameover:" + gameIsOverInPosiiton);
         // if(!gameIsOverInPosiiton){ 
             for (int i = 0; i < Board.COLUMNS ; i++) {
                 BitBoard newMask = mask.addBitPieceToMask(i);
