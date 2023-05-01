@@ -3,7 +3,7 @@ import edu.macalester.graphics.GraphicsGroup;
 import edu.macalester.graphics.events.Key;
 
 public class GameManager {
-    public Board board;
+    public static Board board;
     private BitBoard bitboard;
     private Node gameState;
     private CanvasWindow canvas;
@@ -48,8 +48,7 @@ public class GameManager {
 
     public static void main(String[] args) {
         // GameManager game = new GameManager();
-        BitBoard board = new BitBoard(0b0000000000000000000000000000000000000000000000000);
-        board = board.addBitPieceToMask(3);
-        new Node(new BitBoard(0b0000000000000000000000000000000000000000000000000), board, 1).evaluateNode();
+        BitBoard bitBoard = new BitBoard(0b0000000000000000000000000000000000000000000000000);
+        new Node(board, new BitBoard(0b0000000000000000000000000000000000000000000000000), bitBoard, 1).evaluateNode();
     }
 }

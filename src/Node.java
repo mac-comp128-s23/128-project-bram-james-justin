@@ -1,9 +1,7 @@
-import java.awt.Color;
 import java.util.ArrayList;
 
-import edu.macalester.graphics.Fillable;
-
 public class Node {
+    public Board nodeGameboard;
     public BitBoard yellowPos; // has 1s where computer has a disc (yellow)
     public BitBoard mask; // has 1s where there is a disc
     private BitBoard playersPosition;
@@ -14,9 +12,10 @@ public class Node {
     public int positionEvaluationScore;
     // private GameManager manager;
 
-    public Node(BitBoard hamiDownPosition, BitBoard hamiDownMask, int turnNumba) {
+    public Node(Board gameboard, BitBoard hamiDownPosition, BitBoard hamiDownMask, int turnNumber) {
+        nodeGameboard = gameboard;
         children = new ArrayList<Node>();
-        turn = turnNumba;
+        turn = turnNumber;
         yellowPos = hamiDownPosition;
         mask = hamiDownMask;
         decideLeafStatus();
@@ -50,17 +49,21 @@ public class Node {
         // System.out.println("gameover:" + gameIsOverInPosiiton);
         // if(!gameIsOverInPosiiton){ 
             for (int i = 0; i < Board.COLUMNS ; i++) {
-                BitBoard newMask = mask.addBitPieceToMask(i);
-                if(wasNewBoardCreated(newMask)){
-                    Node node;
-                    if(turn % 2 == 1) { // if this node is a red move/turn
-                        BitBoard newPosition = new BitBoard(yellowPos.addBitToThisPosition(mask.bit, newMask.bit));
-                        node = new Node(newPosition, newMask, turn + 1);
-                    } else {
-                        node = new Node(yellowPos, newMask, turn + 1);
-                    }
-                    children.add(node);
+                System.out.println("column "+ i);
+                System.out.println("column full check" +nodeGameboard.isColumnFull(i));
+                if(!nodeGameboard.isColumnFull(i)){
+                    BitBoard newMask = mask.addBitPieceToMask(i);
+                    if(wasNewBoardCreated(newMask)){
+                        Node node;
+                        if(turn % 2 == 1) { // if this node is a red move/turn
+                            BitBoard newPosition = new BitBoard(yellowPos.addBitToThisPosition(mask.bit, newMask.bit));
+                            node = new Node(nodeGameboard, newPosition, newMask, turn + 1);
+                        } else {
+                            node = new Node(nodeGameboard, yellowPos, newMask, turn + 1);
+                        }
+                        children.add(node);
                 } 
+            }
             }
         }
     // }

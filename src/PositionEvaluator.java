@@ -1,5 +1,3 @@
-import java.util.Collections;
-
 public class PositionEvaluator {
     public Node root;
    // maximizing player should be even turn count
@@ -17,7 +15,6 @@ public class PositionEvaluator {
      * using a max depth of searchDepth 2** and alpha beta scores as doubles so we can use infinities
      */
     public double evaluatePosition(Node start, int depth, double alpha, double beta, boolean playerTurn){
-        System.out.println("-----------------------------------------------------------");
         Node current = start;
         if(depth ==0 || current.getGameIsOverInPosition()){
             return current.evaluateNode();
@@ -90,6 +87,5 @@ public class PositionEvaluator {
 
     public static void main(String[] args) {
         GameManager game = new GameManager();
-
     }
 }
