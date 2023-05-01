@@ -34,7 +34,6 @@ public class Board {
         if(mouseX > xBoxMargin && mouseX < (squareHeightAndWidth * 7) + xBoxMargin) {
             answer = (int) ((mouseX - xBoxMargin) / squareHeightAndWidth); //If something goes wrong check here          
         }
-        System.out.println("check for -1 " + answer);
         return answer;
     }
 
@@ -42,9 +41,11 @@ public class Board {
         int column;
         if (turnCount % 2 == 0) {
             column = getNearestColIndex(x, y);
+            System.out.println("column: "+ column);
             positionEvaluator.updateTree(column);
         } else {
             Node nextMove = positionEvaluator.getNextAIMove();
+            System.out.println("getNext");
             column = getColumn(nextMove.yellowPos.bit ^ yellow.bit);
         }
         return column;
@@ -52,20 +53,17 @@ public class Board {
 
     public void playerPlacePiece(double x, double y) {
         int index =  getColToPlayIn(x, y);
-        if (index != -1 && !gameIsOverInPosition) {
-            Fillable[] col = gameBoard[index];
+        if (index != -1 && !gameIsOverInPosition ) {
+            Fillable[] fillableColumn = gameBoard[index];
             int count = 0;
             while (count < 6) {      // is less than 6 so that it represents the # of rows
-                // System.out.println("last move went in column: " + index);
-                if (col[count].getFillColor() != Color.WHITE) {
+                if (fillableColumn[count].getFillColor() != Color.WHITE) {
                     break;
                 }
                 count++;
-            }
-            System.out.println("count " + count);
-            if (count != 0) {
+            }   
+            if (count != 0) { //Maybe add null check for fillable.
                 gameBoard[index][count - 1].setFillColor(getPlayerColor());
-                // System.out.println("last move went in column: " + index);
                 BitBoard updatedMask = mask.addBitPieceToMask(index);
                 if(turnCount % 2 == 1){
                     yellow.bit = yellow.addBitToThisPosition(mask.bit, updatedMask.bit);
@@ -87,6 +85,9 @@ public class Board {
         }
     }
 
+    // public void makeMove (int count){
+        
+    // }
     // public void TESTTHENODES(){
     //     Node n = new Node(yellow, mask, turnCount);
     //     System.out.println(n.evaluateNode());

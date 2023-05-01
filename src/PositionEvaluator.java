@@ -8,7 +8,7 @@ public class PositionEvaluator {
     public PositionEvaluator(Node n){
         root = n;
         currentTurn = 0;
-        searchDepth = 6;
+        searchDepth = 1;
     }
 
     /*
@@ -54,8 +54,10 @@ public class PositionEvaluator {
         Collections.sort(root.getChildren(), new ChildSorter());
         // Node returnNode=root.getChildren().get(0);
         System.out.println("get children " + root.getChildren());
+
         for (Node child: root.getChildren()) {
             System.out.println("Child score:" + child.score);
+            System.out.println(Long.toBinaryString(child.mask.bit));
                 if(child.getScore() == eval) {
                     returnNode = child;
                     break;
@@ -64,6 +66,7 @@ public class PositionEvaluator {
         
         currentTurn++;
         root = returnNode;
+        
         return returnNode;
     }
 
@@ -71,10 +74,8 @@ public class PositionEvaluator {
      * updates the tree to reflect the players last move
      */
     public void updateTree(int index) {
-        if(root.children.isEmpty()){
-            root.addChildren();
-        }
         if(index !=-1){
+            System.out.println("index: " + index);
             root = root.getChildren().get(index);
             // System.out.println("Child size: " + root.getChildren().size());
             currentTurn++;

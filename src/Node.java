@@ -26,8 +26,10 @@ public class Node {
     public void decideLeafStatus(){
         if(turn % 2 == 1) {
             gameIsOverInPosiiton = yellowPos.checkWin();
+            System.out.println("yellow position.checkwin" + yellowPos.checkWin());
         } else {
             gameIsOverInPosiiton = yellowPos.unMask(mask).checkWin();
+            System.out.println("red position check win " +yellowPos.unMask(mask).checkWin());
         }
     }
 
@@ -43,11 +45,10 @@ public class Node {
     /**
      * Adds all the children of a current boardstate. Doesn't make ALL possible children for the entire tree, for purposes of space. 
      * Will be used for analysis of which child is the best.
-     * @throws Exception
      */
     public void addChildren() {
         System.out.println("gameover:" + gameIsOverInPosiiton);
-        if(!gameIsOverInPosiiton){ 
+        // if(!gameIsOverInPosiiton){ 
             for (int i = 0; i < Board.COLUMNS ; i++) {
                 BitBoard newMask = mask.addBitPieceToMask(i);
                 if(wasNewBoardCreated(newMask)){
@@ -62,7 +63,7 @@ public class Node {
                 } 
             }
         }
-    }
+    // }
 
     public ArrayList<Node> getChildren(){
         if (children.isEmpty()) {
