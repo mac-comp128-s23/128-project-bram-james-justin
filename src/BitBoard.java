@@ -1,7 +1,7 @@
 import java.util.BitSet;
 
 public class BitBoard {
-    public BitSet board;
+    private BitSet board;
     public long bit;
 
     public BitBoard(long previousBit) {
@@ -18,11 +18,19 @@ public class BitBoard {
     public long updateBitboard(BitBoard newBoard){
         return newBoard.bit^bit + bit;
     }
-
+    /**
+     * Creates a new BitBoard by unmasking the bits that are set in the given mask.
+     * @param mask the mask used for unmasking
+     * @return the unmasked BitBoard
+     */
     public BitBoard unMask(BitBoard mask){
         return new BitBoard(bit^mask.bit);
     }
 
+    /**
+     * Checks for a horizontal connect 4.
+     * @return
+     */
     public boolean checkHor(){
         long m = bit & (bit >> 7);
         long f = m & (m >> 14);   
@@ -32,6 +40,10 @@ public class BitBoard {
         return false;
     } 
 
+    /**
+     * Checks for a upwards right diagonal connect 4.
+     * @return
+     */
     public boolean checkUpRightDiag(){
         long m = bit & (bit >> 6);
         long f = m & (m >> 12);   
@@ -40,7 +52,10 @@ public class BitBoard {
         } 
         return false;
     } 
-
+    /**
+     * Checks for a upwards left diagonal connect 4.
+     * @return
+     */
     public boolean checkUpLeft(long unmaskedPosition){
         long m = unmaskedPosition & (unmaskedPosition >> 8);
         long f = m & (m >> 16);   
@@ -49,7 +64,10 @@ public class BitBoard {
         } 
         return false;
     } 
-
+    /**
+     * Checks for a vertical connect 4.
+     * @return
+     */
     public boolean checkVert(long unmaskedPosition){
         long m = unmaskedPosition & (unmaskedPosition >> 1);
         long f = m & (m >> 2);   
@@ -59,15 +77,19 @@ public class BitBoard {
         return false;
     } 
 
+    /**
+     * Checks for connect 4.
+     * @return
+     */
     public boolean checkWin(){
         return checkHor()  || checkVert(bit) || checkUpLeft(bit) ||  checkUpRightDiag();
     } //
+
     /**
      * Changes a bit of a bitboard (i.e., one 42-digit bitstring) from 0 to 1 at a specific column index. Successive
      * additions to the same column are represented at an adjacent index.
      * @param col Column of a bitboard.
      * @return A new bitboard
-     * @throws Exception
      */
     public BitBoard addBitPieceToMask(int col) { // to add to position: x += updatedMask.bit ^ oldMask.bit;
         BitSet number = BitSet.valueOf(new long[] {bit}); // check here for issues 
@@ -85,44 +107,64 @@ public class BitBoard {
         return new BitBoard(tempBit);
         
     }
-
+    
+    /**
+     * Adds a bit to a BitBoard and returns the new Bitboard.
+     * @param oldMaskbit
+     * @param newMaskBit
+     * @return
+     */
     public long addBitToThisPosition(Long oldMaskbit, long newMaskBit){
         long newBit = bit;
         newBit += newMaskBit ^ oldMaskbit;
         return newBit;
     }
-
-    // check for twos: evaluation methods
-
-    public int checkHorForTwo(){
+ 
+    /**
+     * Gets the number of horizontal conect two's.
+     * @return
+     */
+    public int numberOfTwoHorizontals(){
         long m = bit & (bit >> 7);
         BitSet bs = BitSet.valueOf(new long[] {m});
         return bs.cardinality();
     } 
-
-    public int checkUpRightDiagForTwo(){
+    /**
+     * Gets the number of right diagonal conect two's.
+     * @return
+     */
+    public int numberOfTwoRightDiagonals(){
         long m = bit & (bit >> 6);
         BitSet bs = BitSet.valueOf(new long[] {m});
         return bs.cardinality();
     } 
-
-    public int checkUpLeftForTwo(){
+    /**
+     * Gets the number of left diagonal conect two's.
+     * @return
+     */
+    public int numberOfTwoLeftDiagonals(){
         long m = bit & (bit >> 8);
         BitSet bs = BitSet.valueOf(new long[] {m});
         return bs.cardinality();
     } 
-
-    public int checkVertForTwo(){
+    /**
+     * Gets the number of vertical conect two's.
+     * @return
+     */
+    public int numberOfTwoVerticals(){
         long m = bit & (bit >> 1);
         BitSet bs = BitSet.valueOf(new long[] {m});
         return bs.cardinality();
     } 
-
-    public int checkTwo(){
-        return checkHorForTwo()  +  checkVertForTwo() + checkUpLeftForTwo() +  checkUpRightDiagForTwo();
+    /**
+     * Gets the number of connect twos in the BitBoard. This is used for scoring purposes.
+     * @return
+     */
+    public int checkNumberOfTwos(){
+        return numberOfTwoHorizontals()  +  numberOfTwoVerticals() + numberOfTwoLeftDiagonals() +  numberOfTwoRightDiagonals();
     }
 
-    public static void main(String[] args) throws Exception {
+    public static void main(String[] args){
         BitBoard board = new BitBoard(0b0000000000000000000000000000000000000000000000000);
         board = board.addBitPieceToMask(0);
         

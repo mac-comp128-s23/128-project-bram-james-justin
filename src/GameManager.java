@@ -2,9 +2,7 @@ import edu.macalester.graphics.CanvasWindow;
 import edu.macalester.graphics.GraphicsGroup;
 
 public class GameManager {
-    public static Board board;
-    private BitBoard bitboard;
-    private Node gameState;
+    private static Board board;
     private CanvasWindow canvas;
     private final int CANVAS_WIDTH = 700;
     private final int CANVAS_HEIGHT = 600;
@@ -33,11 +31,19 @@ public class GameManager {
         // });
     }
 
-    public void takeATurn(double x, double y) {
-        board.playerPlacePiece(x, y); 
+    /**
+     * Takes a turn. Passes in mouses X and Y coordinates for when it is the players turn.
+     * @param mouseX
+     * @param mouseY
+     */
+    public void takeATurn(double mouseX, double mouseY) {
+        board.playerPlacePiece(mouseX, mouseY); 
         canvas.draw();
     }
 
+    /**
+     * Resets the game.
+     */
     public void clearBoard() {
         canvas.removeAll();
         canvas.add(pieces);

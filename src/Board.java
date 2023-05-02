@@ -10,16 +10,16 @@ import edu.macalester.graphics.GraphicsObject;
 import edu.macalester.graphics.Rectangle;
 
 public class Board {
-    public Fillable[][] gameBoard;
-    public int xBoxMargin, yBoxMargin;
-    public int squareHeightAndWidth;
-    public int turnCount;     
-    public static final int COLUMNS = 7;
+    private Fillable[][] gameBoard;
+    private int xBoxMargin, yBoxMargin;
+    private int squareHeightAndWidth;
+    private int turnCount;     
+    private static final int COLUMNS = 7;
     private static final int ROWS = 6;
     private boolean gameIsOverInPosition;
     private BitBoard mask;
     private BitBoard yellow;
-    public PositionEvaluator positionEvaluator;
+    private PositionEvaluator positionEvaluator;
     private Map<Integer, Integer> columnMap;
 
     public Board(Fillable[][] board) {
@@ -41,14 +41,28 @@ public class Board {
         columnMap.put(6,7);
     }
 
-    public int getNearestColIndex(double mouseX, double mouseY){ //gets the position of the mouse and then assigns it to the nearest column
-        int answer = -1;
+    /**
+     * Takes in the mouses X and Y and assigns it to the nearest column.
+     * @param mouseX
+     * @param mouseY
+     * @return
+     */
+    public int getNearestColIndex(double mouseX, double mouseY){ 
+        int column = -1;
         if(mouseX > xBoxMargin && mouseX < (squareHeightAndWidth * 7) + xBoxMargin) {
-            answer = (int) ((mouseX - xBoxMargin) / squareHeightAndWidth); //If something goes wrong check here          
+            column = (int) ((mouseX - xBoxMargin) / squareHeightAndWidth);          
         }
-        return answer;
+        return column;
     }
 
+    /**
+     *  If it is the users turn it gets the nearest column to the mouses x and y position 
+     *  and places the piece in that column. The tree is then updated to refelct the current board state.
+     *  When it is the bots turn it gets the next move and then gets that moves next column.
+     * @param x
+     * @param y
+     * @return
+     */
     public int getColToPlayIn(double x, double y){
         int column;
         if (turnCount % 2 == 0) {
@@ -177,10 +191,6 @@ public class Board {
         return gameIsOverInPosition;
     }
 
-    public void setGameIsOverInPosition(boolean gameIsOver){
-        gameIsOverInPosition = gameIsOver;
-    }
-
     /**
      * Gets the column based on the location of the first one in the bitstring.
      * @param newestBitPiece
@@ -197,8 +207,6 @@ public class Board {
 
     public static void main(String[] args) {
         GameManager game = new GameManager();
-      
-        //
     }
 }
 
