@@ -29,9 +29,9 @@ public class PositionEvaluator {
             double maxEval = Double.NEGATIVE_INFINITY; 
             for(Node child: current.getOrMakeChildren()){
                 // if(child != null){
-                    current.score = evaluatePosition(child, depth-1, alpha, beta, false);
-                    maxEval = Math.max(maxEval, current.score);
-                    alpha = Math.max(alpha, current.score);
+                    current.setScore(evaluatePosition(child, depth-1, alpha, beta, false));
+                    maxEval = Math.max(maxEval, current.getScore());
+                    alpha = Math.max(alpha, current.getScore());
                     if(beta <= alpha)break;
                 // }
             }
@@ -40,9 +40,9 @@ public class PositionEvaluator {
             double minEval = Double.POSITIVE_INFINITY;
             for(Node child: current.getOrMakeChildren()){
                 // if(child != null){
-                    current.score = evaluatePosition(child, depth-1, alpha, beta, true);
-                    minEval = Math.min(minEval, current.score);
-                    beta = Math.min(beta, current.score);
+                    current.setScore(evaluatePosition(child, depth-1, alpha, beta, true));
+                    minEval = Math.min(minEval, current.getScore());
+                    beta = Math.min(beta, current.getScore());
                     if(beta <= alpha) break;
                 // }
             }

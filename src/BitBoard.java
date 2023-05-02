@@ -2,7 +2,7 @@ import java.util.BitSet;
 
 public class BitBoard {
     private BitSet board;
-    public long bit;
+    private long bit;
 
     public BitBoard(long previousBit) {
         board = new BitSet();
@@ -26,6 +26,34 @@ public class BitBoard {
     public BitBoard unMask(BitBoard mask){
         return new BitBoard(bit^mask.bit);
     }
+    
+    /**
+     * Gets a bit from a bitboard.
+     * @return
+     */
+    public long getBit(){
+        return this.bit;
+    }
+    /**
+     * Sets a bit to newly passed in bit. Used for updating the yellow position in the updateGameState method.
+     * @param newLong
+     */
+    public void setBit(long newLong){
+        this.bit = newLong;
+    }
+
+ /**
+     * Adds a bit to a BitBoard and returns the new Bitboard.
+     * @param oldMaskbit
+     * @param newMaskBit
+     * @return
+     */
+    public long addBitToThisPosition(Long oldMaskbit, long newMaskBit){
+        long newBit = bit;
+        newBit += newMaskBit ^ oldMaskbit;
+        return newBit;
+    }
+
 
     /**
      * Checks for a horizontal connect 4.
@@ -108,17 +136,7 @@ public class BitBoard {
         
     }
     
-    /**
-     * Adds a bit to a BitBoard and returns the new Bitboard.
-     * @param oldMaskbit
-     * @param newMaskBit
-     * @return
-     */
-    public long addBitToThisPosition(Long oldMaskbit, long newMaskBit){
-        long newBit = bit;
-        newBit += newMaskBit ^ oldMaskbit;
-        return newBit;
-    }
+   
  
     /**
      * Gets the number of horizontal conect two's.

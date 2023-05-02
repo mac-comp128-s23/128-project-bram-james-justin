@@ -2,12 +2,12 @@ import java.util.ArrayList;
 
 public class Node {
     private Board nodeGameboard;
-    public BitBoard yellowPos; // has 1s where computer has a disc (yellow)
-    public BitBoard mask; // has 1s where there is a disc
+    private BitBoard yellowPos; // has 1s where computer has a disc (yellow)
+    private BitBoard mask; // has 1s where there is a disc
     private ArrayList<Node> children;   //retrieves the children of a specific node, i.e. a game state
     private int turn;
     private boolean gameIsOverInPosition;
-    public double score;
+    private double score;
     private int positionEvaluationScore;
     private static final int COLUMNS = 7;
     // private GameManager manager;
@@ -42,7 +42,7 @@ public class Node {
      * @return
      */
     public boolean wasNewBoardCreated(BitBoard newBoard){
-        if(newBoard.bit - mask.bit > 0) return true;
+        if(newBoard.getBit() - mask.getBit() > 0) return true;
         return false;
     }
 
@@ -62,7 +62,7 @@ public class Node {
                     if(wasNewBoardCreated(newMask)){
                         Node node;
                         if(turn % 2 == 1) { // if this node is a red move/turn
-                            BitBoard newPosition = new BitBoard(yellowPos.addBitToThisPosition(mask.bit, newMask.bit));
+                            BitBoard newPosition = new BitBoard(yellowPos.addBitToThisPosition(mask.getBit(), newMask.getBit()));
                             node = new Node(nodeGameboard, newPosition, newMask, turn + 1);
                         } else {
                             node = new Node(nodeGameboard, yellowPos, newMask, turn + 1);
@@ -93,6 +93,11 @@ public class Node {
         return score;
     }
 
+    public void setScore(double scoreSetter){
+        score=scoreSetter;
+    }
+
+
     /**
      * Evaluates the score of the node by comparing the # of check twos in the node and if there is a 
      * win for either player.
@@ -117,4 +122,19 @@ public class Node {
     public boolean getGameIsOverInPosition() {
         return gameIsOverInPosition;
     }
+    /**
+     * Gets the bitboard that represents yellows pieces.
+     * @return
+     */
+    public BitBoard getYellowPosition(){
+        return yellowPos;
+    }
+    /**
+     * Gets the bitboard that represents the entire board state which is the mask.
+     * @return
+     */
+    public BitBoard getMask(){
+        return mask;
+    }
+    
 }

@@ -70,8 +70,8 @@ public class Board {
             positionEvaluator.updateTree(column);
         } else {
             Node nextMove = positionEvaluator.getNextAIMove();
-            System.out.println("next Move yellowPos" + Long.toBinaryString(nextMove.yellowPos.bit));
-            column = getColumn(nextMove.yellowPos.bit ^ yellow.bit);
+            System.out.println("next Move yellowPos" + Long.toBinaryString(nextMove.getYellowPosition().getBit()));
+            column = getColumn(nextMove.getYellowPosition().getBit() ^ yellow.getBit());
         }
         return column;
     }
@@ -97,7 +97,7 @@ public class Board {
             gameBoard[column][row - 1].setFillColor(getPlayerColor());
             BitBoard updatedMask = mask.addBitPieceToMask(column);
             if(turnCount % 2 == 1){
-                yellow.bit = yellow.addBitToThisPosition(mask.bit, updatedMask.bit);
+                yellow.setBit(yellow.addBitToThisPosition(mask.getBit(), updatedMask.getBit()));
                 if(yellow.checkWin()){
                     gameOver(true);
                 }
