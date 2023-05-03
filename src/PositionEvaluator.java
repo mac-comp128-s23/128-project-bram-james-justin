@@ -23,29 +23,30 @@ public class PositionEvaluator {
     public double evaluatePosition(Node start, int depth, double alpha, double beta, boolean playerTurn){
         Node current = start;
         if(depth ==0 || current.getGameIsOverInPosition()){
-            return current.evaluateNode();
+            int score = current.evaluateNode();
+            current.setScore(score);
+            return score;
         }
         if(playerTurn) {
             double maxEval = Double.NEGATIVE_INFINITY; 
             for(Node child: current.getOrMakeChildren()){
-                // if(child != null){
-                    current.setScore(evaluatePosition(child, depth-1, alpha, beta, false));
-                    maxEval = Math.max(maxEval, current.getScore());
-                    alpha = Math.max(alpha, current.getScore());
-                    if(beta <= alpha)break;
-                // }
+                double score = evaluatePosition(child, depth-1, alpha, beta, false);
+                
+                maxEval = Math.max(maxEval, score);
+                alpha = Math.max(alpha, maxEval);
+                if(beta <= alpha)break;
             }
+            current.setScore(maxEval);
             return maxEval;
         } else {
             double minEval = Double.POSITIVE_INFINITY;
             for(Node child: current.getOrMakeChildren()){
-                // if(child != null){
-                    current.setScore(evaluatePosition(child, depth-1, alpha, beta, true));
-                    minEval = Math.min(minEval, current.getScore());
-                    beta = Math.min(beta, current.getScore());
-                    if(beta <= alpha) break;
-                // }
+                double score=evaluatePosition(child, depth-1, alpha, beta, true);
+                minEval = Math.min(minEval, score);
+                beta = Math.min(beta, minEval);
+                if(beta <= alpha) break;
             }
+            current.setScore(minEval);
             return minEval; 
         }
     }
@@ -63,6 +64,7 @@ public class PositionEvaluator {
         // System.out.println("get children " + root.getChildren());
         for (Node child: root.getOrMakeChildren()) {
                 if(child.getScore() == eval) {
+                    System.out.println("chosen child postion" + Long.toBinaryString(child.getYellowPosition().getBit()));
                     returnNode = child;
                     break;
                 }
@@ -77,7 +79,7 @@ if(returnNode == null) {
         }
 }
 
-
+    // System.out.println(returnNode.getYellowPosition());
         return returnNode;
     }
 
@@ -96,6 +98,7 @@ if(returnNode == null) {
             for (Node child : root.getOrMakeChildren()) {
                 if(index == child.getMask().getColumnUsingNewMask(root.getMask().getBit())){
                     root = child;
+                    break;
                 }
             }            
         }

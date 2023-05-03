@@ -77,10 +77,11 @@ public class Board {
 
             // if next move isn't getting zero when column full, check this line \/
             column = nextMove.getMask().getColumnUsingNewMask(mask.getBit()); 
-            if((nextMove.getYellowPosition().getBit() ^ yellow.getBit()) >> Long.numberOfTrailingZeros((nextMove.getYellowPosition().getBit() ^ yellow.getBit())) > 1) {
-                System.out.println("error! ");
-                System.out.println("yellow: " + Long.toBinaryString(yellow.getBit()));
-                System.out.println("Nextyellow: " + Long.toBinaryString(nextMove.getYellowPosition().getBit()));
+            System.out.println("column placed" + column);
+            if((nextMove.getMask().getBit() ^ mask.getBit()) >> Long.numberOfTrailingZeros((nextMove.getYellowPosition().getBit() ^ yellow.getBit())) > 1) {
+                System.out.println("error! " + Long.toBinaryString(nextMove.getMask().getBit() ^ mask.getBit()));
+                System.out.println("mask: " + Long.toBinaryString(mask.getBit()));
+                System.out.println("updated mask: " + Long.toBinaryString(nextMove.getMask().getBit()));
             }
         }
 

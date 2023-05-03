@@ -53,7 +53,7 @@ public void setHistory(ArrayList<Integer> parentHistory){
      */
     public boolean wasNewBoardCreated(BitBoard newBoard){
         
-        if((newBoard.getBit() & (0b0111111011111101111110111111011111101111110111111L)) - mask.getBit() > 0) return true;
+        if(newBoard.getBit() - mask.getBit() > 0) return true;
         return false;
     }
 
@@ -70,6 +70,7 @@ public void setHistory(ArrayList<Integer> parentHistory){
                 // System.out.println("column full check" +nodeGameboard.isColumnFull(i));
                 if(!nodeGameboard.isColumnFull(i)){ // this doens't do a lot because nodes are created before column is full
                     BitBoard newMask = mask.addBitPieceToMask(i);
+                    // System.out.println("newMask" + Long.toBinaryString(newMask.getBit()));
                     if(wasNewBoardCreated(newMask)){
                         Node node;
                         if(turn % 2 == 1) { // if this node is a red move/turn
@@ -79,6 +80,7 @@ public void setHistory(ArrayList<Integer> parentHistory){
                             node = new Node(nodeGameboard, yellowPos, newMask, turn + 1);
                         }
                         children.add(node);
+                        // System.out.println("added child" + Long.toBinaryString(children.get(i).yellowPos.getBit()));
                     }  
                 }
             }
@@ -90,6 +92,7 @@ public void setHistory(ArrayList<Integer> parentHistory){
      * @return
      */
     public ArrayList<Node> getOrMakeChildren(){
+        // System.out.println("children" + children.size());
         if (children.isEmpty()) {
             addChildren();
         }
@@ -118,9 +121,9 @@ public void setHistory(ArrayList<Integer> parentHistory){
         positionEvaluationScore = yellowPos.checkNumberOfTwos() - yellowPos.unMask(mask).checkNumberOfTwos();
         if(gameIsOverInPosition){
             if(turn % 2 == 0){
-                positionEvaluationScore -= 100;
+                positionEvaluationScore -= 100; //red wins
             } else {
-                positionEvaluationScore += 100;
+                positionEvaluationScore += 100; //yellow wins
             }
         }
         return positionEvaluationScore;
