@@ -77,9 +77,11 @@ public class Board {
 
             // if next move isn't getting zero when column full, check this line \/
             column = nextMove.getMask().getColumnUsingNewMask(mask.getBit()); 
-            
-            System.out.println("yellow: " + Long.toBinaryString(yellow.getBit()));
-            System.out.println("Nextyellow: " + Long.toBinaryString(nextMove.getYellowPosition().getBit()));
+            if((nextMove.getYellowPosition().getBit() ^ yellow.getBit()) >> Long.numberOfTrailingZeros((nextMove.getYellowPosition().getBit() ^ yellow.getBit())) > 1) {
+                System.out.println("error! ");
+                System.out.println("yellow: " + Long.toBinaryString(yellow.getBit()));
+                System.out.println("Nextyellow: " + Long.toBinaryString(nextMove.getYellowPosition().getBit()));
+            }
         }
 
         return column;
@@ -96,6 +98,7 @@ public class Board {
                 }
                 row++;
             }   
+
             columnMap.put(column, row);
             updateGameState(column, row);
         }

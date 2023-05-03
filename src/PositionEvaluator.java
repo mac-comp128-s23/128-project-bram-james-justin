@@ -70,7 +70,7 @@ public class PositionEvaluator {
 
 if(returnNode == null) {
     System.out.println("eval: " + eval);
-    System.out.println("GETNEXTAIMOVEERROR!" + " ROOT IS A LEAF?: " + root.getGameIsOverInPosition());
+    System.out.println("GET NEXT AI MOVE ERROR!" + " ROOT IS A LEAF?: " + root.getGameIsOverInPosition());
     System.out.println("root history: " + root.getHistory().toString());
     for (Node child: root.getOrMakeChildren()) {
             System.out.println("child score: " + child.getScore());
@@ -78,8 +78,6 @@ if(returnNode == null) {
 }
 
 
-
-        // System.out.println(Long.toBinaryString(root.mask.bit));
         return returnNode;
     }
 
@@ -95,9 +93,11 @@ if(returnNode == null) {
             root.getOrMakeChildren().get(index).setHistory(root.getHistory());;
             // System.out.println(root.getHistory().size());
 
-            root = root.getOrMakeChildren().get(index); /// change
-            // System.out.println("Child size: " + root.getChildren().size());
-            // currentTurn++;
+            for (Node child : root.getOrMakeChildren()) {
+                if(index == child.getMask().getColumnUsingNewMask(root.getMask().getBit())){
+                    root = child;
+                }
+            }            
         }
     }
 

@@ -17,21 +17,23 @@ public class BitBoard {
     }
 
     /**
-     * Gets the column based on the location of the first one in the bitstring.
+     * compares this mask to old mask to find the newest placed bitpiece's column number as an int
      * @param oldmask
      * @return column number
      */
-    public int getColumnUsingNewMask(long oldMaskBit){
-        long bitString = oldMaskBit ^ bit;
-        areMultipleDigitsDifferent(oldMaskBit);
+    public int getColumnUsingNewMask(long oldMask){
+        long bitString = oldMask ^ bit;
+        // areMultipleDigitsDifferent(oldMask);
         int trailingZeroes = Long.numberOfTrailingZeros(bitString);
         return trailingZeroes/7; 
     }
 
-    public void areMultipleDigitsDifferent(long oldBit){
+    public boolean areMultipleDigitsDifferent(long oldBit){
         if((oldBit ^ bit) >> Long.numberOfTrailingZeros(oldBit ^ bit) > 1) {
-            throw new RuntimeException(); 
+            // throw new RuntimeException(); 
+            return true;
         }
+        return false;
     }
     
     /**
@@ -57,8 +59,7 @@ public class BitBoard {
      * @return
      */
     public long addBitToThisPosition(Long oldMaskbit, long newMaskBit){
-        long newBit = bit;
-        newBit += newMaskBit ^ oldMaskbit;
+        Long newBit = bit | ( newMaskBit ^ oldMaskbit);
         return newBit;
     }
 
