@@ -27,14 +27,6 @@ public class BitBoard {
         int trailingZeroes = Long.numberOfTrailingZeros(bitString);
         return trailingZeroes/7; 
     }
-
-    public boolean areMultipleDigitsDifferent(long oldBit){
-        if((oldBit ^ bit) >> Long.numberOfTrailingZeros(oldBit ^ bit) > 1) {
-            // throw new RuntimeException(); 
-            return true;
-        }
-        return false;
-    }
     
     /**
      * Gets a bit from a bitboard.
@@ -52,7 +44,7 @@ public class BitBoard {
         this.bit = newLong;
     }
 
- /**
+    /**
      * Adds a bit to a BitBoard and returns the new Bitboard.
      * @param oldMaskbit
      * @param newMaskBit
@@ -118,7 +110,7 @@ public class BitBoard {
      * @return
      */
     public boolean checkWin(){
-        return checkHor()  || checkVert(bit) || checkUpLeft(bit) ||  checkUpRightDiag();
+        return checkHor() || checkVert(bit) || checkUpLeft(bit) || checkUpRightDiag();
     } //
 
     /**
@@ -127,24 +119,19 @@ public class BitBoard {
      * @param col Column of a bitboard.
      * @return A new bitboard
      */
-    public BitBoard addBitPieceToMask(int col) { // to add to position: x += updatedMask.bit ^ oldMask.bit;
-        BitSet number = BitSet.valueOf(new long[] {bit}); // check here for issues 
+    public BitBoard addBitPieceToMask(int col) {
+        BitSet number = BitSet.valueOf(new long[] {bit});
         int count = 0;
-        //find height of piece to change
         while(number.get((col* 7) + count) && count < 6){
             count++;
         }
-        // change one digit of bitstring 
         long tempBit = bit;
-        // if (count < 6){   //For some reason the limit in the while loop wasn't working
-            tempBit += (long) Math.pow(2, (col* (7)) + count); 
-            // System.out.println("coutn: " + count);
-        // }    
+        tempBit += (long) Math.pow(2, (col* (7)) + count);   
+        
         return new BitBoard(tempBit);
         
     }
     
-   
  
     /**
      * Gets the number of horizontal conect two's.
@@ -155,6 +142,7 @@ public class BitBoard {
         BitSet bs = BitSet.valueOf(new long[] {m});
         return bs.cardinality();
     } 
+
     /**
      * Gets the number of right diagonal conect two's.
      * @return
@@ -164,6 +152,7 @@ public class BitBoard {
         BitSet bs = BitSet.valueOf(new long[] {m});
         return bs.cardinality();
     } 
+
     /**
      * Gets the number of left diagonal conect two's.
      * @return
@@ -173,6 +162,7 @@ public class BitBoard {
         BitSet bs = BitSet.valueOf(new long[] {m});
         return bs.cardinality();
     } 
+
     /**
      * Gets the number of vertical conect two's.
      * @return
@@ -182,18 +172,13 @@ public class BitBoard {
         BitSet bs = BitSet.valueOf(new long[] {m});
         return bs.cardinality();
     } 
+
     /**
      * Gets the number of connect twos in the BitBoard. This is used for scoring purposes.
      * @return
      */
     public int checkNumberOfTwos(){
-        return numberOfTwoHorizontals()  +  numberOfTwoVerticals() + numberOfTwoLeftDiagonals() +  numberOfTwoRightDiagonals();
-    }
-
-    public static void main(String[] args){
-        BitBoard board = new BitBoard(0b0000000000000000000000000000000000000000000000000);
-        board = board.addBitPieceToMask(0);
-        
+        return numberOfTwoHorizontals() + numberOfTwoVerticals() + numberOfTwoLeftDiagonals() + numberOfTwoRightDiagonals();
     }
     
 }

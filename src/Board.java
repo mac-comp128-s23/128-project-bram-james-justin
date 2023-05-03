@@ -14,8 +14,8 @@ public class Board {
     private int xBoxMargin, yBoxMargin;
     private int squareHeightAndWidth;
     private int turnCount;     
-    private static final int COLUMNS = 7;
-    private static final int ROWS = 6;
+    // private static final int COLUMNS = 7;
+    // private static final int ROWS = 6;
     private boolean gameIsOverInPosition;
     private BitBoard mask;
     private BitBoard yellow;
@@ -71,18 +71,9 @@ public class Board {
         int column;
         if (turnCount % 2 == 0) {
             column = getNearestColIndex(x, y);
-
         } else {
             Node nextMove = positionEvaluator.getNextAIMove();
-
-            // if next move isn't getting zero when column full, check this line \/
             column = nextMove.getMask().getColumnUsingNewMask(mask.getBit()); 
-            System.out.println("column placed" + column);
-            if((nextMove.getMask().getBit() ^ mask.getBit()) >> Long.numberOfTrailingZeros((nextMove.getYellowPosition().getBit() ^ yellow.getBit())) > 1) {
-                System.out.println("error! " + Long.toBinaryString(nextMove.getMask().getBit() ^ mask.getBit()));
-                System.out.println("mask: " + Long.toBinaryString(mask.getBit()));
-                System.out.println("updated mask: " + Long.toBinaryString(nextMove.getMask().getBit()));
-            }
         }
 
         return column;
@@ -107,7 +98,7 @@ public class Board {
 
     public void updateGameState (int column, int row){
         if (!isColumnFull(column)) { 
-            positionEvaluator.updateTree(column); // updates the tree regaurdless of which turn it is
+            positionEvaluator.updateTree(column);
             gameBoard[column][row - 1].setFillColor(getPlayerColor());
             BitBoard updatedMask = mask.addBitPieceToMask(column);
             if(turnCount % 2 == 1){
@@ -122,23 +113,15 @@ public class Board {
             }
             mask = updatedMask;
             turnCount++;
-        } else {
-System.out.println("column full");
         }
+
         if (turnCount == 42 && !gameIsOverInPosition) {
             gameOver(false);
         }
     }
 
-    // public void makeMove (int count){
-        
-    // }
-    // public void TESTTHENODES(){
-    //     Node n = new Node(yellow, mask, turnCount);
-    //     System.out.println(n.evaluateNode());
-    // }
 
-    public void initializePieces(CanvasWindow canvas){   //1 is red, 2 is yellow
+    public void initializePieces(CanvasWindow canvas){
         int colCount = 0;
         int rowCount = 0;
         for (Fillable[] col : gameBoard) {
@@ -146,7 +129,7 @@ System.out.println("column full");
             for (Fillable var: col) {
                 Fillable square= new Rectangle(xBoxMargin + (70 * (colCount % 7)), yBoxMargin + (70 * (rowCount )), squareHeightAndWidth, squareHeightAndWidth);
                 Fillable disc = new Ellipse(105 + (70 * (colCount % 7)), 85 + (70 * (rowCount )), 60, 60);
-                ((Ellipse) disc).setFillColor(Color.WHITE); //If we could set this to translucent that would be cool then we could have the sliding effect later.
+                ((Ellipse) disc).setFillColor(Color.WHITE);
                 ((Rectangle) square).setFillColor(Color.BLUE);
                 
                 canvas.add((GraphicsObject) square);
@@ -168,17 +151,9 @@ System.out.println("column full");
         }
     }
 
-    public Color getPieceColor(double d, double e) {
-        if (d < COLUMNS && d > -1 && e < ROWS && e > -1) {
-            return (Color) gameBoard[(int) d][(int) e].getFillColor();
-        }
-        return Color.WHITE;
-    }
-
     public void gameOver(boolean playerWon) {
         if (playerWon) {
-            if (turnCount % 2 == 0) { // checks if player 1 wins because they are an even move number (first move made
-                                      // by red is move 0), not 1
+            if (turnCount % 2 == 0) { 
                 System.out.println("Red Wins");
             } else {
                 System.out.println("Yellow wins");
@@ -198,22 +173,17 @@ System.out.println("column full");
         positionEvaluator = new PositionEvaluator(new Node(this, yellow, mask, 0));
         initializeColumnMap();
     }   
+
     public boolean isColumnFull(int column){
-        if(columnMap.get(column)==0){
+        if(columnMap.get(column) == 0){
             return true;
         }
         return false;
     }
+
     public boolean getGameIsOverInPosition() {
         return gameIsOverInPosition;
     }
 
-    public Board getGameBoard(){
-        return this;
-    }
-
-    public static void main(String[] args) {
-        GameManager game = new GameManager();
-    }
 }
 

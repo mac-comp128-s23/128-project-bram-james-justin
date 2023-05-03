@@ -6,7 +6,7 @@ public class PositionEvaluator {
     public PositionEvaluator(Node n){
         root = n;
         searchDepth = 5;
-        playerTurn=true;
+        playerTurn = true;
     }
 
     /**
@@ -22,29 +22,31 @@ public class PositionEvaluator {
      */
     public double evaluatePosition(Node start, int depth, double alpha, double beta, boolean playerTurn){
         Node current = start;
-        if(depth ==0 || current.getGameIsOverInPosition()){
+        if(depth == 0 || current.getGameIsOverInPosition()){
             int score = current.evaluateNode();
             current.setScore(score);
             return score;
         }
+        
         if(playerTurn) {
             double maxEval = Double.NEGATIVE_INFINITY; 
-            for(Node child: current.getOrMakeChildren()){
+            for(Node child : current.getOrMakeChildren()){
                 double score = evaluatePosition(child, depth-1, alpha, beta, false);
                 
                 maxEval = Math.max(maxEval, score);
                 alpha = Math.max(alpha, maxEval);
-                if(beta <= alpha)break;
+                if (beta <= alpha) break;
             }
             current.setScore(maxEval);
             return maxEval;
+
         } else {
             double minEval = Double.POSITIVE_INFINITY;
-            for(Node child: current.getOrMakeChildren()){
-                double score=evaluatePosition(child, depth-1, alpha, beta, true);
+            for(Node child : current.getOrMakeChildren()){
+                double score = evaluatePosition(child, depth-1, alpha, beta, true);
                 minEval = Math.min(minEval, score);
                 beta = Math.min(beta, minEval);
-                if(beta <= alpha) break;
+                if (beta <= alpha) break;
             }
             current.setScore(minEval);
             return minEval; 
@@ -59,27 +61,12 @@ public class PositionEvaluator {
     public Node getNextAIMove(){
         Node returnNode = null;
         double eval=  evaluatePosition(root, searchDepth, Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY, playerTurn);
-        // Collections.sort(root.getChildren(), new ChildSorter());
-        // Node returnNode=root.getChildren().get(0);
-        // System.out.println("get children " + root.getChildren());
         for (Node child: root.getOrMakeChildren()) {
-                if(child.getScore() == eval) {
-                    System.out.println("chosen child postion" + Long.toBinaryString(child.getYellowPosition().getBit()));
-                    returnNode = child;
-                    break;
-                }
+            if(child.getScore() == eval) {
+                returnNode = child;
+                break;
+            }
         }  
-
-if(returnNode == null) {
-    System.out.println("eval: " + eval);
-    System.out.println("GET NEXT AI MOVE ERROR!" + " ROOT IS A LEAF?: " + root.getGameIsOverInPosition());
-    System.out.println("root history: " + root.getHistory().toString());
-    for (Node child: root.getOrMakeChildren()) {
-            System.out.println("child score: " + child.getScore());
-        }
-}
-
-    // System.out.println(returnNode.getYellowPosition());
         return returnNode;
     }
 
@@ -89,12 +76,6 @@ if(returnNode == null) {
      */
     public void updateTree(int index) {
         if(index !=-1){
-            // System.out.println("index: " + index);
-            root.addChildren();
-            root.getHistory().add(index);
-            root.getOrMakeChildren().get(index).setHistory(root.getHistory());;
-            // System.out.println(root.getHistory().size());
-
             for (Node child : root.getOrMakeChildren()) {
                 if(index == child.getMask().getColumnUsingNewMask(root.getMask().getBit())){
                     root = child;
@@ -102,9 +83,5 @@ if(returnNode == null) {
                 }
             }            
         }
-    }
-
-    public static void main(String[] args) {
-        GameManager game = new GameManager();
     }
 }

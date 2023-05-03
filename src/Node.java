@@ -2,47 +2,45 @@ import java.util.ArrayList;
 
 public class Node {
     private Board nodeGameboard;
-    private BitBoard yellowPos; // has 1s where computer has a disc (yellow)
+    private BitBoard yellowPositions; // has 1s where computer has a disc (yellow)
     private BitBoard mask; // has 1s where there is a disc
-    private ArrayList<Node> children;   //retrieves the children of a specific node, i.e. a game state
+    private ArrayList<Node> children;
     private int turn;
     private boolean gameIsOverInPosition;
     private double score;
     private int positionEvaluationScore;
     private static final int COLUMNS = 7;
     private ArrayList<Integer> gameHistory;
-    // private GameManager manager;
+
 
     public Node(Board gameboard, BitBoard hamiDownPosition, BitBoard hamiDownMask, int turnNumber) {
         nodeGameboard = gameboard;
         children = new ArrayList<Node>();
         turn = turnNumber;
-        yellowPos = hamiDownPosition;
+        yellowPositions = hamiDownPosition;
         mask = hamiDownMask;
         decideLeafStatus();
         positionEvaluationScore = Integer.MIN_VALUE;
         gameHistory = new ArrayList<>();
     }
 
-public ArrayList<Integer> getHistory(){
-    return gameHistory;
-}
+    public ArrayList<Integer> getHistory(){
+        return gameHistory;
+    }
 
-public void setHistory(ArrayList<Integer> parentHistory){
-    gameHistory = parentHistory;
-}
+    public void setHistory(ArrayList<Integer> parentHistory){
+        gameHistory = parentHistory;
+    }
 
     /**
      * Checks if at the node either the player or computer has won. 
      * If they have sets gameIsOverInPosition to True.
      */
-    public void decideLeafStatus(){ //Could we merge this with getGameIsOverInPosition?
+    public void decideLeafStatus(){
         if(turn % 2 == 1) {
-            gameIsOverInPosition = yellowPos.checkWin();
-            // System.out.println("yellow position.checkwin" + yellowPos.checkWin());
+            gameIsOverInPosition = yellowPositions.checkWin();
         } else {
-            gameIsOverInPosition = yellowPos.unMask(mask).checkWin();
-            // System.out.println("red position check win " +yellowPos.unMask(mask).checkWin());
+            gameIsOverInPosition = yellowPositions.unMask(mask).checkWin();
         }
     }
 
@@ -52,7 +50,6 @@ public void setHistory(ArrayList<Integer> parentHistory){
      * @return
      */
     public boolean wasNewBoardCreated(BitBoard newBoard){
-        
         if(newBoard.getBit() - mask.getBit() > 0) return true;
         return false;
     }
@@ -63,36 +60,30 @@ public void setHistory(ArrayList<Integer> parentHistory){
      * Will be used for analysis of which child is the best.
      */
     public void addChildren() {
-        // System.out.println("gameover:" + gameIsOverInPosiiton);
-        // if(!gameIsOverInPosiiton){ 
-            for (int i = 0; i < COLUMNS ; i++) {
-                // System.out.println("column "+ i);
-                // System.out.println("column full check" +nodeGameboard.isColumnFull(i));
-                if(!nodeGameboard.isColumnFull(i)){ // this doens't do a lot because nodes are created before column is full
-                    BitBoard newMask = mask.addBitPieceToMask(i);
-                    // System.out.println("newMask" + Long.toBinaryString(newMask.getBit()));
-                    if(wasNewBoardCreated(newMask)){
-                        Node node;
-                        if(turn % 2 == 1) { // if this node is a red move/turn
-                            BitBoard newPosition = new BitBoard(yellowPos.addBitToThisPosition(mask.getBit(), newMask.getBit()));
-                            node = new Node(nodeGameboard, newPosition, newMask, turn + 1);
-                        } else {
-                            node = new Node(nodeGameboard, yellowPos, newMask, turn + 1);
-                        }
-                        children.add(node);
-                        // System.out.println("added child" + Long.toBinaryString(children.get(i).yellowPos.getBit()));
-                    }  
-                }
+        for (int i = 0; i < COLUMNS ; i++) {
+            if(!nodeGameboard.isColumnFull(i)){
+                BitBoard newMask = mask.addBitPieceToMask(i);
+                if(wasNewBoardCreated(newMask)){
+                    Node node;
+                    if(turn % 2 == 1) {
+                        BitBoard newPosition = new BitBoard(yellowPositions.addBitToThisPosition(mask.getBit(), newMask.getBit()));
+                        node = new Node(nodeGameboard, newPosition, newMask, turn + 1);
+                    } else {
+                        node = new Node(nodeGameboard, yellowPositions, newMask, turn + 1);
+                    }
+                    children.add(node);
+                }  
             }
         }
-    // }
+    }
+
+
     /**
      * Gets the current list of children. If there are no children to be gotten, 
      * it makes the children for the Node.
-     * @return
+     * @return children
      */
     public ArrayList<Node> getOrMakeChildren(){
-        // System.out.println("children" + children.size());
         if (children.isEmpty()) {
             addChildren();
         }
@@ -108,7 +99,7 @@ public void setHistory(ArrayList<Integer> parentHistory){
     }
 
     public void setScore(double scoreSetter){
-        score=scoreSetter;
+        this.score = scoreSetter;
     }
 
 
@@ -118,7 +109,7 @@ public void setHistory(ArrayList<Integer> parentHistory){
      * @return
      */
     public int evaluateNode() {
-        positionEvaluationScore = yellowPos.checkNumberOfTwos() - yellowPos.unMask(mask).checkNumberOfTwos();
+        positionEvaluationScore = yellowPositions.checkNumberOfTwos() - yellowPositions.unMask(mask).checkNumberOfTwos();
         if(gameIsOverInPosition){
             if(turn % 2 == 0){
                 positionEvaluationScore -= 100; //red wins
@@ -136,13 +127,15 @@ public void setHistory(ArrayList<Integer> parentHistory){
     public boolean getGameIsOverInPosition() {
         return gameIsOverInPosition;
     }
+    
     /**
      * Gets the bitboard that represents yellows pieces.
      * @return
      */
     public BitBoard getYellowPosition(){
-        return yellowPos;
+        return yellowPositions;
     }
+
     /**
      * Gets the bitboard that represents the entire board state which is the mask.
      * @return
