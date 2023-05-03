@@ -23,7 +23,7 @@ public class Board {
     private Map<Integer, Integer> columnMap;
 
     /**
-     * Creates a Fillable board of size 7x6, 42 bits with underlying bitboards of size 7x7, 49-bits for AI move determination.
+     * Creates a Fillable board of size 7x6, 42 bits with underlying BitBoards of size 7x7, 49-bits for AI move determination.
      * @param Fillable board
      */
     public Board(Fillable[][] board) {
@@ -109,7 +109,7 @@ public class Board {
     }
 
     /**
-     * Updates the game tree based on whether a column is not full, and adds yellow's bit to a bitboard to determine
+     * Updates the game tree based on whether a column is not full, and adds yellow's bit to a BitBoard to determine
      * whether a future game state wins the game. Determines whether the game is finished or not.
      * @param column
      * @param row

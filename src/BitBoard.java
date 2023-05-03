@@ -24,18 +24,17 @@ public class BitBoard {
 
     /**
      * compares this mask to old mask to find the newest placed bitpiece's column number as an int
-     * @param oldmask
+     * @param previousPosition
      * @return column number
      */
-    public int getColumnUsingNewMask(long oldMask){
-        long bitString = oldMask ^ bit;
-        // areMultipleDigitsDifferent(oldMask);
+    public int getColumnUsingNewMask(long previousPosition){
+        long bitString = previousPosition ^ bit;
         int trailingZeroes = Long.numberOfTrailingZeros(bitString);
         return trailingZeroes/7; 
     }
     
     /**
-     * Gets a bit from a bitboard.
+     * Gets a bit from a BitBoard.
      * @return
      */
     public long getBit(){
@@ -51,7 +50,7 @@ public class BitBoard {
     }
 
     /**
-     * Adds a bit to a BitBoard and returns the new Bitboard.
+     * Adds a bit to a BitBoard and returns the new BitBoard.
      * @param oldMaskbit
      * @param newMaskBit
      * @return 
@@ -120,10 +119,10 @@ public class BitBoard {
     } 
 
     /**
-     * Changes a bit of a bitboard (i.e., one 42-digit bitstring) from 0 to 1 at a specific column index. Successive
+     * Changes a bit of a BitBoard (i.e., one 42-digit bitstring) from 0 to 1 at a specific column index. Successive
      * additions to the same column are represented at an adjacent index.
-     * @param col Column of a bitboard.
-     * @return A new bitboard
+     * @param col Column of a BitBoard.
+     * @return A new BitBoard
      */
     public BitBoard addBitPieceToMask(int col) {
         BitSet number = BitSet.valueOf(new long[] {bit});

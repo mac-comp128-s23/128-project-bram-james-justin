@@ -45,7 +45,7 @@ public class Node {
     }
 
     /**
-     * Checks if a new bitboard was created.
+     * Checks if a new BitBoard was created.
      * @param newBoard
      * @return
      */
@@ -130,7 +130,7 @@ public class Node {
     }
     
     /**
-     * Gets the bitboard that represents yellows pieces.
+     * Gets the BitBoard that represents yellows pieces.
      * @return
      */
     public BitBoard getYellowPosition(){
@@ -138,7 +138,7 @@ public class Node {
     }
 
     /**
-     * Gets the bitboard that represents the entire board state which is the mask.
+     * Gets the BitBoard that represents the entire board state which is the mask.
      * @return
      */
     public BitBoard getMask(){
