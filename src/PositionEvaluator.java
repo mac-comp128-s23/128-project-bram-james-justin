@@ -4,7 +4,7 @@ public class PositionEvaluator {
     private boolean playerTurn;
 
     /**
-     * Game tree for all possible moves of the game
+     * Game tree for all possible moves of the game.
      * @param n
      */
     public PositionEvaluator(Node n){

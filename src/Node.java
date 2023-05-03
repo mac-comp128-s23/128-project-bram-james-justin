@@ -14,9 +14,9 @@ public class Node {
     /**
      * Represents a gamestate of connect 4. Stores the game as two BitBoards as 
      * @param gameboard A board fillable
-     * @param inputPosition Position of a board
-     * @param inputMask Mask of 
-     * @param turnNumber
+     * @param inputPosition Position of player on board
+     * @param inputMask Mask of board
+     * @param turnNumber number of turns
      */
     public Node(Board gameboard, BitBoard inputPosition, BitBoard inputMask, int turnNumber) {
         nodeGameboard = gameboard;

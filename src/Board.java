@@ -34,8 +34,8 @@ public class Board {
         yBoxMargin = 80;
         squareHeightAndWidth = 70;
         isGameOver = false;
-        mask = new BitBoard(0b0000000000000000000000000000000000000000000000000);
-        yellow = new BitBoard(0b0000000000000000000000000000000000000000000000000);
+        mask = new BitBoard(0);
+        yellow = new BitBoard(0);
         positionEvaluator = new PositionEvaluator(new Node(this, yellow, mask, 0));
         initializeColumnMap();
     }
