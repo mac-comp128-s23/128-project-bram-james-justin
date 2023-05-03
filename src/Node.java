@@ -63,11 +63,11 @@ public class Node {
     public void addChildren() {
         for (int i = 0; i < COLUMNS ; i++) {
             if(!nodeGameboard.isColumnFull(i)){
-                BitBoard newMask = mask.addBitPieceToMask(i);
+                BitBoard newMask = mask.addBitToMask(i);
                 if(wasNewBoardCreated(newMask)){
                     Node node;
                     if(turn % 2 == 1) {
-                        BitBoard newPosition = new BitBoard(yellowPositions.addBitToThisPosition(mask.getBit(), newMask.getBit()));
+                        BitBoard newPosition = new BitBoard(yellowPositions.addBitToPos(mask.getBit(), newMask.getBit()));
                         node = new Node(nodeGameboard, newPosition, newMask, turn + 1);
                     } else {
                         node = new Node(nodeGameboard, yellowPositions, newMask, turn + 1);
@@ -110,7 +110,7 @@ public class Node {
      * @return
      */
     public int evaluateNode() {
-        positionEvaluationScore = yellowPositions.checkNumberOfTwos() - yellowPositions.unMask(mask).checkNumberOfTwos();
+        positionEvaluationScore = yellowPositions.checkTwos() - yellowPositions.unMask(mask).checkTwos();
         if(gameIsOverInPosition){
             if(turn % 2 == 0){
                 positionEvaluationScore -= 100; //red wins

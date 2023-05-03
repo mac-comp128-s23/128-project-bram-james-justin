@@ -78,7 +78,7 @@ System.out.println(root.getOrMakeChildren().size());
     public void updateTree(int index) {
         if(index !=-1){
             for (Node child : root.getOrMakeChildren()) {
-                if(index == child.getMask().getColumnUsingNewMask(root.getMask().getBit())){
+                if(index == child.getMask().getColUsingBitBoard(root.getMask().getBit())){
                     root = child;
                     break;
                 }

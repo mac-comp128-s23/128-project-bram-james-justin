@@ -27,7 +27,7 @@ public class BitBoard {
      * @param previousPosition
      * @return column number
      */
-    public int getColumnUsingNewMask(long previousPosition){
+    public int getColUsingBitBoard(long previousPosition){
         long bitString = previousPosition ^ bit;
         int trailingZeroes = Long.numberOfTrailingZeros(bitString);
         return trailingZeroes/7; 
@@ -35,7 +35,7 @@ public class BitBoard {
     
     /**
      * Gets a bit from a BitBoard.
-     * @return
+     * @return bit
      */
     public long getBit(){
         return this.bit;
@@ -51,12 +51,12 @@ public class BitBoard {
 
     /**
      * Adds a bit to a BitBoard and returns the new BitBoard.
-     * @param oldMaskbit
-     * @param newMaskBit
+     * @param oldPosBit The old bit position from previous move
+     * @param newPosBit The future bit position created by a move
      * @return 
      */
-    public long addBitToThisPosition(Long oldMaskbit, long newMaskBit){
-        Long newBit = bit | ( newMaskBit ^ oldMaskbit);
+    public long addBitToPos(Long oldPosBit, long newPosBit){
+        Long newBit = bit | (newPosBit ^ oldPosBit);
         return newBit;
     }
 
@@ -124,7 +124,7 @@ public class BitBoard {
      * @param col Column of a BitBoard.
      * @return A new BitBoard
      */
-    public BitBoard addBitPieceToMask(int col) {
+    public BitBoard addBitToMask(int col) {
         BitSet number = BitSet.valueOf(new long[] {bit});
         int count = 0;
         while(number.get((col* 7) + count) && count < 6){
@@ -142,7 +142,7 @@ public class BitBoard {
      * Gets the number of horizontal conect two's.
      * @return 
      */
-    private int numberOfTwoHorizontals(){
+    private int numOfTwoHoriz(){
         long m = bit & (bit >> 7);
         BitSet bs = BitSet.valueOf(new long[] {m});
         return bs.cardinality();
@@ -152,7 +152,7 @@ public class BitBoard {
      * Gets the number of right diagonal conect two's.
      * @return
      */
-    private int numberOfTwoRightDiagonals(){
+    private int numOfTwoRightDiag(){
         long m = bit & (bit >> 6);
         BitSet bs = BitSet.valueOf(new long[] {m});
         return bs.cardinality();
@@ -162,7 +162,7 @@ public class BitBoard {
      * Gets the number of left diagonal conect two's.
      * @return
      */
-    private int numberOfTwoLeftDiagonals(){
+    private int numOfTwoLeftDiag(){
         long m = bit & (bit >> 8);
         BitSet bs = BitSet.valueOf(new long[] {m});
         return bs.cardinality();
@@ -172,7 +172,7 @@ public class BitBoard {
      * Gets the number of vertical conect two's.
      * @return
      */
-    private int numberOfTwoVerticals(){
+    private int numOfTwoVert(){
         long m = bit & (bit >> 1);
         BitSet bs = BitSet.valueOf(new long[] {m});
         return bs.cardinality();
@@ -182,8 +182,8 @@ public class BitBoard {
      * Gets the number of connect twos in the BitBoard. This is used for scoring purposes.
      * @return
      */
-    public int checkNumberOfTwos(){
-        return numberOfTwoHorizontals() + numberOfTwoVerticals() + numberOfTwoLeftDiagonals() + numberOfTwoRightDiagonals();
+    public int checkTwos(){
+        return numOfTwoHoriz() + numOfTwoVert() + numOfTwoLeftDiag() + numOfTwoRightDiag();
     }
 
     /**
