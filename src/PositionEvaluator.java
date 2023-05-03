@@ -57,7 +57,6 @@ public class PositionEvaluator {
         }
     }
  
-
     /**
      * Returns the highest score child node of the root, than updates the root to reflect the turn progression.
      * @return

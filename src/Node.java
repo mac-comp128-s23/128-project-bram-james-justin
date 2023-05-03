@@ -32,7 +32,7 @@ public class Node {
      * Checks if at the node either the player or computer has won. 
      * If they have sets gameIsOverInPosition to True.
      */
-    public void decideLeafStatus(){
+    private void decideLeafStatus(){
         if(turn % 2 == 1) {
             gameIsOverInPosition = yellowPositions.checkWin();
         } else {
@@ -45,7 +45,7 @@ public class Node {
      * @param newBoard
      * @return
      */
-    public boolean wasNewBoardCreated(BitBoard newBoard){
+    private boolean wasNewBoardCreated(BitBoard newBoard){
         long updatedBoardBit = newBoard.getBit() & 0b0111111011111101111110111111011111101111110111111L;
         if(mask.getBit() - updatedBoardBit == 0) return false;
         return true;
@@ -56,7 +56,7 @@ public class Node {
      * Once a column is full no longer creates a child in that column.
      * Will be used for analysis of which child is the best.
      */
-    public void addChildren() {
+    private void addChildren() {
         for (int i = 0; i < COLUMNS ; i++) {
             if(!nodeGameboard.isColumnFull(i)){
                 BitBoard newMask = mask.addBitToMask(i);
@@ -73,7 +73,6 @@ public class Node {
             }
         }
     }
-
 
     /**
      * Gets the current list of children. If there are no children to be gotten, 
@@ -102,7 +101,6 @@ public class Node {
     public void setScore(double scoreSetter){
         this.score = scoreSetter;
     }
-
 
     /**
      * Evaluates the score of the node by comparing the # of check twos in the node and if there is a 
