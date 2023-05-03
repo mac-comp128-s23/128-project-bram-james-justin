@@ -18,6 +18,7 @@ public class BitBoard {
     public long updateBitboard(BitBoard newBoard){
         return newBoard.bit^bit + bit;
     }
+
     /**
      * Creates a new BitBoard by unmasking the bits that are set in the given mask.
      * @param mask the mask used for unmasking
@@ -25,6 +26,24 @@ public class BitBoard {
      */
     public BitBoard unMask(BitBoard mask){
         return new BitBoard(bit^mask.bit);
+    }
+
+    /**
+     * Gets the column based on the location of the first one in the bitstring.
+     * @param oldmask
+     * @return column number
+     */
+    public int getColumnUsingNewMask(long oldMaskBit){
+        long bitString = oldMaskBit ^ bit;
+        areMultipleDigitsDifferent(oldMaskBit);
+        int trailingZeroes = Long.numberOfTrailingZeros(bitString);
+        return trailingZeroes/7; 
+    }
+
+    public void areMultipleDigitsDifferent(long oldBit){
+        if((oldBit ^ bit) >> Long.numberOfTrailingZeros(oldBit ^ bit) > 1) {
+            throw new RuntimeException(); 
+        }
     }
     
     /**
@@ -34,6 +53,7 @@ public class BitBoard {
     public long getBit(){
         return this.bit;
     }
+
     /**
      * Sets a bit to newly passed in bit. Used for updating the yellow position in the updateGameState method.
      * @param newLong
@@ -53,7 +73,6 @@ public class BitBoard {
         newBit += newMaskBit ^ oldMaskbit;
         return newBit;
     }
-
 
     /**
      * Checks for a horizontal connect 4.

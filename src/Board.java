@@ -64,19 +64,23 @@ public class Board {
      * @return
      */
     public int getColToPlayIn(double x, double y){
+        System.out.println("yellow: " + yellow.getBit());
         int column;
         if (turnCount % 2 == 0) {
             column = getNearestColIndex(x, y);
         } else {
             Node nextMove = positionEvaluator.getNextAIMove();
-            column = getColumn(nextMove.getYellowPosition().getBit() ^ yellow.getBit());
+            column = nextMove.getMask().getColumnUsingNewMask(mask.getBit());
+            System.out.println("nextMove: " + Long.toBinaryString(nextMove.getYellowPosition().getBit()));
+
         }
         return column;
     }
 
+
+
     public void playerPlacePiece(double x, double y) {
         int column =  getColToPlayIn(x, y);
-        positionEvaluator.updateTree(column); // updates the tree regaurdless of which turn it is
         if (column != -1 && !gameIsOverInPosition ) {
             Fillable[] fillableColumn = gameBoard[column];
             int row = 0;
@@ -92,6 +96,7 @@ public class Board {
     }
     public void updateGameState (int column, int row){
         if (!isColumnFull(column)) { 
+            positionEvaluator.updateTree(column); // updates the tree regaurdless of which turn it is
             gameBoard[column][row - 1].setFillColor(getPlayerColor());
             BitBoard updatedMask = mask.addBitPieceToMask(column);
             if(turnCount % 2 == 1){
@@ -106,6 +111,8 @@ public class Board {
             }
             mask = updatedMask;
             turnCount++;
+        } else {
+System.out.println("column full");
         }
         if (turnCount == 42 && !gameIsOverInPosition) {
             gameOver(false);
@@ -187,16 +194,6 @@ public class Board {
     }
     public boolean getGameIsOverInPosition() {
         return gameIsOverInPosition;
-    }
-
-    /**
-     * Gets the column based on the location of the first one in the bitstring.
-     * @param newestBitPiece
-     * @return
-     */
-    public int getColumn(Long newestBitPiece){
-        int trailingZeroes = Long.numberOfTrailingZeros(newestBitPiece);
-        return trailingZeroes/7; 
     }
 
     public Board getGameBoard(){

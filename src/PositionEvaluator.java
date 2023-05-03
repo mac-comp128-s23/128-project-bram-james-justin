@@ -96,11 +96,11 @@ if(returnNode == null) {
             root.getHistory().add(index);
             root.getOrMakeChildren().get(index).setHistory(root.getHistory());;
             System.out.println(root.getHistory().size());
-            root = root.getOrMakeChildren().get(index);
+
+            root = root.getOrMakeChildren().get(index); /// change
             // System.out.println("Child size: " + root.getChildren().size());
             // currentTurn++;
         }
-        
     }
 
     public static void main(String[] args) {
