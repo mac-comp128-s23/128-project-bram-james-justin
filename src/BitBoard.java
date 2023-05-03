@@ -51,12 +51,12 @@ public class BitBoard {
 
     /**
      * Adds a bit to a BitBoard and returns the new BitBoard.
-     * @param oldPosBit The old bit position from previous move
-     * @param newPosBit The future bit position created by a move
+     * @param oldPositionBit The old bit position from previous move
+     * @param newPositionBit The future bit position created by a move
      * @return 
      */
-    public long addBitToPos(Long oldPosBit, long newPosBit){
-        Long newBit = bit | (newPosBit ^ oldPosBit);
+    public long addBitToPos(Long oldPositionBit, long newPositionBit){
+        Long newBit = bit | (newPositionBit ^ oldPositionBit);
         return newBit;
     }
 
@@ -97,6 +97,7 @@ public class BitBoard {
         } 
         return false;
     } 
+
     /**
      * Checks for a vertical connect 4.
      * @return
@@ -134,9 +135,7 @@ public class BitBoard {
         tempBit += (long) Math.pow(2, (col* (7)) + count);   
         
         return new BitBoard(tempBit);
-        
     }
-    
  
     /**
      * Gets the number of horizontal conect two's.
