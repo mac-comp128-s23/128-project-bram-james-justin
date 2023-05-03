@@ -15,3 +15,14 @@ The bitboard is **masked** and **unmasked** to determine what possible locations
 
 ## Decision making using a Game Tree and Minimax Algorithm
 The bot utilizes a game tree that contains the *current* board state as the root, and *all* possible valid moves the bot can take. Each child of the current board state contains a **score** which is calculated according to the number of two-in-a-rows it leads to, or if it's a winning state. To reduce computation time and to help understand what move to make, the **minimax algorithm** is utilized by examining the possible board states up to a specific depth in the tree. The algorithm prunes unnecessary branches to reduce computation time as well.
+
+## Classes
+**GameManager**: GameManager creates the graphic objects and handles the canvas click calls, as well as initializes the main instance of the Board().
+
+**Board**: Board manages the fillable visual representation of the live game which calls position evaluator to choose moves for the ai to make. 
+
+**PositionEvaluator**: Creates a game tree using the Node class, and uses a minimax algorithm and alpha-beta pruning to evaluate the nodes, allowing it to return moves for the AI and stay updated with player moves. 
+
+**Node**: Each node is a game state, which holds the boards information as a pair of BitBoards, as well as other useful information about the position, and has some helper methods for modifying and duplicating bitboards.
+
+**BitBoard**: A bitstring representation of the connect four board, including a sentinal row to allow for clean adjacency testing. It also has helper methods for testing adjacency and creating modified BitBoards. 
