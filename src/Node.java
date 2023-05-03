@@ -10,6 +10,7 @@ public class Node {
     private double score;
     private int positionEvaluationScore;
     private static final int COLUMNS = 7;
+    private ArrayList<Integer> gameHistory;
     // private GameManager manager;
 
     public Node(Board gameboard, BitBoard hamiDownPosition, BitBoard hamiDownMask, int turnNumber) {
@@ -20,7 +21,16 @@ public class Node {
         mask = hamiDownMask;
         decideLeafStatus();
         positionEvaluationScore = Integer.MIN_VALUE;
+        gameHistory = new ArrayList<>();
     }
+
+public ArrayList<Integer> getHistory(){
+    return gameHistory;
+}
+
+public void setHistory(ArrayList<Integer> parentHistory){
+    gameHistory = parentHistory;
+}
 
     /**
      * Checks if at the node either the player or computer has won. 
@@ -55,8 +65,8 @@ public class Node {
         // System.out.println("gameover:" + gameIsOverInPosiiton);
         // if(!gameIsOverInPosiiton){ 
             for (int i = 0; i < COLUMNS ; i++) {
-                System.out.println("column "+ i);
-                System.out.println("column full check" +nodeGameboard.isColumnFull(i));
+                // System.out.println("column "+ i);
+                // System.out.println("column full check" +nodeGameboard.isColumnFull(i));
                 if(!nodeGameboard.isColumnFull(i)){
                     BitBoard newMask = mask.addBitPieceToMask(i);
                     if(wasNewBoardCreated(newMask)){

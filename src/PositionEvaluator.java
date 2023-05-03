@@ -5,7 +5,7 @@ public class PositionEvaluator {
 
     public PositionEvaluator(Node n){
         root = n;
-        searchDepth = 8;
+        searchDepth = 6;
         playerTurn=true;
     }
 
@@ -63,13 +63,26 @@ public class PositionEvaluator {
         // System.out.println("get children " + root.getChildren());
 
         for (Node child: root.getOrMakeChildren()) {
-                if(child.getScore() <= eval) {
+                if(child.getScore() == eval) {
                     returnNode = child;
                     break;
                 }
         }  
+
+
+
+if(returnNode == null) {
+    System.out.println("eval: " + eval);
+    System.out.println("GETNEXTAIMOVEERROR!" + " ROOT IS A LEAF?: " + root.getGameIsOverInPosition());
+    System.out.println("root history: " + root.getHistory().toString());
+    for (Node child: root.getOrMakeChildren()) {
+            System.out.println("child score: " + child.getScore());
+        }
+}
+
+
+
         // System.out.println(Long.toBinaryString(root.mask.bit));
-        root = returnNode;
         return returnNode;
     }
 
@@ -79,7 +92,10 @@ public class PositionEvaluator {
      */
     public void updateTree(int index) {
         if(index !=-1){
-            System.out.println("index: " + index);
+            // System.out.println("index: " + index);
+            root.getHistory().add(index);
+            root.getOrMakeChildren().get(index).setHistory(root.getHistory());;
+            System.out.println(root.getHistory().size());
             root = root.getOrMakeChildren().get(index);
             // System.out.println("Child size: " + root.getChildren().size());
             // currentTurn++;

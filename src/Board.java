@@ -67,10 +67,8 @@ public class Board {
         int column;
         if (turnCount % 2 == 0) {
             column = getNearestColIndex(x, y);
-            positionEvaluator.updateTree(column);
         } else {
             Node nextMove = positionEvaluator.getNextAIMove();
-            System.out.println("next Move yellowPos" + Long.toBinaryString(nextMove.getYellowPosition().getBit()));
             column = getColumn(nextMove.getYellowPosition().getBit() ^ yellow.getBit());
         }
         return column;
@@ -78,6 +76,7 @@ public class Board {
 
     public void playerPlacePiece(double x, double y) {
         int column =  getColToPlayIn(x, y);
+        positionEvaluator.updateTree(column); // updates the tree regaurdless of which turn it is
         if (column != -1 && !gameIsOverInPosition ) {
             Fillable[] fillableColumn = gameBoard[column];
             int row = 0;
@@ -88,7 +87,6 @@ public class Board {
                 row++;
             }   
             columnMap.put(column, row);
-            System.out.println(isColumnFull(column));
             updateGameState(column, row);
         }
     }
