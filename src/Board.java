@@ -16,24 +16,32 @@ public class Board {
     private int turnCount;     
     private static final int COLUMNS = 7;
     private static final int ROWS = 6;
-    private boolean gameIsOverInPosition;
+    private boolean isGameOver;
     private BitBoard mask;
     private BitBoard yellow;
     private PositionEvaluator positionEvaluator;
     private Map<Integer, Integer> columnMap;
 
+    /**
+     * Creates a Fillable board of size 7x6, 42 bits with underlying bitboards of size 7x7, 49-bits for AI move determination.
+     * @param Fillable board
+     */
     public Board(Fillable[][] board) {
         gameBoard = new Fillable[COLUMNS][ROWS];
         xBoxMargin = 100;
         yBoxMargin = 80;
         squareHeightAndWidth = 70;
-        gameIsOverInPosition = false;
-        mask = new BitBoard(0b0000000000000000000000000000000000000000000000000); //length should be 49 (7*7)
+        isGameOver = false;
+        mask = new BitBoard(0b0000000000000000000000000000000000000000000000000);
         yellow = new BitBoard(0b0000000000000000000000000000000000000000000000000);
         positionEvaluator = new PositionEvaluator(new Node(this, yellow, mask, 0));
         initializeColumnMap();
     }
 
+    /**
+     * Initializes map that stores each column as a key and the amount of empty spots (including sentinel node row)
+     * per column (7 slots per column).
+     */
     public void initializeColumnMap(){
         columnMap = new HashMap<>();
         columnMap.put(0,7);
@@ -46,10 +54,10 @@ public class Board {
     }
 
     /**
-     * Takes in the mouses X and Y and assigns it to the nearest column.
+     * Takes in the mouse's X and Y and assigns it to the nearest column based on the board's margins.
      * @param mouseX
      * @param mouseY
-     * @return
+     * @return A specified column
      */
     public int getNearestColIndex(double mouseX, double mouseY){ 
         int column = -1;
@@ -60,14 +68,13 @@ public class Board {
     }
 
     /**
-     *  If it is the users turn it gets the nearest column to the mouses x and y position 
-     *  and places the piece in that column. The tree is then updated to refelct the current board state.
-     *  When it is the bots turn it gets the next move and then gets that moves next column.
+     * Calls getNearestColIndex when the player's turn and places the piece in that column. The tree is then 
+     * updated to reflect the current board state. When it is the bot's turn it gets the next move and the next move's column.
      * @param x
      * @param y
      * @return
      */
-    public int getColToPlayIn(double x, double y){
+    public int getSpecificCol(double x, double y){
         int column;
         if (turnCount % 2 == 0) {
             column = getNearestColIndex(x, y);
@@ -79,12 +86,17 @@ public class Board {
         return column;
     }
 
-    public void playerPlacePiece(double x, double y) {
-        int column =  getColToPlayIn(x, y);
-        if (column != -1 && !gameIsOverInPosition ) {
+    /**
+     * Places the player's piece if the game is not finished and is within bounds and puts it into the columnMap.
+     * @param x
+     * @param y
+     */
+    public void placePiece(double x, double y) {
+        int column =  getSpecificCol(x, y);
+        if (column != -1 && !isGameOver ) {
             Fillable[] fillableColumn = gameBoard[column];
             int row = 0;
-            while (row < ROWS) {      // is less than 6 so that it represents the # of rows
+            while (row < ROWS) {
                 if (fillableColumn[row].getFillColor() != Color.WHITE) {
                     break;
                 }
@@ -96,6 +108,12 @@ public class Board {
         }
     }
 
+    /**
+     * Updates the game tree based on whether a column is not full, and adds yellow's bit to a bitboard to determine
+     * whether a future game state wins the game. Determines whether the game is finished or not.
+     * @param column
+     * @param row
+     */
     public void updateGameState (int column, int row){
         if (!isColumnFull(column)) { 
             positionEvaluator.updateTree(column);
@@ -115,12 +133,16 @@ public class Board {
             turnCount++;
         }
 
-        if (turnCount == 42 && !gameIsOverInPosition) {
+        if (turnCount == 42 && !isGameOver) {
             gameOver(false);
         }
     }
 
 
+    /**
+     * Initializes the game pieces and board on canvas.
+     * @param canvas
+     */
     public void initializePieces(CanvasWindow canvas){
         int colCount = 0;
         int rowCount = 0;
@@ -143,6 +165,11 @@ public class Board {
         }
     }
 
+    /**
+     * Determines which player has what token. For the purposes of this project, the human player is red and the
+     * bot is yellow.
+     * @return
+     */
     public Color getPlayerColor() {
         if (turnCount % 2 == 1) {
             return Color.YELLOW;
@@ -151,6 +178,10 @@ public class Board {
         }
     }
 
+    /**
+     * Prints out in the terminal who has won the game.
+     * @param playerWon
+     */
     public void gameOver(boolean playerWon) {
         if (playerWon) {
             if (turnCount % 2 == 0) { 
@@ -162,11 +193,14 @@ public class Board {
         if (!playerWon) {
             System.out.println("Nobody is a winner");
         }
-        gameIsOverInPosition = true;
+        isGameOver = true;
     }
 
+    /**
+     * Resets the game variables needed to play a new game.
+     */
     public void resetGameTrackers(){
-        gameIsOverInPosition = false;
+        isGameOver = false;
         turnCount = 0;
         mask = new BitBoard(0b0000000000000000000000000000000000000000000000000L);
         yellow = new BitBoard(0b0000000000000000000000000000000000000000000000000L);
@@ -174,6 +208,11 @@ public class Board {
         initializeColumnMap();
     }   
 
+    /**
+     * Checks if the column is full for a specific column
+     * @param column
+     * @return
+     */
     public boolean isColumnFull(int column){
         if(columnMap.get(column) == 0){
             return true;
@@ -181,8 +220,11 @@ public class Board {
         return false;
     }
 
-    public boolean getGameIsOverInPosition() {
-        return gameIsOverInPosition;
+    /**
+     * @return The current value of gameIsOverInPostion
+     */
+    public boolean getIsGameOver() {
+        return isGameOver;
     }
 
 }

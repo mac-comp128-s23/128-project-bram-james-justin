@@ -16,7 +16,7 @@ public class GameManager {
         board.initializePieces(canvas);
 
         canvas.onClick(event -> {
-            if (!board.getGameIsOverInPosition()) {
+            if (!board.getIsGameOver()) {
                 takeATurn(event.getPosition().getX(), event.getPosition().getY());
             } 
             else {
@@ -31,7 +31,7 @@ public class GameManager {
      * @param mouseY
      */
     public void takeATurn(double mouseX, double mouseY) {
-        board.playerPlacePiece(mouseX, mouseY); 
+        board.placePiece(mouseX, mouseY); 
         canvas.draw();
     }
 
