@@ -50,8 +50,9 @@ public class Node {
      * @return
      */
     public boolean wasNewBoardCreated(BitBoard newBoard){
-        if(newBoard.getBit() - mask.getBit() > 0) return true;
-        return false;
+        long updatedBoardBit = newBoard.getBit() & 0b0111111011111101111110111111011111101111110111111L;
+        if(mask.getBit() - updatedBoardBit == 0) return false;
+        return true;
     }
 
     /**
@@ -114,7 +115,7 @@ public class Node {
             if(turn % 2 == 0){
                 positionEvaluationScore -= 100; //red wins
             } else {
-                positionEvaluationScore += 100; //yellow wins
+                positionEvaluationScore += 100 * turn; //yellow wins
             }
         }
         return positionEvaluationScore;
