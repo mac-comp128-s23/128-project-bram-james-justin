@@ -31,6 +31,10 @@ public class Board {
         mask = new BitBoard(0b0000000000000000000000000000000000000000000000000); //length should be 49 (7*7)
         yellow = new BitBoard(0b0000000000000000000000000000000000000000000000000);
         positionEvaluator = new PositionEvaluator(new Node(this, yellow, mask, 0));
+        initializeColumnMap();
+    }
+
+    public void initializeColumnMap(){
         columnMap = new HashMap<>();
         columnMap.put(0,7);
         columnMap.put(1,7);
@@ -64,20 +68,22 @@ public class Board {
      * @return
      */
     public int getColToPlayIn(double x, double y){
-        System.out.println("yellow: " + yellow.getBit());
         int column;
         if (turnCount % 2 == 0) {
             column = getNearestColIndex(x, y);
+
         } else {
             Node nextMove = positionEvaluator.getNextAIMove();
-            column = nextMove.getMask().getColumnUsingNewMask(mask.getBit());
-            System.out.println("nextMove: " + Long.toBinaryString(nextMove.getYellowPosition().getBit()));
 
+            // if next move isn't getting zero when column full, check this line \/
+            column = nextMove.getMask().getColumnUsingNewMask(mask.getBit()); 
+            
+            System.out.println("yellow: " + Long.toBinaryString(yellow.getBit()));
+            System.out.println("Nextyellow: " + Long.toBinaryString(nextMove.getYellowPosition().getBit()));
         }
+
         return column;
     }
-
-
 
     public void playerPlacePiece(double x, double y) {
         int column =  getColToPlayIn(x, y);
@@ -94,6 +100,7 @@ public class Board {
             updateGameState(column, row);
         }
     }
+
     public void updateGameState (int column, int row){
         if (!isColumnFull(column)) { 
             positionEvaluator.updateTree(column); // updates the tree regaurdless of which turn it is
@@ -182,9 +189,10 @@ System.out.println("column full");
     public void resetGameTrackers(){
         gameIsOverInPosition = false;
         turnCount = 0;
-        mask = new BitBoard(0b0000000000000000000000000000000000000000000000000);
-        yellow = new BitBoard(0b0000000000000000000000000000000000000000000000000);
+        mask = new BitBoard(0b0000000000000000000000000000000000000000000000000L);
+        yellow = new BitBoard(0b0000000000000000000000000000000000000000000000000L);
         positionEvaluator = new PositionEvaluator(new Node(this, yellow, mask, 0));
+        initializeColumnMap();
     }   
     public boolean isColumnFull(int column){
         if(columnMap.get(column)==0){

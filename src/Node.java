@@ -52,7 +52,11 @@ public void setHistory(ArrayList<Integer> parentHistory){
      * @return
      */
     public boolean wasNewBoardCreated(BitBoard newBoard){
-        if(newBoard.getBit() - mask.getBit() > 0) return true;
+        // if(newBoard.getBit() != (newBoard.getBit() & (0b0111111011111101111110111111011111101111110111111L))){
+        // System.out.println("before xor: " + Long.toBinaryString(newBoard.getBit()));
+        // System.out.println("adfter xor: " + Long.toBinaryString((newBoard.getBit() & (0b0111111011111101111110111111011111101111110111111L))));
+        // }
+        if((newBoard.getBit() & (0b0111111011111101111110111111011111101111110111111L)) - mask.getBit() > 0) return true;
         return false;
     }
 
@@ -78,8 +82,8 @@ public void setHistory(ArrayList<Integer> parentHistory){
                             node = new Node(nodeGameboard, yellowPos, newMask, turn + 1);
                         }
                         children.add(node);
-                } 
-            }
+                    }  
+                }
             }
         }
     // }

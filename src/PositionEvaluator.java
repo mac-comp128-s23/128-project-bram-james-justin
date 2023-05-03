@@ -5,7 +5,7 @@ public class PositionEvaluator {
 
     public PositionEvaluator(Node n){
         root = n;
-        searchDepth = 6;
+        searchDepth = 5;
         playerTurn=true;
     }
 
@@ -61,15 +61,12 @@ public class PositionEvaluator {
         // Collections.sort(root.getChildren(), new ChildSorter());
         // Node returnNode=root.getChildren().get(0);
         // System.out.println("get children " + root.getChildren());
-
         for (Node child: root.getOrMakeChildren()) {
                 if(child.getScore() == eval) {
                     returnNode = child;
                     break;
                 }
         }  
-
-
 
 if(returnNode == null) {
     System.out.println("eval: " + eval);
@@ -93,9 +90,10 @@ if(returnNode == null) {
     public void updateTree(int index) {
         if(index !=-1){
             // System.out.println("index: " + index);
+            root.addChildren();
             root.getHistory().add(index);
             root.getOrMakeChildren().get(index).setHistory(root.getHistory());;
-            System.out.println(root.getHistory().size());
+            // System.out.println(root.getHistory().size());
 
             root = root.getOrMakeChildren().get(index); /// change
             // System.out.println("Child size: " + root.getChildren().size());

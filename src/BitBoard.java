@@ -1,22 +1,10 @@
 import java.util.BitSet;
 
 public class BitBoard {
-    private BitSet board;
     private long bit;
 
     public BitBoard(long previousBit) {
-        board = new BitSet();
         bit = previousBit;
-    }
-
-    /**
-     * Updates the current bitboard by performing the XOR operation on the bitstrings (exclusive-or on 0s and 1s in
-     * the bitstring).
-     * @param newBoard
-     * @return
-     */
-    public long updateBitboard(BitBoard newBoard){
-        return newBoard.bit^bit + bit;
     }
 
     /**

@@ -7,6 +7,7 @@ public class GameManager {
     private final int CANVAS_WIDTH = 700;
     private final int CANVAS_HEIGHT = 600;
     private GraphicsGroup pieces;
+    private boolean programsRunning;
 
     public GameManager() {
         canvas = new CanvasWindow("Board", CANVAS_WIDTH, CANVAS_HEIGHT);
@@ -14,14 +15,17 @@ public class GameManager {
         board = new Board(null);
         canvas.add(pieces, 0, 0);
         board.initializePieces(canvas);
+        programsRunning = false;
 
         canvas.onClick(event -> {
+            programsRunning = true;
             if (!board.getGameIsOverInPosition()) {
                 takeATurn(event.getPosition().getX(), event.getPosition().getY());
             } 
             else {
                 clearBoard();
             }
+            programsRunning = false;
         });
 
         /// FOR TESTING!!!
