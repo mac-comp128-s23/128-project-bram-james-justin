@@ -10,26 +10,22 @@ public class Node {
     private double score;
     private int positionEvaluationScore;
     private static final int COLUMNS = 7;
-    private ArrayList<Integer> gameHistory;
 
-
-    public Node(Board gameboard, BitBoard hamiDownPosition, BitBoard hamiDownMask, int turnNumber) {
+    /**
+     * Represents a gamestate of connect 4. Stores the game as two BitBoards as 
+     * @param gameboard 
+     * @param inputPosition
+     * @param inputMask
+     * @param turnNumber
+     */
+    public Node(Board gameboard, BitBoard inputPosition, BitBoard inputMask, int turnNumber) {
         nodeGameboard = gameboard;
         children = new ArrayList<Node>();
         turn = turnNumber;
-        yellowPositions = hamiDownPosition;
-        mask = hamiDownMask;
+        yellowPositions = inputPosition;
+        mask = inputMask;
         decideLeafStatus();
         positionEvaluationScore = Integer.MIN_VALUE;
-        gameHistory = new ArrayList<>();
-    }
-
-    public ArrayList<Integer> getHistory(){
-        return gameHistory;
-    }
-
-    public void setHistory(ArrayList<Integer> parentHistory){
-        gameHistory = parentHistory;
     }
 
     /**

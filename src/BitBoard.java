@@ -23,7 +23,7 @@ public class BitBoard {
     }
 
     /**
-     * compares this mask to old mask to find the newest placed bitpiece's column number as an int
+     * Compares this mask to old mask to find the newest placed bitpiece's column number as an int
      * @param previousPosition
      * @return column number
      */

@@ -60,7 +60,6 @@ public class PositionEvaluator {
      */
     public Node getNextAIMove(){
         Node returnNode = null;
-System.out.println(root.getOrMakeChildren().size());
         double eval=  evaluatePosition(root, searchDepth, Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY, playerTurn);
         for (Node child: root.getOrMakeChildren()) {
             if(child.getScore() == eval) {
