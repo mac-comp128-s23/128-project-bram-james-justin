@@ -1,5 +1,7 @@
 # Connect Four Bot
 
+Project by: Bram Nutt, James McCarthy, and Justin Chalichemala
+
 Utilizes **kilt-graphics API** from **edu.macalester.graphics** for **Java**.
 
 This project creates a Connect Four interactable GUI using the **kilt-graphics API** to allow the player to play against an artificial intelligence. The Connect Four board is represented using *Fillable 2D arrays*, but also a *bitstring* representation to allow for the bot to determine which moves are best. The player uses the red tokens while the bot uses yellow.
