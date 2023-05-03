@@ -180,5 +180,27 @@ public class BitBoard {
     public int checkNumberOfTwos(){
         return numberOfTwoHorizontals() + numberOfTwoVerticals() + numberOfTwoLeftDiagonals() + numberOfTwoRightDiagonals();
     }
+
+    public String toString(){
+        String asBinary = Long.toBinaryString(bit);
+        while (asBinary.length() != 64)
+            asBinary = "0" + asBinary;
+        String s = asBinary +"\n"+
+         "    a   b   c   d   e   f   g\n";
+        s += "  +---+---+---+---+---+---+---+\n 7 | ";
+        for (int row = 6; row >= 0; row--) {
+            for (int col = 0; col < 7; col++) {
+                if (asBinary.charAt(63 - (col * 7 + row)) == '1')
+                    s += "X | ";
+                else
+                    s += "  | ";
+            }
+            s += (row + 1) + "\n   +---+---+---+---+---+---+---+";
+            if (row != 0)
+                s += "\n " + row + " | ";
+        }
+        s += "\n     a   b   c   d   e   f   g\n";
+        return s;
+    }
     
 }

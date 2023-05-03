@@ -14,8 +14,8 @@ public class Board {
     private int xBoxMargin, yBoxMargin;
     private int squareHeightAndWidth;
     private int turnCount;     
-    // private static final int COLUMNS = 7;
-    // private static final int ROWS = 6;
+    private static final int COLUMNS = 7;
+    private static final int ROWS = 6;
     private boolean gameIsOverInPosition;
     private BitBoard mask;
     private BitBoard yellow;
@@ -23,7 +23,7 @@ public class Board {
     private Map<Integer, Integer> columnMap;
 
     public Board(Fillable[][] board) {
-        gameBoard = new Fillable[7][6];
+        gameBoard = new Fillable[COLUMNS][ROWS];
         xBoxMargin = 100;
         yBoxMargin = 80;
         squareHeightAndWidth = 70;
@@ -53,7 +53,7 @@ public class Board {
      */
     public int getNearestColIndex(double mouseX, double mouseY){ 
         int column = -1;
-        if(mouseX > xBoxMargin && mouseX < (squareHeightAndWidth * 7) + xBoxMargin) {
+        if(mouseX > xBoxMargin && mouseX < (squareHeightAndWidth * COLUMNS) + xBoxMargin) {
             column = (int) ((mouseX - xBoxMargin) / squareHeightAndWidth);          
         }
         return column;
@@ -84,7 +84,7 @@ public class Board {
         if (column != -1 && !gameIsOverInPosition ) {
             Fillable[] fillableColumn = gameBoard[column];
             int row = 0;
-            while (row < 6) {      // is less than 6 so that it represents the # of rows
+            while (row < ROWS) {      // is less than 6 so that it represents the # of rows
                 if (fillableColumn[row].getFillColor() != Color.WHITE) {
                     break;
                 }
@@ -127,7 +127,7 @@ public class Board {
         for (Fillable[] col : gameBoard) {
             rowCount = 0;
             for (Fillable var: col) {
-                Fillable square= new Rectangle(xBoxMargin + (70 * (colCount % 7)), yBoxMargin + (70 * (rowCount )), squareHeightAndWidth, squareHeightAndWidth);
+                Fillable square= new Rectangle(xBoxMargin + (70 * (colCount % COLUMNS)), yBoxMargin + (70 * (rowCount )), squareHeightAndWidth, squareHeightAndWidth);
                 Fillable disc = new Ellipse(105 + (70 * (colCount % 7)), 85 + (70 * (rowCount )), 60, 60);
                 ((Ellipse) disc).setFillColor(Color.WHITE);
                 ((Rectangle) square).setFillColor(Color.BLUE);
