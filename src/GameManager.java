@@ -8,6 +8,10 @@ public class GameManager {
     private final int CANVAS_HEIGHT = 600;
     private GraphicsGroup pieces;
 
+    /**
+     * Initializes the game and canvas. Each valid click determines whose turn it is. The player is even, and the
+     * bot is odd.
+     */
     public GameManager() {
         canvas = new CanvasWindow("Board", CANVAS_WIDTH, CANVAS_HEIGHT);
         pieces = new GraphicsGroup();
@@ -26,19 +30,19 @@ public class GameManager {
     }
 
     /**
-     * Takes a turn. Passes in mouses X and Y coordinates for when it is the players turn.
+     * Takes a turn for the human player. Passes in mouses X and Y coordinates for when it is the players turn.
      * @param mouseX
      * @param mouseY
      */
-    public void takeATurn(double mouseX, double mouseY) {
+    private void takeATurn(double mouseX, double mouseY) {
         board.placePiece(mouseX, mouseY); 
         canvas.draw();
     }
 
     /**
-     * Resets the game.
+     * Resets the game by clearing the canvas and reinitializing all the pieces.
      */
-    public void clearBoard() {
+    private void clearBoard() {
         canvas.removeAll();
         canvas.add(pieces);
         board.initializePieces(canvas);

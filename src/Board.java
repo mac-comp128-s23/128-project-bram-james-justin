@@ -42,7 +42,7 @@ public class Board {
      * Initializes map that stores each column as a key and the amount of empty spots (including sentinel node row)
      * per column (7 slots per column).
      */
-    public void initializeColumnMap(){
+    private void initializeColumnMap(){
         columnMap = new HashMap<>();
         columnMap.put(0,7);
         columnMap.put(1,7);
@@ -59,7 +59,7 @@ public class Board {
      * @param mouseY
      * @return A specified column
      */
-    public int getNearestColIndex(double mouseX, double mouseY){ 
+    private int getNearestColIndex(double mouseX, double mouseY){ 
         int column = -1;
         if(mouseX > xBoxMargin && mouseX < (squareHeightAndWidth * COLUMNS) + xBoxMargin) {
             column = (int) ((mouseX - xBoxMargin) / squareHeightAndWidth);          
@@ -74,7 +74,7 @@ public class Board {
      * @param y
      * @return
      */
-    public int getSpecificCol(double x, double y){
+    private int getSpecificCol(double x, double y){
         int column;
         if (turnCount % 2 == 0) {
             column = getNearestColIndex(x, y);
@@ -114,7 +114,7 @@ public class Board {
      * @param column
      * @param row
      */
-    public void updateGameState (int column, int row){
+    private void updateGameState (int column, int row){
         if (!isColumnFull(column)) { 
             positionEvaluator.updateTree(column);
             gameBoard[column][row - 1].setFillColor(getPlayerColor());
@@ -170,7 +170,7 @@ public class Board {
      * bot is yellow.
      * @return
      */
-    public Color getPlayerColor() {
+    private Color getPlayerColor() {
         if (turnCount % 2 == 1) {
             return Color.YELLOW;
         } else {
@@ -182,7 +182,7 @@ public class Board {
      * Prints out in the terminal who has won the game.
      * @param playerWon
      */
-    public void gameOver(boolean playerWon) {
+    private void gameOver(boolean playerWon) {
         if (playerWon) {
             if (turnCount % 2 == 0) { 
                 System.out.println("Red Wins");
