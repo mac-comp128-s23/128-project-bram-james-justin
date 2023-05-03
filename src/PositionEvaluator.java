@@ -3,9 +3,13 @@ public class PositionEvaluator {
     private int searchDepth;
     private boolean playerTurn;
 
+    /**
+     * Game tree for all possible moves of the game
+     * @param n
+     */
     public PositionEvaluator(Node n){
         root = n;
-        searchDepth = 5;
+        searchDepth = 8;
         playerTurn = true;
     }
 
@@ -28,7 +32,7 @@ public class PositionEvaluator {
             return score;
         }
         
-        if(playerTurn) {
+        if (playerTurn) {
             double maxEval = Double.NEGATIVE_INFINITY; 
             for(Node child : current.getOrMakeChildren()){
                 double score = evaluatePosition(child, depth-1, alpha, beta, false);

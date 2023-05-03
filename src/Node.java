@@ -13,9 +13,9 @@ public class Node {
 
     /**
      * Represents a gamestate of connect 4. Stores the game as two BitBoards as 
-     * @param gameboard 
-     * @param inputPosition
-     * @param inputMask
+     * @param gameboard A board fillable
+     * @param inputPosition Position of a board
+     * @param inputMask Mask of 
      * @param turnNumber
      */
     public Node(Board gameboard, BitBoard inputPosition, BitBoard inputMask, int turnNumber) {
@@ -95,6 +95,10 @@ public class Node {
         return score;
     }
 
+    /**
+     * Sets the score of the given node to be used for evaluation.
+     * @param scoreSetter
+     */
     public void setScore(double scoreSetter){
         this.score = scoreSetter;
     }
@@ -102,16 +106,17 @@ public class Node {
 
     /**
      * Evaluates the score of the node by comparing the # of check twos in the node and if there is a 
-     * win for either player.
+     * win for either player. It weighs losing lower than winning, and values losses in more moves over 
+     * allowing losses in fewer moves.
      * @return
      */
     public int evaluateNode() {
         positionEvaluationScore = yellowPositions.checkTwos() - yellowPositions.unMask(mask).checkTwos();
         if(gameIsOverInPosition){
             if(turn % 2 == 0){
-                positionEvaluationScore -= 100; //red wins
+                positionEvaluationScore -= 100 * (42 - turn); //red winning
             } else {
-                positionEvaluationScore += 100 * turn; //yellow wins
+                positionEvaluationScore += 100; //yellow winning
             }
         }
         return positionEvaluationScore;
