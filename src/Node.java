@@ -2,8 +2,8 @@ import java.util.ArrayList;
 
 public class Node {
     private Board nodeGameboard;
-    private BitBoard yellowPositions; // has 1s where computer has a disc (yellow)
-    private BitBoard mask; // has 1s where there is a disc
+    private BitBoard yellowPositions;
+    private BitBoard mask;
     private ArrayList<Node> children;
     private int turn;
     private boolean gameIsOverInPosition;
