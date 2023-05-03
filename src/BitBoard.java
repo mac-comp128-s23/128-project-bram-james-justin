@@ -61,51 +61,51 @@ public class BitBoard {
     }
 
     /**
-     * Checks for a horizontal connect 4.
+     * Shifts bits to check for a horizontal connect 4.
      * @return
      */
     private boolean checkHor(){
-        long m = bit & (bit >> 7);
-        long f = m & (m >> 14);   
-        if(Long.valueOf(f) > 0){
+        long lineUpBit1 = bit & (bit >> 7);
+        long lineUpBit2 = lineUpBit1 & (lineUpBit1 >> 14);   
+        if(Long.valueOf(lineUpBit2) > 0){
             return true;
         } 
         return false;
     } 
 
     /**
-     * Checks for a upwards right diagonal connect 4.
+     * Shifts bits to check for a upwards right diagonal connect 4.
      * @return
      */
     private boolean checkUpRightDiag(){
-        long m = bit & (bit >> 6);
-        long f = m & (m >> 12);   
-        if(Long.valueOf(f) > 0){
+        long lineUpBit1 = bit & (bit >> 6);
+        long lineUpBit2 = lineUpBit1 & (lineUpBit1 >> 12);   
+        if(Long.valueOf(lineUpBit2) > 0){
             return true;
         } 
         return false;
     } 
     /**
-     * Checks for a upwards left diagonal connect 4.
+     * Shifts bits to check for a upwards left diagonal connect 4.
      * @return
      */
     private boolean checkUpLeft(long unmaskedPosition){
-        long m = unmaskedPosition & (unmaskedPosition >> 8);
-        long f = m & (m >> 16);   
-        if(Long.valueOf(f) > 0){
+        long lineUpBit1 = unmaskedPosition & (unmaskedPosition >> 8);
+        long lineUpBit2 = lineUpBit1 & (lineUpBit1 >> 16);   
+        if(Long.valueOf(lineUpBit2) > 0){
             return true;
         } 
         return false;
     } 
 
     /**
-     * Checks for a vertical connect 4.
+     * Shifts bits to check for a vertical connect 4.
      * @return
      */
     private boolean checkVert(long unmaskedPosition){
-        long m = unmaskedPosition & (unmaskedPosition >> 1);
-        long f = m & (m >> 2);   
-        if(Long.valueOf(f) > 0){
+        long lineUpBit1 = unmaskedPosition & (unmaskedPosition >> 1);
+        long lineUpBit2 = lineUpBit1 & (lineUpBit1 >> 2);   
+        if(Long.valueOf(lineUpBit2) > 0){
             return true;
         } 
         return false;
@@ -138,42 +138,42 @@ public class BitBoard {
     }
  
     /**
-     * Gets the number of horizontal conect two's.
+     * Shifts bits to get the number of horizontal conect two's.
      * @return 
      */
     private int numOfTwoHoriz(){
-        long m = bit & (bit >> 7);
-        BitSet bs = BitSet.valueOf(new long[] {m});
+        long lineUpBit = bit & (bit >> 7);
+        BitSet bs = BitSet.valueOf(new long[] {lineUpBit});
         return bs.cardinality();
     } 
 
     /**
-     * Gets the number of right diagonal conect two's.
+     * Shifts bits to get the number of right diagonal conect two's.
      * @return
      */
     private int numOfTwoRightDiag(){
-        long m = bit & (bit >> 6);
-        BitSet bs = BitSet.valueOf(new long[] {m});
+        long lineUpBit = bit & (bit >> 6);
+        BitSet bs = BitSet.valueOf(new long[] {lineUpBit});
         return bs.cardinality();
     } 
 
     /**
-     * Gets the number of left diagonal conect two's.
+     * Shifts bits to get the number of left diagonal conect two's.
      * @return
      */
     private int numOfTwoLeftDiag(){
-        long m = bit & (bit >> 8);
-        BitSet bs = BitSet.valueOf(new long[] {m});
+        long lineUpBit = bit & (bit >> 8);
+        BitSet bs = BitSet.valueOf(new long[] {lineUpBit});
         return bs.cardinality();
     } 
 
     /**
-     * Gets the number of vertical conect two's.
+     * Shifts bits to get the number of vertical conect two's.
      * @return
      */
     private int numOfTwoVert(){
-        long m = bit & (bit >> 1);
-        BitSet bs = BitSet.valueOf(new long[] {m});
+        long lineUpBit = bit & (bit >> 1);
+        BitSet bs = BitSet.valueOf(new long[] {lineUpBit});
         return bs.cardinality();
     } 
 
